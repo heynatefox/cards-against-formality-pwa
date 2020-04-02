@@ -1,0 +1,49 @@
+{
+  "name": "cards-against-formality-pwa",
+  "homepage": ".",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.9.8",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.47",
+    "axios": "^0.19.2",
+    "jsonwebtoken": "^8.5.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "socket.io-client": "^2.3.0",
+    "typeface-roboto": "^0.0.75"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/axios": "^0.14.0",
+    "@types/jsonwebtoken": "^8.3.8",
+    "@types/socket.io-client": "^1.4.32",
+    "@types/react-dom": "^16.9.0",
+    "node-sass": "^4.13.1",
+    "react-scripts": "3.4.1",
+    "typescript": "~3.7.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

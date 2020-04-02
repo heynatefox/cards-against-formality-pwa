@@ -1,0 +1,12 @@
+.app-container {
+  overflow-x: hidden;
+}
+
+.app {
+  width: 100%;
+  overflow-x: hidden;
+
+  .title {
+    text-align: center;
+  }
+}

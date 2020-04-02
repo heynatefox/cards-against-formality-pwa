@@ -1,0 +1,21 @@
+.inner-login-container {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  .header {
+    text-align: center;
+  }
+
+  .input-wrapper {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    min-width: 500px;
+    .username-input {
+      margin-bottom: 5%;
+    }
+  }
+}
