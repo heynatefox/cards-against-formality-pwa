@@ -3,7 +3,7 @@
   "name": "Cards Against Formality",
   "icons": [
     {
-      "src": "apple-touch-icon",
+      "src": "apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
     },
@@ -26,6 +26,6 @@
   "start_url": ".",
   "scope": ".",
   "display": "fullscreen",
-  "theme_color": "#FFF",
-  "background_color": "#000"
+  "theme_color": "#303030",
+  "background_color": "#303030"
 }

@@ -27,15 +27,15 @@ function constructRequest(uri: string, type: FetchType, options?: AxiosRequestCo
  * @param {string} uri
  * @param {FetchType} [type=FetchType.GET]
  * @param {AxiosRequestConfig} [options]
- * @returns {([any[], boolean, string | null, (body: any) => void, () => void])}
+ * @returns {([T, boolean, string | null, (body: any) => void, () => void])}
  */
-function useFetchData(
+function useFetchData<T>(
   uri: string,
   type: FetchType = FetchType.GET,
   options: AxiosRequestConfig = {},
-): [any[], boolean, string | null, (body: any) => void, () => void] {
+): [T | null, boolean, string | null, (body: any) => Promise<any>, () => void] {
 
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<T | null>(null);
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const cancelToken = useRef<Canceler | null>(null);
@@ -45,7 +45,7 @@ function useFetchData(
   useEffect(() => {
     if (type === FetchType.GET) {
       console.log('initial request')
-      next({});
+      next({}).catch(() => { });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -63,18 +63,17 @@ function useFetchData(
 
     setLoading(true);
     const _options = Object.assign({}, options, { cancelToken: new axios.CancelToken(token => cancelToken.current = token) });
-    constructRequest(uri, type, _options, body)
+    return constructRequest(uri, type, _options, body)
       .then(res => {
         setLoading(false);
-        if (res.data.rows) {
-          setData(res.data.rows);
-        } else {
-          setData(res.data);
-        }
+        setErrorMessage(null);
+        setData(res.data);
+        return res;
       })
       .catch(err => {
         setLoading(false);
         setErrorMessage(err.response?.data ? err.response.data.message : 'Something went wrong.')
+        throw err;
       });
   }
 

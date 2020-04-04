@@ -1,4 +1,8 @@
 .create-room-form {
   display: flex;
   flex-flow: column;
+
+  .MuiFormControl-root {
+    margin-bottom: 2%;
+  }
 }

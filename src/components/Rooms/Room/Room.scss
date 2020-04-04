@@ -1,0 +1,9 @@
+.room {
+  margin-right: 5%;
+  margin-bottom: 5%;
+  flex: 1 1 auto;
+
+  .room-title {
+    text-transform: capitalize;
+  }
+}

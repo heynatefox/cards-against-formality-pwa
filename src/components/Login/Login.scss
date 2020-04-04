@@ -1,8 +1,15 @@
+.login-title {
+  text-align: center;
+  margin-bottom: 5% !important;
+}
+
 .inner-login-container {
   height: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
+  justify-content: center;
+  min-height: 500px;
 
   .header {
     text-align: center;
@@ -11,11 +18,13 @@
   .input-wrapper {
     width: 100%;
     display: flex;
-    flex-flow: column;
+    flex-flow: row;
     align-items: center;
+    justify-content: center;
     min-width: 500px;
+
     .username-input {
-      margin-bottom: 5%;
+      margin-right: 5%;
     }
   }
 }

@@ -2,25 +2,14 @@
   display: flex;
   justify-content: center;
   height: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .rooms-list {
   display: flex;
   flex-flow: wrap;
-  height: 100%;
+  max-height: 500px;
   overflow: auto;
-
-  .room {
-    margin-right: 5%;
-    margin-bottom: 5%;
-    flex: 1 1 auto;
-    max-width: 50%;
-
-    .room-title {
-      text-transform: capitalize;
-    }
-  }
 }
 
 .create-button {
