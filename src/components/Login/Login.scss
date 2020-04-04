@@ -3,13 +3,20 @@
   margin-bottom: 5% !important;
 }
 
+.login-wrapper {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  height: 70%;
+}
+
 .inner-login-container {
   height: 100%;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
-  min-height: 500px;
+  height: 250px;
 
   .header {
     text-align: center;

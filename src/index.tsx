@@ -5,13 +5,14 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 import App from './App';
+import RouteProvider from './Contexts/RouteProvider';
 import UserProvider from './Contexts/UserProvider';
 import * as serviceWorker from './serviceWorker';
 import './index.scss';
 
 const theme = createMuiTheme({
   palette: {
-    type: "light"
+    type: "dark"
   }
 });
 
@@ -20,7 +21,9 @@ ReactDOM.render(
     <UserProvider>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <App />
+        <RouteProvider>
+          <App />
+        </RouteProvider>
       </MuiThemeProvider>
     </UserProvider>
   </React.StrictMode>,

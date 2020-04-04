@@ -29,6 +29,7 @@ export default function UserProvider({ children }: any) {
   useEffect(() => {
     setUser(renewData);
   }, [renewData]);
+
   useEffect(() => {
     setUser(loginData);
   }, [loginData]);
@@ -43,7 +44,6 @@ export default function UserProvider({ children }: any) {
   const logout = useCallback(_logout, []);
   function _logout() {
     document.cookie = 'auth=;'
-    setUser(null);
   }
 
   return <UserContext.Provider value={{ login, logout, user }}>

@@ -1,9 +1,11 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import axios from 'axios';
-import { Typography, Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
+import { Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 
-import './Login.scss';
 import Message, { MessageType } from '../Message/Message';
+import { RouterContext } from '../../Contexts/RouteProvider';
+import './Login.scss';
+
 axios.defaults.withCredentials = true;
 
 export interface LoginProps {
@@ -11,10 +13,11 @@ export interface LoginProps {
 }
 // '^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$'
 export default function Login({ login }: LoginProps) {
+  const { history } = useContext(RouterContext);
   const [username, setUsername] = useState('');
   const [message, setMessage] = useState({ text: '', type: MessageType.DEFAULT });
   const [isLoading, setIsLoading] = useState(false);
-  const handleLogin = useCallback(_handleLogin, [username, login, setMessage, setIsLoading]);
+  const handleLogin = useCallback(_handleLogin, [username, login, setMessage, setIsLoading, history]);
   const onChange = useCallback(_onChange, [handleLogin]);
 
   function _onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -30,7 +33,12 @@ export default function Login({ login }: LoginProps) {
   function _handleLogin() {
     setIsLoading(true);
     login(username)
-      .then(() => { setIsLoading(false); })
+      .then(() => {
+        setIsLoading(false);
+        if (history) {
+          history.push('/rooms');
+        }
+      })
       .catch((msg: string) => {
         setIsLoading(false);
         setMessage({ text: msg, type: MessageType.ERROR });
@@ -47,15 +55,14 @@ export default function Login({ login }: LoginProps) {
   }
 
   return <>
-    <Typography variant="h3" className="login-title">Cards Against Formality</Typography>
-    <Container maxWidth="sm">
+    <Container maxWidth="md" className="login-wrapper">
       <Card className="inner-login-container" raised={true}>
         <CardHeader className="header" title="Let's Play!"></CardHeader>
         <CardContent>
           <div className="input-wrapper">
             <FormControl className="username-input" required={true} error={!!message.text?.length}>
               <InputLabel htmlFor="target">Username</InputLabel>
-              <Input onKeyPress={onKeyPress} id="target" aria-describedby="username-helper" value={username} onChange={onChange} />
+              <Input onKeyPress={onKeyPress} autoFocus={true} id="target" aria-describedby="username-helper" value={username} onChange={onChange} />
               <FormHelperText id="username-helper">Enter a name unique name</FormHelperText>
             </FormControl>
             {renderButton()}

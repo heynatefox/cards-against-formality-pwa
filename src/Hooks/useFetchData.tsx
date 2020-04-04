@@ -1,5 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from 'axios';
+
+import { RouterContext } from '../Contexts/RouteProvider';
 axios.defaults.withCredentials = true;
 
 export enum FetchType {
@@ -34,6 +36,8 @@ function useFetchData<T>(
   type: FetchType = FetchType.GET,
   options: AxiosRequestConfig = {},
 ): [T | null, boolean, string | null, (body: any) => Promise<any>, () => void] {
+  const { history } = useContext(RouterContext);
+  const historyRef = useRef(history);
 
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setLoading] = useState(false);
@@ -43,9 +47,17 @@ function useFetchData<T>(
   const next = useCallback(_next, [uri, type, options]);
 
   useEffect(() => {
+    historyRef.current = history;
+  }, [history]);
+
+  useEffect(() => {
     if (type === FetchType.GET) {
       console.log('initial request')
-      next({}).catch(() => { });
+      next({}).catch((err) => {
+        if (err.response?.status === 401 && historyRef.current) {
+          historyRef.current.push('/login');
+        }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -72,6 +84,12 @@ function useFetchData<T>(
       })
       .catch(err => {
         setLoading(false);
+
+        if (err.code === 401) {
+          history.push('/login');
+          return;
+        }
+
         setErrorMessage(err.response?.data ? err.response.data.message : 'Something went wrong.')
         throw err;
       });

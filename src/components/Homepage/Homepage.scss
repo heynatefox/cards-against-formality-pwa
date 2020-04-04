@@ -1,0 +1,44 @@
+.homepage-section {
+  padding: 10% 0 10%;
+  height: 450px;
+
+  &.title {
+    background: url(./cards.png) no-repeat 150px 0%;
+    background-size: contain;
+
+    @media (min-width: 600px) {
+      background: url(./cards.png) no-repeat 900px center;
+      background-size: 40%;
+    }
+  }
+  @media (min-width: 600px) {
+    padding: 5% 0 5%;
+    height: 550px;
+  }
+
+  .title-container {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    .play-button-container {
+      margin-top: 2%;
+      display: flex;
+      justify-content: center;
+      .play-button {
+        width: 100px;
+      }
+    }
+  }
+
+  .title {
+    font-family: "Helvetica" !important;
+    font-weight: bolder !important;
+  }
+
+  .subtitle {
+    margin-top: 5%;
+  }
+  &.even {
+    background: white;
+  }
+}
