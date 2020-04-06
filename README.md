@@ -48,7 +48,13 @@ git clone https://github.com/JordanPawlett/cards-against-formality-pwa.git
 
 ```
 
-  
+Install the packages!
+
+```sh
+
+yarn
+
+```
 
 Run the dev server!
 
