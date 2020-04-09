@@ -16,7 +16,7 @@ function App() {
 
       <Route exact={true} path="/">
         <Homepage />
-      </Route>;
+      </Route>
 
       <UserProvider>
         <Navbar />
@@ -26,15 +26,15 @@ function App() {
               <Login />
             </div>
           </Container>
-        </Route>;
+        </Route>
 
-                <Route path="/rooms">
+        <Route path="/rooms">
           <Container className="app-container" maxWidth="lg">
             <div className="app">
               <Rooms />
             </div>
           </Container>
-        </Route>;
+        </Route>
       </UserProvider>
     </Switch>
   </>;

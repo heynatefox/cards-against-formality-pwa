@@ -58,10 +58,15 @@ export function Room({ room, user }: any) {
   }
 
   function renderAction() {
-    if (room.passcode) {
-      return <Button variant="contained" color="primary" size="small" onClick={() => setIsDialogOpen(true)}>Join Room</Button>
-    }
-    return <Button variant="contained" color="primary" size="small" onClick={() => joinRoom()}>Join Room</Button>;
+    return <Button
+      variant="contained"
+      color="primary"
+      size="small"
+      onClick={() => { room.passcode ? setIsDialogOpen(true) : joinRoom() }}
+      disabled={room.players.length >= room.options.maxPlayers}
+    >
+      Join Room
+    </Button>;
   }
 
   function renderPasscodeDialog() {

@@ -54,6 +54,12 @@ function useFetchData<T>(
   }, [history]);
 
   useEffect(() => {
+    if (token?.length) {
+      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+    }
+  }, [token]);
+
+  useEffect(() => {
     if (type === FetchType.GET) {
       next({}).catch((err) => {
         if (err.response?.status === 401 && historyRef.current) {
@@ -82,9 +88,6 @@ function useFetchData<T>(
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Credentials": "true"
       };
-    }
-    if (token?.length && process.env.NODE_ENV !== 'production') {
-      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
     }
 
     return constructRequest(uri, type, _options, body)
