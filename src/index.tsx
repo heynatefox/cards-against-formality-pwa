@@ -6,7 +6,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
 import App from './App';
 import RouteProvider from './Contexts/RouteProvider';
-import UserProvider from './Contexts/UserProvider';
 import * as serviceWorker from './serviceWorker';
 import './index.scss';
 
@@ -18,14 +17,12 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <UserProvider>
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <RouteProvider>
-          <App />
-        </RouteProvider>
-      </MuiThemeProvider>
-    </UserProvider>
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <RouteProvider>
+        <App />
+      </RouteProvider>
+    </MuiThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

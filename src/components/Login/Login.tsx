@@ -1,18 +1,14 @@
 import React, { useState, useCallback, useContext } from 'react';
-import axios from 'axios';
 import { Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 
 import Message, { MessageType } from '../Message/Message';
 import { RouterContext } from '../../Contexts/RouteProvider';
+import { UserContext } from '../../Contexts/UserProvider';
 import './Login.scss';
 
-axios.defaults.withCredentials = true;
+export default React.memo(() => {
+  const { login } = useContext(UserContext);
 
-export interface LoginProps {
-  login: (username: string) => Promise<string>;
-}
-// '^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$'
-export default function Login({ login }: LoginProps) {
   const { history } = useContext(RouterContext);
   const [username, setUsername] = useState('');
   const [message, setMessage] = useState({ text: '', type: MessageType.DEFAULT });
@@ -72,4 +68,4 @@ export default function Login({ login }: LoginProps) {
       </Card>
     </Container>
   </>
-}
+});

@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from 'axios';
 
 import { RouterContext } from '../Contexts/RouteProvider';
+import { UserContext } from "../Contexts/UserProvider";
+
 axios.defaults.withCredentials = true;
 
 export enum FetchType {
@@ -10,7 +12,7 @@ export enum FetchType {
   PUT = 'put'
 }
 
-function constructRequest(uri: string, type: FetchType, options?: AxiosRequestConfig, body?: any): Promise<AxiosResponse<any>> {
+function constructRequest(uri: string, type: FetchType, options: AxiosRequestConfig, body?: any): Promise<AxiosResponse<any>> {
   switch (type) {
     case FetchType.GET:
       return axios.get(uri, options)
@@ -36,6 +38,7 @@ function useFetchData<T>(
   type: FetchType = FetchType.GET,
   options: AxiosRequestConfig = {},
 ): [T | null, boolean, string | null, (body: any) => Promise<any>, () => void] {
+  const { token } = useContext(UserContext);
   const { history } = useContext(RouterContext);
   const historyRef = useRef(history);
 
@@ -44,7 +47,7 @@ function useFetchData<T>(
   const [errorMessage, setErrorMessage] = useState(null);
   const cancelToken = useRef<Canceler | null>(null);
 
-  const next = useCallback(_next, [uri, type, options]);
+  const next = useCallback(_next, [uri, type, options, token]);
 
   useEffect(() => {
     historyRef.current = history;
@@ -52,7 +55,6 @@ function useFetchData<T>(
 
   useEffect(() => {
     if (type === FetchType.GET) {
-      console.log('initial request')
       next({}).catch((err) => {
         if (err.response?.status === 401 && historyRef.current) {
           historyRef.current.push('/login');
@@ -60,7 +62,7 @@ function useFetchData<T>(
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [token])
 
   function cancel() {
     if (cancelToken.current) {
@@ -75,6 +77,16 @@ function useFetchData<T>(
 
     setLoading(true);
     const _options = Object.assign({}, options, { cancelToken: new axios.CancelToken(token => cancelToken.current = token) });
+    if (!options.headers) {
+      options.headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true"
+      };
+    }
+    if (token?.length && process.env.NODE_ENV !== 'production') {
+      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+    }
+
     return constructRequest(uri, type, _options, body)
       .then(res => {
         setLoading(false);

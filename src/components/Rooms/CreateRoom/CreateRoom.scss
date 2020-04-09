@@ -1,8 +1,26 @@
-.create-room-form {
+.deck-loading-container {
   display: flex;
-  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  .MuiFormControl-root {
-    margin-bottom: 2%;
+.create-form-card-content {
+  max-height: 400px;
+  overflow: auto;
+
+  @media (min-width: 600px) {
+    max-height: 100%;
+  }
+
+  .create-room-form {
+    display: flex;
+    flex-flow: column;
+
+    .MuiFormControl-root {
+      margin-bottom: 5%;
+      @media (min-width: 600px) {
+       margin-bottom: 2%;
+      }
+    }
   }
 }

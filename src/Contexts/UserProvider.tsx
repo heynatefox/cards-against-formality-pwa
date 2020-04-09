@@ -13,13 +13,15 @@ export interface UserContextInterface {
   login: (username: string) => Promise<string>
   logout: () => void;
   user: { username: string; _id: string, displayName: string } | null;
+  token: string;
 }
 
 export const UserContext = React.createContext<UserContextInterface>(
-  { login: () => Promise.resolve(''), logout: () => { }, user: null }
+  { login: () => Promise.resolve(''), logout: () => { }, user: null, token: '' }
 );
 
 export default function UserProvider({ children }: any) {
+  const [token, setToken] = useState('');
   const [user, setUser] = useState(null);
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
   const [renewData] = useFetchData<any>('http://localhost/api/login/renew', FetchType.GET);
@@ -27,11 +29,19 @@ export default function UserProvider({ children }: any) {
   const login = useCallback(_login, [next]);
 
   useEffect(() => {
-    setUser(renewData);
+    if (renewData) {
+      const { jwt, ..._user } = renewData;
+      setUser(_user);
+      setToken(jwt);
+    }
   }, [renewData]);
 
   useEffect(() => {
-    setUser(loginData);
+    if (loginData) {
+      const { jwt, ..._user } = loginData;
+      setUser(_user);
+      setToken(jwt);
+    }
   }, [loginData]);
 
   function _login(username: string) {
@@ -46,7 +56,7 @@ export default function UserProvider({ children }: any) {
     document.cookie = 'auth=;'
   }
 
-  return <UserContext.Provider value={{ login, logout, user }}>
+  return <UserContext.Provider value={{ login, logout, user, token }}>
     {children}
 
     <Snackbar open={hasLoggedIn} autoHideDuration={3000} onClose={() => setHasLoggedIn(false)} >

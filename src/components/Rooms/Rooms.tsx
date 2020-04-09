@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useReducer } from 'react';
 import { Container, CircularProgress, Button, Card, CardHeader, CardContent, Backdrop } from "@material-ui/core";
 import axios from 'axios';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -9,30 +9,54 @@ import { UserContext } from '../../Contexts/UserProvider';
 import { Room } from './Room/Room';
 import useFetchData from '../../Hooks/useFetchData';
 import CreateRoom from './CreateRoom/CreateRoom';
+import RoomsReducer from './RoomsReducer';
 import './Rooms.scss';
 
 axios.defaults.withCredentials = true;
 
 export default function Rooms() {
-  const { user } = useContext(UserContext);
-  const [rooms, setRooms] = useState<any[]>([]);
-  const [socket] = useState(() => {
-    // Construct a socket connection with the given url . Uses the existing connection if one is already present.
-    return io('localhost', {
-      transports: ['websocket'],
-      path: '/socket',
-      autoConnect: false,
-      query: {
-        // auth
-      }
-    });
-  });
+  const { user, token } = useContext(UserContext);
+  const [rooms, dispatch] = useReducer(RoomsReducer, []);
+
   useEffect(() => {
-    socket.on('rooms.*', (data: any) => {
-      console.log(data);
-    })
-    socket.connect()
-  }, [socket]);
+    let socket: SocketIOClient.Socket;
+    if (token?.length) {
+      socket = io('localhost', {
+        transports: ['websocket'],
+        path: '/socket',
+        autoConnect: false,
+        query: {
+          auth: token
+        }
+      });
+
+      socket.on('rooms', ({ payload, updateType }: any) => {
+        switch (updateType) {
+          case 'created':
+            console.log('created', payload);
+            dispatch({ type: 'ADD_ROOM', data: payload })
+            break;
+          case 'updated':
+            dispatch({ type: 'UPDATE_ROOM', data: payload })
+            break;
+          case 'removed':
+            dispatch({ type: 'REMOVED_ROOM', data: payload })
+            break;
+          default:
+            break;
+        }
+      });
+
+      socket.connect()
+    }
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        socket.removeAllListeners();
+      }
+    }
+  }, [token]);
 
   const [isCreating, setIsCreating] = useState(false);
 
@@ -41,8 +65,7 @@ export default function Rooms() {
 
   useEffect(() => {
     if (res) {
-      console.log(res)
-      setRooms(res.rows);
+      dispatch({ type: 'MULTI_ADD_ROOMS', data: res.rows })
     }
   }, [res]);
 
