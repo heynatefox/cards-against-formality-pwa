@@ -25,19 +25,22 @@ function constructRequest(uri: string, type: FetchType, options: AxiosRequestCon
   }
 }
 
+const defaultOption = Object.freeze({});
+
 /**
  *
  *
  * @param {string} uri
  * @param {FetchType} [type=FetchType.GET]
  * @param {AxiosRequestConfig} [options]
- * @returns {([T, boolean, string | null, (body: any) => void, () => void])}
+ * @returns {([T, boolean, string | null, (body: any, noRedirect?: boolean) => void, () => void])}
  */
 function useFetchData<T>(
   uri: string,
   type: FetchType = FetchType.GET,
-  options: AxiosRequestConfig = {},
-): [T | null, boolean, string | null, (body: any) => Promise<any>, () => void] {
+  options: AxiosRequestConfig = defaultOption,
+): [T | null, boolean, string | null, (body: any, noRedirect?: boolean) => Promise<any>, () => void] {
+
   const { token } = useContext(UserContext);
   const { history } = useContext(RouterContext);
   const historyRef = useRef(history);
@@ -47,7 +50,7 @@ function useFetchData<T>(
   const [errorMessage, setErrorMessage] = useState(null);
   const cancelToken = useRef<Canceler | null>(null);
 
-  const next = useCallback(_next, [uri, type, options, token]);
+  const next = useCallback(_next, [uri, type, options]);
 
   useEffect(() => {
     historyRef.current = history;
@@ -61,14 +64,9 @@ function useFetchData<T>(
 
   useEffect(() => {
     if (type === FetchType.GET) {
-      next({}).catch((err) => {
-        if (err.response?.status === 401 && historyRef.current) {
-          historyRef.current.push('/login');
-        }
-      });
+      next({}).catch(() => { });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token])
+  }, [token, type, next])
 
   function cancel() {
     if (cancelToken.current) {
@@ -76,20 +74,15 @@ function useFetchData<T>(
     }
   }
 
-  function _next(body: any) {
+  function _next(body: any, noRedirect?: boolean) {
+    console.log('next called')
     if (cancelToken.current) {
       cancel();
     }
 
     setLoading(true);
+    console.log(options);
     const _options = Object.assign({}, options, { cancelToken: new axios.CancelToken(token => cancelToken.current = token) });
-    if (!options.headers) {
-      options.headers = {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": "true"
-      };
-    }
-
     return constructRequest(uri, type, _options, body)
       .then(res => {
         setLoading(false);
@@ -100,8 +93,8 @@ function useFetchData<T>(
       .catch(err => {
         setLoading(false);
 
-        if (err.code === 401) {
-          history.push('/login');
+        if (!noRedirect && (err.code === 401 || err.response?.status)) {
+          historyRef.current.push('/login');
           return;
         }
 

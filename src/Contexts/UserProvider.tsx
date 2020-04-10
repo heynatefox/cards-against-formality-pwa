@@ -1,8 +1,10 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useContext } from "react";
 import axios from 'axios';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+
 import useFetchData, { FetchType } from "../Hooks/useFetchData";
+import { RouterContext } from "./RouteProvider";
 axios.defaults.withCredentials = true;
 
 function Alert(props: AlertProps) {
@@ -21,12 +23,15 @@ export const UserContext = React.createContext<UserContextInterface>(
 );
 
 export default function UserProvider({ children }: any) {
+  const { history, prevLocation } = useContext(RouterContext);
   const [token, setToken] = useState('');
   const [user, setUser] = useState(null);
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
   const [renewData] = useFetchData<any>('http://localhost/api/login/renew', FetchType.GET);
   const [loginData, , , next] = useFetchData<any>('http://localhost/api/login', FetchType.POST);
-  const login = useCallback(_login, [next]);
+
+  // NEED TO MAKE HISTORY AND PREV LOCATION AS REFS SO LOGIN DOESNT RE-RENDER
+  const login = useCallback(_login, [next, history, prevLocation]);
 
   useEffect(() => {
     if (renewData) {
@@ -46,6 +51,19 @@ export default function UserProvider({ children }: any) {
 
   function _login(username: string) {
     return next({ username })
+      .then((res) => {
+        let redirectPath = '/rooms';
+        if (prevLocation) {
+          const userDest = `${prevLocation.pathname}${prevLocation.search}`;
+          if (userDest !== '/login') {
+            console.log(redirectPath, 'does not match /login');
+            redirectPath = userDest;
+          }
+        }
+        console.log('Redirecting to', redirectPath);
+        history.push(redirectPath);
+        return res;
+      })
       .catch(err => {
         throw err.response?.data ? err.response.data.message : 'Something went wrong.'
       });

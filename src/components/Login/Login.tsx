@@ -2,18 +2,15 @@ import React, { useState, useCallback, useContext } from 'react';
 import { Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 
 import Message, { MessageType } from '../Message/Message';
-import { RouterContext } from '../../Contexts/RouteProvider';
 import { UserContext } from '../../Contexts/UserProvider';
 import './Login.scss';
 
 export default React.memo(() => {
   const { login } = useContext(UserContext);
-
-  const { history } = useContext(RouterContext);
   const [username, setUsername] = useState('');
   const [message, setMessage] = useState({ text: '', type: MessageType.DEFAULT });
   const [isLoading, setIsLoading] = useState(false);
-  const handleLogin = useCallback(_handleLogin, [username, login, setMessage, setIsLoading, history]);
+  const handleLogin = useCallback(_handleLogin, [username, login, setMessage, setIsLoading]);
   const onChange = useCallback(_onChange, [handleLogin]);
 
   function _onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -31,9 +28,6 @@ export default React.memo(() => {
     login(username)
       .then(() => {
         setIsLoading(false);
-        if (history) {
-          history.push('/rooms');
-        }
       })
       .catch((msg: string) => {
         setIsLoading(false);
