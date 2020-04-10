@@ -1,68 +1,22 @@
 import React, { useState, useCallback } from 'react';
-import { IconButton, Card, CardContent, CardHeader, Button, Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions } from "@material-ui/core";
+import { IconButton, Card, CardContent, CardHeader, Button } from "@material-ui/core";
 import Lock from '@material-ui/icons/Lock';
 import LockOpen from '@material-ui/icons/LockOpen';
 
+import PasswordDialog from './PasswordDialog';
+
 import './Room.scss';
 
-function PasscodeDialog({ isDialogOpen, onClose, onSubmit }: any) {
-  const [password, setPassword] = useState('');
-
-  return <Dialog open={isDialogOpen} onClose={onClose} aria-labelledby="form-dialog-title">
-    <DialogTitle id="form-dialog-title">Password Required</DialogTitle>
-    <DialogContent>
-      <DialogContentText>
-        Enter the correct password for entry.
-        </DialogContentText>
-      <TextField
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        autoFocus
-        margin="dense"
-        id="password"
-        label="Password"
-        type="password"
-        fullWidth
-      />
-    </DialogContent>
-    <DialogActions>
-      <Button color="primary" onClick={onClose}>
-        Cancel
-        </Button>
-      <Button onClick={() => onSubmit(password)} color="primary">
-        Submit
-        </Button>
-    </DialogActions>
-  </Dialog>
-}
-
-export function Room({ room, onJoin }: any) {
+export default React.memo(({ room, onJoin }: any) => {
   const joinRoom = useCallback((passcode?: string) => onJoin(room._id, passcode), [onJoin, room._id]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  function renderPadlock(passcode: string) {
-    return <IconButton edge="start" color="secondary" aria-label="menu" disabled={true}>
-      {passcode ? <Lock /> : <LockOpen />}
-    </IconButton>
-  }
 
-  function renderAction() {
-    return <Button
-      variant="contained"
-      color="primary"
-      size="small"
-      onClick={() => { room.passcode ? setIsDialogOpen(true) : joinRoom() }}
-      disabled={room.players.length >= room.options.maxPlayers}
-    >
-      Join Room
-    </Button>;
-  }
-
-  function renderPasscodeDialog() {
+  function renderPasswordDialog() {
     if (!room.passcode) {
       return null;
     }
 
-    return <PasscodeDialog
+    return <PasswordDialog
       onSubmit={joinRoom}
       isDialogOpen={isDialogOpen}
       onClose={() => setIsDialogOpen(false)}
@@ -70,18 +24,32 @@ export function Room({ room, onJoin }: any) {
   }
 
   return <>
-    {renderPasscodeDialog()}
+    {renderPasswordDialog()}
     <Card className="room" key={room._id}>
       <CardHeader
         className="room-title"
         title={room.name}
         subheader={`${room.players.length}/${room.options.maxPlayers} Players, Status: ${room.status}`}
-        avatar={renderPadlock(room.passcode)}
-        action={renderAction()}
+        avatar={
+          <IconButton edge="start" color="secondary" aria-label="menu" disabled={true}>
+            {room.passcode ? <Lock /> : <LockOpen />}
+          </IconButton>
+        }
+        action={
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            onClick={() => { room.passcode ? setIsDialogOpen(true) : joinRoom() }}
+            disabled={room.players.length >= room.options.maxPlayers}
+          >
+            Join Room
+        </Button>
+        }
       />
       <CardContent>
         {/* <div>hello</div> */}
       </CardContent>
     </Card>
   </>;
-}
+});

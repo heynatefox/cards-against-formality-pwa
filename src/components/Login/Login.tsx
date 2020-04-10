@@ -53,7 +53,7 @@ export default React.memo(() => {
             <FormControl className="username-input" required={true} error={!!message.text?.length}>
               <InputLabel htmlFor="target">Username</InputLabel>
               <Input onKeyPress={onKeyPress} autoFocus={true} id="target" aria-describedby="username-helper" value={username} onChange={onChange} />
-              <FormHelperText id="username-helper">Enter a name unique name</FormHelperText>
+              <FormHelperText id="username-helper">Enter a unique name</FormHelperText>
             </FormControl>
             {renderButton()}
           </div>

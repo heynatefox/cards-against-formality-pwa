@@ -4,7 +4,7 @@ import { Typography, Button } from '@material-ui/core';
 import { UserContext } from '../../Contexts/UserProvider';
 import './Navbar.scss';
 
-export default function Navbar() {
+export default React.memo(() => {
   const { user, logout } = useContext(UserContext);
 
   if (!user) {
@@ -18,4 +18,4 @@ export default function Navbar() {
     <div className="spacer" />
     <Button className="logout-button" onClick={logout} color="inherit">Logout</Button>
   </div>
-}
+});
