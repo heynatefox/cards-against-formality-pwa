@@ -52,15 +52,15 @@ export default function UserProvider({ children }: any) {
   function _login(username: string) {
     return next({ username })
       .then((res) => {
+        setHasLoggedIn(true);
         let redirectPath = '/rooms';
         if (prevLocation) {
           const userDest = `${prevLocation.pathname}${prevLocation.search}`;
           if (userDest !== '/login') {
-            console.log(redirectPath, 'does not match /login');
             redirectPath = userDest;
           }
         }
-        console.log('Redirecting to', redirectPath);
+
         history.push(redirectPath);
         return res;
       })
@@ -69,8 +69,12 @@ export default function UserProvider({ children }: any) {
       });
   }
 
-  const logout = useCallback(_logout, []);
+  const logout = useCallback(_logout, [history, setUser, setToken]);
   function _logout() {
+    // investigate why token and user aren't being reset.
+    setUser(null);
+    setToken('');
+    history.push('/');
     document.cookie = 'auth=;'
   }
 

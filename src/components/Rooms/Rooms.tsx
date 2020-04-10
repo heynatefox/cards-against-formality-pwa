@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useReducer } from 'react';
+import React, { useState, useContext, useEffect, useReducer, useCallback } from 'react';
 import { Container, CircularProgress, Button, Card, CardHeader, CardContent, Backdrop } from "@material-ui/core";
 import axios from 'axios';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -7,14 +7,16 @@ import io from 'socket.io-client';
 
 import { UserContext } from '../../Contexts/UserProvider';
 import { Room } from './Room/Room';
-import useFetchData from '../../Hooks/useFetchData';
+import useFetchData, { FetchType } from '../../Hooks/useFetchData';
 import CreateRoom from './CreateRoom/CreateRoom';
 import RoomsReducer from './RoomsReducer';
 import './Rooms.scss';
+import { RouterContext } from '../../Contexts/RouteProvider';
 
 axios.defaults.withCredentials = true;
 
 export default function Rooms() {
+  const { history } = useContext(RouterContext);
   const { user, token } = useContext(UserContext);
   const [rooms, dispatch] = useReducer(RoomsReducer, []);
 
@@ -33,7 +35,6 @@ export default function Rooms() {
       socket.on('rooms', ({ payload, updateType }: any) => {
         switch (updateType) {
           case 'created':
-            console.log('created', payload);
             dispatch({ type: 'ADD_ROOM', data: payload })
             break;
           case 'updated':
@@ -65,13 +66,38 @@ export default function Rooms() {
 
   useEffect(() => {
     if (res) {
+      // investigate why this is called twice. Might just be a dev thing.
       dispatch({ type: 'MULTI_ADD_ROOMS', data: res.rows })
     }
   }, [res]);
 
+  const [, , joinRoomErrorMessage, join] = useFetchData('http://localhost/api/rooms/join/players', FetchType.PUT, undefined);
+  useEffect(() => {
+    // display error toast.
+  }, [joinRoomErrorMessage]);
+
+  const joinRoom = useCallback(_joinRoom, [join, history]);
+  function _joinRoom(roomId: string, passcode?: string) {
+    if (!user) {
+      // display toast error.
+      return;
+    }
+
+    const data: any = { roomId, clientId: user._id, populate: ['players', 'spectators'] };
+    if (passcode?.length) {
+      data.passcode = passcode;
+    }
+
+    join(data)
+      .then((axiosRes) => {
+        history.push(`/game?_id=${roomId}`, axiosRes.data)
+      })
+      .catch(() => { });
+  }
+
   function renderRooms() {
     if (isCreating) {
-      return <CreateRoom />
+      return <CreateRoom onJoin={joinRoom} />
     }
 
     if (isLoading) {
@@ -81,7 +107,7 @@ export default function Rooms() {
     }
 
     return <div className="rooms-list">
-      {rooms.map(room => <Room key={room._id} room={room} user={user} />)}
+      {rooms.map(room => <Room key={room._id} room={room} user={user} onJoin={joinRoom} />)}
     </div>;
   }
 

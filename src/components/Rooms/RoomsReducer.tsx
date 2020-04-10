@@ -1,6 +1,5 @@
 
 export default (state: any[], action: any) => {
-  console.log('created', action, state);
   switch (action.type) {
     case 'ADD_ROOM':
       return [

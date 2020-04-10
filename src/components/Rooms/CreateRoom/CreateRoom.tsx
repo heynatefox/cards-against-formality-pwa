@@ -49,7 +49,7 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
   </FormControl>
 }
 
-export default function CreateRoom() {
+export default function CreateRoom({ onJoin }: any) {
   const [isProtected, setIsProtected] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [name, setName] = useState('');
@@ -73,7 +73,11 @@ export default function CreateRoom() {
     if (isProtected && passcode.length) {
       (room as any).passcode = passcode;
     }
-    createRoom(room).catch(() => { });
+    createRoom(room)
+      .then((axiosRes) => {
+        onJoin(axiosRes.data._id, passcode);
+      })
+      .catch(() => { });
     // route to the room.
   }
 

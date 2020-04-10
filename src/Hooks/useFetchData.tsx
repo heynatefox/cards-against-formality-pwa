@@ -57,7 +57,7 @@ function useFetchData<T>(
   }, [history]);
 
   useEffect(() => {
-    if (token?.length) {
+    if (token) {
       axios.defaults.headers['Authorization'] = `Bearer ${token}`;
     }
   }, [token]);
@@ -75,13 +75,11 @@ function useFetchData<T>(
   }
 
   function _next(body: any, noRedirect?: boolean) {
-    console.log('next called')
     if (cancelToken.current) {
       cancel();
     }
 
     setLoading(true);
-    console.log(options);
     const _options = Object.assign({}, options, { cancelToken: new axios.CancelToken(token => cancelToken.current = token) });
     return constructRequest(uri, type, _options, body)
       .then(res => {
@@ -92,8 +90,7 @@ function useFetchData<T>(
       })
       .catch(err => {
         setLoading(false);
-
-        if (!noRedirect && (err.code === 401 || err.response?.status)) {
+        if (!noRedirect && (err.code === 401 || err.response?.status === 401)) {
           historyRef.current.push('/login');
           return;
         }
