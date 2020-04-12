@@ -49,19 +49,21 @@ export default function Rooms() {
       return <CreateRoom onJoin={joinRoom} />
     }
 
-    if (isLoading) {
-      return <Backdrop className="backdrop" open={true}>
-        <CircularProgress color="inherit" />
-      </Backdrop>;
-    }
-
     return <div className="rooms-list">
       {rooms.map(room => <Room key={room._id} room={room} user={user} onJoin={joinRoom} />)}
     </div>;
   }
 
+
+
+  if (isLoading) {
+    return <Backdrop className="backdrop" open={true}>
+      <CircularProgress color="inherit" />
+    </Backdrop>;
+  }
+
   return <Container className="rooms-container">
-    <Card variant="elevation">
+    <Card raised={true}>
       <CardHeader
         title={!isCreating ? 'Create or Join a Room!' : 'Creating a New Room'}
         subheader="Fun fun fun!"

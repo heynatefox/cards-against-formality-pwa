@@ -1,2 +1,24 @@
 .game-container {
 }
+
+.game-container-content {
+  display: flex;
+
+  .game-container-children-wrapper {
+    flex: 1 1 auto;
+  }
+
+  .players-container {
+    flex-grow: 0;
+    flex-shrink: 1;
+    max-width: 10%;
+  }
+}
+
+.players-list {
+  display: flex;
+  flex-flow: column;
+}
+
+.player-container {
+}
