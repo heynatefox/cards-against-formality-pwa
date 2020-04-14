@@ -17,7 +17,7 @@ export default function useRooms(token: string): [any[], boolean] {
         dispatch({ type: 'UPDATE_DATA', data: payload })
         break;
       case 'removed':
-        dispatch({ type: 'REMOVED_DATA', data: payload })
+        dispatch({ type: 'REMOVE_DATA', data: payload })
         break;
       default:
         break;
@@ -27,7 +27,7 @@ export default function useRooms(token: string): [any[], boolean] {
 
   useSocket(token, socketMapping, '/rooms');
   // TODO: implement infinite scrolling.
-  const [res, isLoading] = useFetchData<{ rows: any[] }>('http://localhost/api/rooms?pageSize=100');
+  const [res, isLoading] = useFetchData<{ rows: any[] }>(`${window.location.protocol}//${window.location.hostname}/api/rooms?pageSize=100`);
 
   useEffect(() => {
     if (res) {

@@ -9,8 +9,8 @@ import genericReducer from "../../Reducers/genericReducer";
 export default function useGameRoom() {
   const { user, token } = useContext(UserContext);
   // We need to keep the room state up to date.
-  const [res, isLoading, errorMessage, next] = useFetchData('http://localhost/api/rooms/join/players', FetchType.PUT);
-  const { location: { search, state } } = useContext(RouterContext);
+  const [res, isLoading, errorMessage, next] = useFetchData(`${window.location.protocol}//${window.location.hostname}/api/rooms/join/players`, FetchType.PUT);
+  const { location: { search, state }, history } = useContext(RouterContext);
   const [roomId, setRoomId] = useState<null | string>(null);
 
   const [spectators, setSpectators] = useState([]);
@@ -19,8 +19,15 @@ export default function useGameRoom() {
   const [room, setRoom] = useState<any>(null);
   const [game, setGame] = useState<any>(null);
   const [isHost, setIsHost] = useState(false);
+  const [isCzar, setIsCzar] = useState(false);
 
-  const onRoomEvent = useCallback(d => setRoom(d.payload), []);
+  const onRoomEvent = useCallback(({ updateType, payload }) => {
+    if (updateType === 'removed') {
+      history.push('/rooms');
+      return;
+    }
+    setRoom(payload);
+  }, [history]);
   const onDealEvent = useCallback(d => setCards(d.payload), []);
   const onGameEvent = useCallback(d => setGame(d.payload), []);
   const [socketMapping] = useState({ room: onRoomEvent, game: onGameEvent, deal: onDealEvent });
@@ -51,7 +58,6 @@ export default function useGameRoom() {
       // we've got the roomId... Try join the room. If 401. Prompt password dialog.
       const data: any = { roomId, clientId: user._id };
       // reroute to room.
-      console.log('fetching room')
       next(data, true)
         .catch((err) => {
 
@@ -72,27 +78,23 @@ export default function useGameRoom() {
     // once we have a room. We must join the game socket namespace.
     if (room && user) {
       setSpectators(room.spectators);
+      // make it so that 'multi_update_Data' dispatch, removes any elements that aren't found in the update array.
       dispatchPlayers({ type: 'MULTI_UPDATE_DATA', data: room.players });
       if (socket && socket.disconnected) {
         socket.connect();
-        console.log(room);
       }
 
-      console.log('testing if is host', user._id, room.host)
       setIsHost(user._id === room.host);
     }
   }, [room, socket, user]);
 
   useEffect(() => {
     if (game) {
+      setIsCzar(game.czar === user?._id);
+      console.log(game);
       dispatchPlayers({ type: 'MULTI_UPDATE_DATA', data: game.players });
     }
-  }, [game]);
+  }, [game, user]);
 
-  // dev purposes.
-  useEffect(() => {
-    console.log(players);
-  }, [players]);
-
-  return [room, isHost, game, cards, players, spectators, isLoading, errorMessage];
+  return [user?._id, room, isHost, isCzar, game, cards, players, spectators, isLoading, errorMessage];
 }

@@ -9,7 +9,7 @@ import './App.scss';
 const Homepage = lazy(() => import('./components/Homepage/Homepage'));
 const Login = lazy(() => import('./components/Login/Login'));
 const Rooms = lazy(() => import('./components/Rooms/Rooms'));
-const Game = lazy(() => import('./components/Game/Game'));
+const Game = lazy(() => import('./components/Game/GameManager'));
 
 function RouteLoadingFallback() {
   return <Backdrop open={true}>

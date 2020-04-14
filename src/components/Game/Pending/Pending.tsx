@@ -1,5 +1,7 @@
 import React from 'react';
-import { Card, CardContent, Typography, CardActions, Button } from "@material-ui/core";
+import { Typography, CardActions, Button } from "@material-ui/core";
+
+import './Pending.scss';
 
 export interface PendingProps {
   isHost: boolean;
@@ -27,15 +29,13 @@ const Pending = React.memo(({ isHost, numberOfPlayers, startGame }: PendingProps
     </CardActions>;
   }
 
-  return <Card>
+  return <div className="pending-container">
     {renderStartButton()}
-    <CardContent>
-      <Typography>
-        Waiting host the host to start the game...
-      </Typography>
-      <div>Display the game options here...</div>
-    </CardContent>
-  </Card>
+    <Typography>
+      Waiting host the host to start the game...
+    </Typography>
+    <div>Display the game options here...</div>
+  </div>
 });
 
 export default Pending;

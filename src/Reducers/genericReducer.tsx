@@ -22,18 +22,16 @@ export default (state: any[], action: any) => {
         return state;
       }
 
-      action.data.forEach((data: any) => {
+      // Any items that are not in the incoming data set will be removed.
+      return action.data.map((data: any) => {
         const multiUpdateIndex = state.findIndex(d => d._id === data._id);
         if (multiUpdateIndex >= 0) {
           const obj = state[multiUpdateIndex];
-          state[multiUpdateIndex] = Object.assign(obj, data)
-        } else {
-          // If it's not already in the array, add it.
-          state.push(data);
+          return Object.assign(obj, data);
         }
-      })
-
-      return [...state];
+        // If it's not already in the array, add it.
+        return data;
+      });
     case 'MULTI_ADD_DATA':
       if (!action.data?.length) {
         return state;

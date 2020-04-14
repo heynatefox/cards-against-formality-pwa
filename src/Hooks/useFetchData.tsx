@@ -39,6 +39,7 @@ function useFetchData<T>(
   uri: string,
   type: FetchType = FetchType.GET,
   options: AxiosRequestConfig = defaultOption,
+  interval?: number
 ): [T | null, boolean, string | null, (body: any, noRedirect?: boolean) => Promise<any>, () => void] {
 
   const { token } = useContext(UserContext);
@@ -64,9 +65,15 @@ function useFetchData<T>(
 
   useEffect(() => {
     if (type === FetchType.GET) {
+      // if (interval) {
+      //   setInterval(() => {
+      //     next({}).catch(() => { });
+      //   }, interval);
+      //   return;
+      // }
       next({}).catch(() => { });
     }
-  }, [token, type, next])
+  }, [token, type, next, interval])
 
   function cancel() {
     if (cancelToken.current) {

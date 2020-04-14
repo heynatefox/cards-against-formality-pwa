@@ -1,17 +1,19 @@
-.game-container {
-}
-
 .game-container-content {
   display: flex;
+  height: 100%;
 
   .game-container-children-wrapper {
     flex: 1 1 auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    width: 80%;
   }
 
   .players-container {
     flex-grow: 0;
     flex-shrink: 1;
-    max-width: 10%;
+    width: 20%;
   }
 }
 
@@ -21,4 +23,8 @@
 }
 
 .player-container {
+  border: 1px solid grey;
+  display: flex;
+  flex-flow: column;
+  padding: 10%;
 }

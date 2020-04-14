@@ -19,7 +19,7 @@ export default function Rooms() {
   const [isCreating, setIsCreating] = useState(false);
   const onCreate = useCallback(() => setIsCreating(prevIsCreating => !prevIsCreating), []);
 
-  const [, , joinRoomErrorMessage, join] = useFetchData('http://localhost/api/rooms/join/players', FetchType.PUT, undefined);
+  const [, , joinRoomErrorMessage, join] = useFetchData(`${window.location.protocol}//${window.location.hostname}/api/rooms/join/players`, FetchType.PUT, undefined);
   useEffect(() => {
     // display error toast.
   }, [joinRoomErrorMessage]);
@@ -62,8 +62,8 @@ export default function Rooms() {
     </Backdrop>;
   }
 
-  return <Container className="rooms-container">
-    <Card raised={true}>
+  return <Container className="rooms-container" maxWidth="lg">
+    <Card className="rooms-card" raised={true}>
       <CardHeader
         title={!isCreating ? 'Create or Join a Room!' : 'Creating a New Room'}
         subheader="Fun fun fun!"

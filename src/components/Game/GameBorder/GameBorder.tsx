@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card, CardHeader, CardContent, Button } from "@material-ui/core";
-import Players from './PlayersContainer';
 
-export interface GameContainerProps {
+import Players from './PlayersContainer';
+import './GameBorder.scss';
+
+export interface GameBorderProps {
   host: string;
   children: React.ReactNode;
   players: any[];
@@ -10,7 +12,7 @@ export interface GameContainerProps {
   onLeave: () => void;
 }
 
-export default React.memo(({ roomName, host, players, children, onLeave }: GameContainerProps) => {
+export default React.memo(({ roomName, host, players, children, onLeave }: GameBorderProps) => {
   return <Card raised={true}>
     <CardHeader
       className="header"

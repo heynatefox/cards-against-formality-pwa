@@ -27,8 +27,8 @@ export default function UserProvider({ children }: any) {
   const [token, setToken] = useState('');
   const [user, setUser] = useState(null);
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
-  const [renewData] = useFetchData<any>('http://localhost/api/login/renew', FetchType.GET);
-  const [loginData, , , next] = useFetchData<any>('http://localhost/api/login', FetchType.POST);
+  const [renewData] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/login/renew`, FetchType.GET, undefined, 10000);
+  const [loginData, , , next] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/login`, FetchType.POST);
 
   // NEED TO MAKE HISTORY AND PREV LOCATION AS REFS SO LOGIN DOESNT RE-RENDER
   const login = useCallback(_login, [next, history, prevLocation]);
