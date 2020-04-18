@@ -1,9 +1,11 @@
 import React, { useState, useCallback, useContext } from 'react';
 import { Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText, Typography } from '@material-ui/core';
+import { debounce } from 'lodash';
 
 import { UserContext } from '../../Contexts/UserProvider';
 import googleLogo from './Google__G__Logo.svg';
 import './Login.scss';
+import useFetchData, { FetchType } from '../../Hooks/useFetchData';
 
 function LoginProviders({ onProviderSelect }: any) {
   return <div className="login-providers-content">
@@ -22,20 +24,31 @@ export default React.memo(() => {
 
   const { login, user, signup, authUser } = useContext(UserContext);
   const [username, setUsername] = useState('');
+  const [, , , check] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/check/username`, FetchType.POST);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const handleLogin = useCallback(_handleLogin, [username, login, setIsLoading]);
-  const onChange = useCallback(_onChange, [handleLogin]);
+  const handleLogin = useCallback(_handleLogin, [username, login]);
+  const checkUsername = useCallback(
+    debounce((username: string) => {
+      if (!username?.length) {
+        return;
+      }
+      check({ username })
+        .then(() => setMessage(''))
+        .catch(err => setMessage(err.response.data.message))
+    }, 100),
+    []);
 
-  function _onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setUsername(e.target.value);
-  }
-
-  function onKeyPress(e: React.KeyboardEvent<HTMLDivElement>) {
-    if (e.charCode === 13) {
+  const onKeyPress = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.charCode === 13 && !message?.length) {
       handleLogin();
     }
-  }
+  }, [message, handleLogin]);
+
+  const onChange = useCallback((e: any) => {
+    setUsername(e.target.value);
+    checkUsername(e.target.value);
+  }, [checkUsername]);
 
   function _handleLogin() {
     setIsLoading(true);
@@ -51,7 +64,12 @@ export default React.memo(() => {
 
   function renderButton() {
     if (!isLoading) {
-      return <Button variant="contained" color="primary" disabled={!username.length} onClick={handleLogin}>
+      return <Button
+        variant="contained"
+        color="primary"
+        disabled={!username.length || !!message?.length}
+        onClick={handleLogin}
+      >
         Login
       </Button>;
     }
@@ -72,7 +90,7 @@ export default React.memo(() => {
         <FormControl className="username-input" required={true} error={!!message?.length}>
           <InputLabel htmlFor="target">Username</InputLabel>
           <Input onKeyPress={onKeyPress} autoFocus={true} id="target" aria-describedby="username-helper" value={username} onChange={onChange} />
-          <FormHelperText id="username-helper">Enter a unique name</FormHelperText>
+          <FormHelperText id="username-helper">{!!message?.length ? message : 'Enter a unique name'}</FormHelperText>
         </FormControl>
         {renderButton()}
       </div>;
