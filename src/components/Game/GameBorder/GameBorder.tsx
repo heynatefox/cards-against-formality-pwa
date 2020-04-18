@@ -13,7 +13,7 @@ export interface GameBorderProps {
 }
 
 export default React.memo(({ roomName, host, players, children, onLeave }: GameBorderProps) => {
-  return <Card raised={true}>
+  return <Card raised={true} className="game-border-container">
     <CardHeader
       className="header"
       title={roomName}
@@ -31,15 +31,15 @@ export default React.memo(({ roomName, host, players, children, onLeave }: GameB
         </Button>
       }
     />
-    <CardContent>
-      <div className="game-container-content">
+    <CardContent className="game-container-content">
+      {/* <div className="game-container-content"> */}
         <div className="game-container-children-wrapper">
           {children}
         </div>
         <div className="players-container">
           <Players players={players} host={host} />
         </div>
-      </div>
+      {/* </div> */}
     </CardContent>
   </Card>
 });

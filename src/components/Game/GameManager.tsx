@@ -72,7 +72,7 @@ export default function GameManager() {
     </GameContainer>
   }
 
-  return <Container className="game-manager-container">
+  return <Container className="game-manager-container" maxWidth="lg">
     {renderMain()}
   </Container>
 }

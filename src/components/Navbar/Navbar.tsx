@@ -13,7 +13,7 @@ export default React.memo(() => {
 
   return <div className="nav-bar">
     <Typography variant="h6" >
-      {user ? user.displayName : null}
+      {user ? user.username : null}
     </Typography>
     <div className="spacer" />
     <Button className="logout-button" onClick={logout} color="inherit">Logout</Button>

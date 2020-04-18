@@ -39,7 +39,7 @@ export default function useGameRoom() {
   useEffect(() => {
     // if state location is present. Redirect came from joining a room from /rooms.
     if (state) {
-      setRoom(state);
+      setRoomId((state as any)._id);
     } else if (search) {
 
       const params = new URLSearchParams(search);
@@ -54,6 +54,7 @@ export default function useGameRoom() {
 
 
   useEffect(() => {
+    console.log('Try getting game data', roomId, user)
     if (user && roomId?.length) {
       // we've got the roomId... Try join the room. If 401. Prompt password dialog.
       const data: any = { roomId, clientId: user._id };

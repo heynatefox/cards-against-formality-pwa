@@ -9,7 +9,7 @@ interface PlayersProps {
 const Player = React.memo(({ player, isHost }: any) => {
   return <div className="player-container">
     <Typography variant="body1">
-      {player.displayName}
+      {player.username}
     </Typography>
     <Typography variant="body2" color="textSecondary">
       Score: {!player?.score ? 0 : player.score}

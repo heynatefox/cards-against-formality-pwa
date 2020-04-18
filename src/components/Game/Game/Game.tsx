@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import './Game.scss';
 import { Typography, CircularProgress, Button } from '@material-ui/core';
@@ -69,7 +69,7 @@ function TurnSetup({ game, players }: { game: TurnDataWithState, players: any[] 
   }
 
   return <div>
-    <pre>{players.find(player => player._id === game.winner).displayName} wins!</pre>
+    <pre>{players.find(player => player._id === game.winner)?.username} wins!</pre>
     <Card card={game.blackCard} />
     {game.winningCards.map(card => <Card key={card._id + 'user-selection'} card={card} />)}
   </div>;
@@ -228,8 +228,9 @@ export default function Game({ game, players, cards, isCzar, onCardsSubmit, onWi
     <div className="game-content">
       {renderBasedOnGameState()}
     </div>
+    <div className="spacer" />
     <div className="card-selector-container">
       <Cards cards={cards} onCardsSubmit={onCardsSubmit} isCzar={isCzar} />
     </div>
-  </div>
+  </div >
 }

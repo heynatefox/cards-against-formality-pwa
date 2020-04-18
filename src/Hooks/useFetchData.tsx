@@ -33,14 +33,14 @@ const defaultOption = Object.freeze({});
  * @param {string} uri
  * @param {FetchType} [type=FetchType.GET]
  * @param {AxiosRequestConfig} [options]
- * @returns {([T, boolean, string | null, (body: any, noRedirect?: boolean) => void, () => void])}
+ * @returns {([T, boolean, string | null, (body: any, noRedirect?: boolean, token?: string) => void, () => void])}
  */
 function useFetchData<T>(
   uri: string,
   type: FetchType = FetchType.GET,
   options: AxiosRequestConfig = defaultOption,
   interval?: number
-): [T | null, boolean, string | null, (body: any, noRedirect?: boolean) => Promise<any>, () => void] {
+): [T | null, boolean, string | null, (body: any, noRedirect?: boolean, token?: string) => Promise<any>, () => void] {
 
   const { token } = useContext(UserContext);
   const { history } = useContext(RouterContext);
@@ -51,7 +51,7 @@ function useFetchData<T>(
   const [errorMessage, setErrorMessage] = useState(null);
   const cancelToken = useRef<Canceler | null>(null);
 
-  const next = useCallback(_next, [uri, type, options]);
+  const next = useCallback(_next, [uri, type, options, token]);
 
   useEffect(() => {
     historyRef.current = history;
@@ -65,12 +65,6 @@ function useFetchData<T>(
 
   useEffect(() => {
     if (type === FetchType.GET) {
-      // if (interval) {
-      //   setInterval(() => {
-      //     next({}).catch(() => { });
-      //   }, interval);
-      //   return;
-      // }
       next({}).catch(() => { });
     }
   }, [token, type, next, interval])
@@ -81,13 +75,17 @@ function useFetchData<T>(
     }
   }
 
-  function _next(body: any, noRedirect?: boolean) {
+  function _next(body: any, noRedirect?: boolean, token?: string) {
     if (cancelToken.current) {
       cancel();
     }
 
     setLoading(true);
     const _options = Object.assign({}, options, { cancelToken: new axios.CancelToken(token => cancelToken.current = token) });
+    if (token && token.length) {
+      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+    }
+
     return constructRequest(uri, type, _options, body)
       .then(res => {
         setLoading(false);

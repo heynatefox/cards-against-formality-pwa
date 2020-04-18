@@ -1,6 +1,10 @@
+.game-border-container {
+  height: 100%;
+}
+
 .game-container-content {
   display: flex;
-  height: 100%;
+  height: 90%;
 
   .game-container-children-wrapper {
     flex: 1 1 auto;

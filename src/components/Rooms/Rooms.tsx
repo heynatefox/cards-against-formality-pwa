@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Container, CircularProgress, Button, Card, CardHeader, CardContent, Backdrop } from "@material-ui/core";
+import { Container, CircularProgress, Button, Card, CardHeader, CardContent, Backdrop, Typography } from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
 
@@ -24,7 +24,7 @@ export default function Rooms() {
     // display error toast.
   }, [joinRoomErrorMessage]);
 
-  const joinRoom = useCallback(_joinRoom, [join, history]);
+  const joinRoom = useCallback(_joinRoom, [join, history, user]);
   function _joinRoom(roomId: string, passcode?: string) {
     if (!user) {
       // display toast error.
@@ -38,6 +38,7 @@ export default function Rooms() {
 
     join(data)
       .then((axiosRes) => {
+        console.log('joining room', `/game?_id=${roomId}`)
         history.push(`/game?_id=${roomId}`, axiosRes.data)
         // todo: fire success toasty.
       })
@@ -47,6 +48,12 @@ export default function Rooms() {
   function renderRooms() {
     if (isCreating) {
       return <CreateRoom onJoin={joinRoom} />
+    }
+
+    if (!rooms?.length) {
+      return <Typography variant="body1">
+        There are currently no active rooms
+      </Typography>;
     }
 
     return <div className="rooms-list">
