@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Container, CircularProgress, Button, Card, CardHeader, CardContent, Backdrop, Typography } from "@material-ui/core";
+import { Container, Button, Card, CardHeader, CardContent, Typography } from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
 
@@ -50,7 +50,7 @@ export default function Rooms() {
       return <CreateRoom onJoin={joinRoom} />
     }
 
-    if (!rooms?.length) {
+    if (!rooms?.length && !isLoading) {
       return <Typography variant="body1">
         There are currently no active rooms
       </Typography>;
@@ -59,14 +59,6 @@ export default function Rooms() {
     return <div className="rooms-list">
       {rooms.map(room => <Room key={room._id} room={room} user={user} onJoin={joinRoom} />)}
     </div>;
-  }
-
-
-
-  if (isLoading) {
-    return <Backdrop className="backdrop" open={true}>
-      <CircularProgress color="inherit" />
-    </Backdrop>;
   }
 
   return <Container className="rooms-container" maxWidth="lg">
@@ -91,5 +83,5 @@ export default function Rooms() {
         {renderRooms()}
       </CardContent>
     </Card>
-  </Container>
+  </Container>;
 };

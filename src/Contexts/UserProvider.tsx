@@ -32,11 +32,14 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     routerRef.current = routerContext;
   }, [routerContext]);
 
+
   const [token, setToken] = useState('');
   const [user, setUser] = useState<{ _id: string, username: string, isAnonymous: boolean } | null>(null);
   const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
+  const [isProviderSigningIn, setIsProviderSigningIn] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [renewData, isRenewing, , renew] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/login/renew`, FetchType.PUT);
   const [loginData, isSigningin, , next] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/login`, FetchType.POST);
 
@@ -54,6 +57,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
             setToken(idToken)
             const { uid, displayName, photoURL, email, emailVerified, phoneNumber, isAnonymous } = _user;
             setAuthUser({ uid, displayName, photoURL, email, emailVerified, phoneNumber, isAnonymous });
+            setIsProviderSigningIn(false);
           })
         } else {
           setAuthUser(null);
@@ -101,6 +105,26 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     }
   }, [user, authUser, token]);
 
+  // Handle smoother transitions between multiple loading states
+  useEffect(() => {
+    const newIsLoading = isLoadingAuth || isRenewing || isSigningin || isProviderSigningIn;
+    let timeout: NodeJS.Timeout;
+    // If the next loading state is false. Set a timeout.
+    if (!newIsLoading) {
+      timeout = setTimeout(() => {
+        setIsLoading(false);
+      }, 200);
+    } else {
+      setIsLoading(true);
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [isLoadingAuth, isRenewing, isSigningin, isProviderSigningIn])
+
   function redirect() {
     if (!routerRef?.current) {
       return;
@@ -124,15 +148,28 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   }
 
   function signup(providerStr: string): Promise<any> {
+    setIsProviderSigningIn(true);
     // here we should handle the different sign up types.
     if (providerStr === 'anonymous') {
       return firebase.auth().signInAnonymously()
         .catch((err) => { console.log(err) });
     }
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return firebase.auth().signInWithRedirect(provider)
-      .catch(err => console.log(err));
 
+    let provider: firebase.auth.GoogleAuthProvider | firebase.auth.FacebookAuthProvider;
+    if (providerStr === 'facebook') {
+      provider = new firebase.auth.FacebookAuthProvider();
+    } else {
+      // must be google.
+      provider = new firebase.auth.GoogleAuthProvider();
+    }
+
+    if (window.innerWidth < 600) {
+      return firebase.auth().signInWithRedirect(provider)
+        .catch(err => console.log(err));
+    }
+
+    return firebase.auth().signInWithPopup(provider)
+      .catch(err => console.log(err));
   }
 
   function _login(username: string) {
@@ -158,22 +195,15 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
       })
   }
 
-  function renderChildren() {
-    if (isLoadingAuth || isRenewing || isSigningin) {
-      return <Backdrop open={true}>
-        <CircularProgress color="inherit" />
-      </Backdrop>;
-    }
-
-    return children;
-  }
   return <UserContext.Provider value={{ login: (login as any), logout, user, authUser, token, signup }}>
-    {renderChildren()}
-
+    {isLoading ? null : children}
     <Snackbar open={hasLoggedIn} autoHideDuration={3000} onClose={() => setHasLoggedIn(false)} >
       <Alert severity="success">
         Successfully logged in!
         </Alert>
     </Snackbar>
+    <Backdrop className="backdrop" open={isLoading}>
+      <CircularProgress color="inherit" />
+    </Backdrop>
   </UserContext.Provider>
 }

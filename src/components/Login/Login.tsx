@@ -1,13 +1,20 @@
 import React, { useState, useCallback, useContext } from 'react';
-import { Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
+import { Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText, Typography } from '@material-ui/core';
 
 import { UserContext } from '../../Contexts/UserProvider';
+import googleLogo from './Google__G__Logo.svg';
 import './Login.scss';
 
 function LoginProviders({ onProviderSelect }: any) {
   return <div className="login-providers-content">
-    <Button onClick={() => onProviderSelect('anonymous')}>Play Anonymously</Button>
-    <Button onClick={() => onProviderSelect('google')}>Sign in with Google</Button>
+    <Button className="button" onClick={() => onProviderSelect('anonymous')} variant="contained" color="secondary">Play Anonymously</Button>
+    <Typography>
+      Or Sign in to choose a username!
+    </Typography>
+    <Button className="button bottom" onClick={() => onProviderSelect('google')} variant="contained" color="primary">
+      <img className="google-icon-svg" src={googleLogo} alt="google" />
+      <div>Sign in with Google</div>
+    </Button>
   </div>
 }
 
@@ -76,14 +83,12 @@ export default React.memo(() => {
     return null;
   }
 
-  return <>
-    <Container maxWidth="md" className="login-wrapper">
-      <Card className="inner-login-container" raised={true}>
-        <CardHeader className="header" title="Let's Play!"></CardHeader>
-        <CardContent>
-          {renderCardContent()}
-        </CardContent>
-      </Card>
-    </Container>
-  </>
+  return <Container maxWidth="lg" className="login-wrapper">
+    <Card className="inner-login-container" raised={true}>
+      <CardHeader className="header" title="Let's Play!"></CardHeader>
+      <CardContent>
+        {renderCardContent()}
+      </CardContent>
+    </Card>
+  </Container>;
 });
