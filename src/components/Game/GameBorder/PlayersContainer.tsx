@@ -1,26 +1,40 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import { List, ListItem, ListItemText, Divider, ListItemAvatar, Avatar } from "@material-ui/core";
+// import PersonIcon from '@material-ui/icons/Person';
+import StyleIcon from '@material-ui/icons/Style';
 
 interface PlayersProps {
   players: any[];
   host: string;
+  czar: string;
 }
 
-const Player = React.memo(({ player, isHost }: any) => {
-  return <div className="player-container">
-    <Typography variant="body1">
-      {player.username}
-    </Typography>
-    <Typography variant="body2" color="textSecondary">
-      Score: {!player?.score ? 0 : player.score}
-    </Typography>
-  </div>
+const Player = React.memo(({ player, isHost, isCzar }: any) => {
+  function renderIcon() {
+    return <div style={!isHost && !isCzar ? { opacity: 0 } : {}}>
+      <ListItemAvatar>
+        <Avatar>
+          <StyleIcon />
+        </Avatar>
+      </ListItemAvatar>
+    </div>
+  }
+
+  return <ListItem>
+    {renderIcon()}
+    <ListItemText primary={player.username} secondary={`Score: ${!player?.score ? 0 : player.score}`} />
+  </ListItem>;
 });
 
-const Players = React.memo(({ players, host }: PlayersProps) => {
-  return <div className="players-list">
-    {players.map(player => <Player key={player._id} player={player} isHost={player._id === host} />)}
-  </div>;
+const Players = React.memo(({ players, host, czar }: PlayersProps) => {
+  return <List>
+    {players.map((player, index) => {
+      return <>
+        <Player key={player._id} player={player} isHost={player._id === host} isCzar={player?._id === czar} />
+        {index !== players?.length -1 ? <Divider variant="inset" component="li" /> : null}
+      </>
+    })}
+  </List>;
 });
 
 export default Players;

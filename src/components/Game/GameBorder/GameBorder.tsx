@@ -6,13 +6,14 @@ import './GameBorder.scss';
 
 export interface GameBorderProps {
   host: string;
+  czar: string;
   children: React.ReactNode;
   players: any[];
   roomName: string;
   onLeave: () => void;
 }
 
-export default React.memo(({ roomName, host, players, children, onLeave }: GameBorderProps) => {
+export default React.memo(({ roomName, host, czar, players, children, onLeave }: GameBorderProps) => {
   return <Card raised={true} className="game-border-container">
     <CardHeader
       className="header"
@@ -37,7 +38,7 @@ export default React.memo(({ roomName, host, players, children, onLeave }: GameB
           {children}
         </div>
         <div className="players-container">
-          <Players players={players} host={host} />
+          <Players players={players} host={host} czar={czar}/>
         </div>
       {/* </div> */}
     </CardContent>

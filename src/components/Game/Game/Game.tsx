@@ -137,12 +137,18 @@ function GameEnded({ game }: { game: any }) {
 
 function Card({ card, onSelect, isSelected, isUnselectable }: { card: Card; onSelect?: (_id: string) => void; isSelected?: boolean; isUnselectable?: boolean }) {
   const onClick = useCallback(_onClick, [card, onSelect]);
+
   function _onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (!onSelect) {
       return;
     }
     onSelect(card._id);
   }
+
+  if (!card) {
+    return null;
+  }
+
   return <div draggable={true} className={`playing-card ${card.cardType} ${isSelected ? 'selected' : ''} ${isUnselectable ? 'unselectable' : ''}`} onClick={onClick}>
     {card.text}
   </div>;

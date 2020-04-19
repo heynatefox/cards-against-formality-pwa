@@ -24,17 +24,18 @@ export default function GameManager() {
 
 
   function _onLeave() {
-    leave({ roomId: room._id })
+    leave({ roomId: room?._id })
       .then(() => {
         history.push('/rooms');
       })
       .catch(() => {
+        history.push('/rooms');
         // handle toasty error.
       })
   }
 
   function _onGameStart() {
-    startGame({ roomId: room._id })
+    startGame({ roomId: room?._id })
       .catch(() => {
         // handle toasty error.
       })
@@ -64,7 +65,7 @@ export default function GameManager() {
       </div>;
     }
 
-    return <GameContainer key={game?.turn} host={room?.host} roomName={room?.name} players={players} onLeave={onLeave}>
+    return <GameContainer key={game?.turn} host={room?.host} czar={game?.czar} roomName={room?.name} players={players} onLeave={onLeave}>
       {room?.status === 'pending' ?
         <Pending isHost={isHost} numberOfPlayers={players.length} startGame={onGameStart} /> :
         <Game cards={cards} players={players} game={game} isCzar={isCzar} onCardsSubmit={onCardsSubmit} onWinnerSelect={onWinnerSelect} />
