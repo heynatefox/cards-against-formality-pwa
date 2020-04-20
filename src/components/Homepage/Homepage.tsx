@@ -25,7 +25,7 @@ const Homepage = React.memo(() => {
             Cards Against Formality
         </Typography>
           <Typography className="subtitle" variant="h6" style={{ width: 200 }}>
-            A terrible Card game. For terrible people...
+            A terrible card game. For terrible people...
         </Typography>
           <div className="play-button-container">
             <Button className="play-button" variant="contained" color="primary" onClick={onPlay}>Play</Button>
