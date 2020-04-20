@@ -2,6 +2,13 @@
   padding: 10% 0 10%;
   height: 450px;
 
+  &.footer {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   &.title {
     background: url(./cards.png) no-repeat 150px 0%;
     background-size: contain;

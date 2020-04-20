@@ -40,7 +40,7 @@ function useFetchData<T>(
   type: FetchType = FetchType.GET,
   options: AxiosRequestConfig = defaultOption,
   interval?: number
-): [T | null, boolean, string | null, (body: any, noRedirect?: boolean, token?: string) => Promise<any>, () => void] {
+): [T | null, boolean, string | null, (body?: any, noRedirect?: boolean, token?: string) => Promise<any>, () => void] {
 
   const { token } = useContext(UserContext);
   const { history } = useContext(RouterContext);
@@ -75,7 +75,7 @@ function useFetchData<T>(
     }
   }
 
-  function _next(body: any, noRedirect?: boolean, token?: string) {
+  function _next(body?: any, noRedirect?: boolean, token?: string) {
     if (cancelToken.current) {
       cancel();
     }

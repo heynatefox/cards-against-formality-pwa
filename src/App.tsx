@@ -37,9 +37,11 @@ function App() {
     // Initialize Firebase
     console.log('initialize app');
     firebase.initializeApp(firebaseConfig);
+
     if (process.env.NODE_ENV === 'production') {
       firebase.analytics();
     }
+
     setIsFirebaseInit(true);
   }, []);
 

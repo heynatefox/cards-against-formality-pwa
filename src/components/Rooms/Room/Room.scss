@@ -2,6 +2,11 @@
   margin-right: 5%;
   margin-bottom: 5%;
   flex: 1 1 auto;
+  max-width: 100%;
+
+  @media (min-width: 600px) {
+    max-width: 50%;
+  }
 
   .room-title {
     text-transform: capitalize;

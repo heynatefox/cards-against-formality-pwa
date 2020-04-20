@@ -41,6 +41,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [renewData, isRenewing, , renew] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/login/renew`, FetchType.PUT);
+  const [, , , logoutHttp] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/logout`, FetchType.PUT);
   const [loginData, isSigningin, , next] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/login`, FetchType.POST);
 
   const logout = useCallback(_logout, [setUser, setToken]);
@@ -54,9 +55,8 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
       unsubscribe = firebase.auth().onAuthStateChanged((_user) => {
         if (_user) {
           _user.getIdToken(true).then(idToken => {
-            setToken(idToken)
-            const { uid, displayName, photoURL, email, emailVerified, phoneNumber, isAnonymous } = _user;
-            setAuthUser({ uid, displayName, photoURL, email, emailVerified, phoneNumber, isAnonymous });
+            setToken(idToken);
+            setAuthUser(_user);
             setIsProviderSigningIn(false);
           })
         } else {
@@ -187,6 +187,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     };
 
     return firebase.auth().signOut()
+      .then(() => logoutHttp())
       .then(() => {
         handleComplete();
       })

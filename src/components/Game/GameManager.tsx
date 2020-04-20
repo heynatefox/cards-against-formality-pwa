@@ -43,6 +43,10 @@ export default function GameManager() {
 
   function _onCardsSubmit(cards: string[]) {
     return submitCards({ roomId: room._id, clientId, cards })
+      .then(() => {
+          // remove cards from current pick
+          // handle error
+      })
   }
 
   function _onWinnerSelect(winnerId: string) {

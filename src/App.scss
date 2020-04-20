@@ -1,6 +1,12 @@
 .app-container {
   overflow-x: hidden;
   height: calc(100% - 50px);
+  // background: url('./tactile_noise.png');
+
+  @media (min-width: 600px) {
+    padding: 0 19.5%;
+    height: calc(100% - 75px);
+  }
 }
 
 .app {
