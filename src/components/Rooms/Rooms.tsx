@@ -19,7 +19,7 @@ export default function Rooms() {
   const [isCreating, setIsCreating] = useState(false);
   const onCreate = useCallback(() => setIsCreating(prevIsCreating => !prevIsCreating), []);
 
-  const [, , joinRoomErrorMessage, join] = useFetchData(`${window.location.protocol}//${window.location.hostname}/api/rooms/join/players`, FetchType.PUT, undefined);
+  const [, , joinRoomErrorMessage, join] = useFetchData(`https:////api.cardsagainstformality.io/api/rooms/join/players`, FetchType.PUT, undefined);
   useEffect(() => {
     // display error toast.
   }, [joinRoomErrorMessage]);

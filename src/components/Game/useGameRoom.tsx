@@ -9,7 +9,7 @@ import genericReducer from "../../Reducers/genericReducer";
 export default function useGameRoom() {
   const { user, token } = useContext(UserContext);
   // We need to keep the room state up to date.
-  const [res, isLoading, errorMessage, next] = useFetchData(`${window.location.protocol}//${window.location.hostname}/api/rooms/join/players`, FetchType.PUT);
+  const [res, isLoading, errorMessage, next] = useFetchData(`https:////api.cardsagainstformality.io/api/rooms/join/players`, FetchType.PUT);
   const { location: { search, state }, history } = useContext(RouterContext);
   const [roomId, setRoomId] = useState<null | string>(null);
 

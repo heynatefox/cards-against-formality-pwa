@@ -56,8 +56,8 @@ export default function CreateRoom({ onJoin }: any) {
   const [target, setTarget] = useState(10);
   const [maxPlayers, setMaxPlayers] = useState(10);
   const [maxSpectators, setMaxSpectators] = useState(10);
-  const [, isLoading, errorMessage, createRoom] = useFetchData(`${window.location.protocol}//${window.location.hostname}/api/rooms`, FetchType.POST);
-  const [decksData, loadingDecks] = useFetchData<{ rows: any[] } | null>(`${window.location.protocol}//${window.location.hostname}/api/decks?fields=name,_id&pageSize=100`, FetchType.GET);
+  const [, isLoading, errorMessage, createRoom] = useFetchData(`https:////api.cardsagainstformality.io/api/rooms`, FetchType.POST);
+  const [decksData, loadingDecks] = useFetchData<{ rows: any[] } | null>(`https:////api.cardsagainstformality.io/api/decks?fields=name,_id&pageSize=100`, FetchType.GET);
   const [decks, setDecks] = useState([]);
 
   function handleSubmit() {

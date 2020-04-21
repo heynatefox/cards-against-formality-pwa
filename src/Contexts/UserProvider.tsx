@@ -1,12 +1,10 @@
 import React, { useCallback, useState, useEffect, useContext, useRef } from "react";
-import axios from 'axios';
 import { Snackbar, Backdrop, CircularProgress } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import * as firebase from "firebase/app";
 
 import useFetchData, { FetchType } from "../Hooks/useFetchData";
 import { RouterContext } from "./RouteProvider";
-axios.defaults.withCredentials = true;
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -40,9 +38,9 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   const [isProviderSigningIn, setIsProviderSigningIn] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [renewData, isRenewing, , renew] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/login/renew`, FetchType.PUT);
-  const [, , , logoutHttp] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/logout`, FetchType.PUT);
-  const [loginData, isSigningin, , next] = useFetchData<any>(`${window.location.protocol}//${window.location.hostname}/api/login`, FetchType.POST);
+  const [renewData, isRenewing, , renew] = useFetchData<any>(`https:////api.cardsagainstformality.io/api/login/renew`, FetchType.PUT);
+  const [, , , logoutHttp] = useFetchData<any>(`https:////api.cardsagainstformality.io/api/logout`, FetchType.PUT);
+  const [loginData, isSigningin, , next] = useFetchData<any>(`https:////api.cardsagainstformality.io/api/login`, FetchType.POST);
 
   const logout = useCallback(_logout, [setUser, setToken]);
 

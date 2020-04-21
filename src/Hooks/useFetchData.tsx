@@ -4,8 +4,6 @@ import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from 'axios';
 import { RouterContext } from '../Contexts/RouteProvider';
 import { UserContext } from "../Contexts/UserProvider";
 
-axios.defaults.withCredentials = true;
-
 export enum FetchType {
   GET = 'get',
   POST = 'post',

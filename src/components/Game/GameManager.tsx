@@ -12,10 +12,10 @@ import Game from './Game/Game'
 export default function GameManager() {
   const [clientId, room, isHost, isCzar, game, cards, players, spectators, isLoading, errorMessage] = useGameRoom();
 
-  const [, , , leave] = useFetchData(`${window.location.protocol}//${window.location.hostname}/api/rooms/leave`, FetchType.PUT);
-  const [, startGameLoading, , startGame] = useFetchData(`${window.location.protocol}//${window.location.hostname}/api/games/start`, FetchType.PUT);
-  const [, submitCardsLoading, , submitCards] = useFetchData(`${window.location.protocol}//${window.location.hostname}/api/games/cards`, FetchType.POST);
-  const [, selectWinnerLoading, , selectWinner] = useFetchData(`${window.location.protocol}//${window.location.hostname}/api/games/winner`, FetchType.POST);
+  const [, , , leave] = useFetchData(`https:////api.cardsagainstformality.io/api/rooms/leave`, FetchType.PUT);
+  const [, startGameLoading, , startGame] = useFetchData(`https:////api.cardsagainstformality.io/api/games/start`, FetchType.PUT);
+  const [, submitCardsLoading, , submitCards] = useFetchData(`https:////api.cardsagainstformality.io/api/games/cards`, FetchType.POST);
+  const [, selectWinnerLoading, , selectWinner] = useFetchData(`https:////api.cardsagainstformality.io/api/games/winner`, FetchType.POST);
   const { history } = useContext(RouterContext);
   const onLeave = useCallback(_onLeave, [room, leave, history]);
   const onGameStart = useCallback(_onGameStart, [room, startGame]);
