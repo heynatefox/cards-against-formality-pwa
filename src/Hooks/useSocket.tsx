@@ -13,7 +13,7 @@ export default function useSocket(token: string, socketEventMap: SocketEventMap,
   const socket = useRef<SocketIOClient.Socket | null>(null);
   useEffect(() => {
     if (token?.length) {
-      socket.current = io(`localhost${namespace}`, {
+      socket.current = io(`api.cardsagainstformality.io${namespace}`, {
         transports: ['websocket'],
         path: '/socket',
         autoConnect: false,
