@@ -150,7 +150,9 @@ function Card({ card, onSelect, isSelected, isUnselectable }: { card: Card; onSe
   }
 
   return <div draggable={true} className={`playing-card ${card.cardType} ${isSelected ? 'selected' : ''} ${isUnselectable ? 'unselectable' : ''}`} onClick={onClick}>
-    {card.text}
+    <div className="playing-card-inner">
+      {card.text}
+    </div>
   </div>;
 }
 

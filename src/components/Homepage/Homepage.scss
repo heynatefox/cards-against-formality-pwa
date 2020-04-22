@@ -1,3 +1,29 @@
+.card-group-wrapper {
+  // position: absolute;
+  // top: 0;
+  // right: 15%;
+  display: none;
+  @media (min-width: 800px) {
+    display: block;
+  }
+
+  .card-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20%;
+    margin-top: 10%;
+    pointer-events: none;
+    .first-card {
+      z-index: 2;
+      transform: rotate(-15deg) translateY(1.5em) translateX(0em);
+    }
+    .second-card {
+      z-index: 2;
+      transform: rotate(4deg) translateY(0.5em) translateX(-4em);
+    }
+  }
+}
+
 .homepage-section {
   padding: 10% 0 10%;
   height: 450px;
@@ -10,14 +36,19 @@
   }
 
   &.title {
-    background: url(./cards.png) no-repeat 150px 0%;
+    display: flex;
+    width: 100%;
+
+    background: url(./cards.png) no-repeat 150px 10%;
     background-size: contain;
 
-    @media (min-width: 600px) {
-      background: url(./cards.png) no-repeat 900px center;
-      background-size: 40%;
+    @media (min-width: 800px) {
+      background: none;
+      position: absolute;
+      top: -50px;
     }
   }
+
   @media (min-width: 600px) {
     padding: 5% 0 5%;
     height: 550px;
@@ -28,7 +59,8 @@
     flex-flow: column;
     justify-content: center;
     .play-button-container {
-      margin-top: 2%;
+      z-index: 5;
+      margin-top: 5%;
       display: flex;
       justify-content: center;
       .play-button {

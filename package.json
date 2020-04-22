@@ -18,9 +18,9 @@
     "typeface-roboto": "^0.0.75"
   },
   "devDependencies": {
-    "@types/lodash": "4.14.108",
     "@types/axios": "^0.14.0",
     "@types/jsonwebtoken": "^8.3.8",
+    "@types/lodash": "4.14.108",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",

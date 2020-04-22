@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, Typography, Container, Button } from '@material-ui/core';
 
+import Card from '../Card/Card';
 import './Homepage.scss';
 import { RouterContext } from '../../Contexts/RouteProvider';
 
@@ -18,6 +19,12 @@ const Homepage = React.memo(() => {
   }
 
   return <div>
+    <div className="card-group-wrapper">
+      <div className="card-group">
+        <Card className="first-card" card={{ cardType: 'black', _id: '1', text: `MTV's new reality show features eight washed-up celebrities living with _.`, pick: 1 }} />
+        <Card className="second-card" card={{ cardType: 'white', _id: '2', text: `Coat hanger abortions.` }} />
+      </div>
+    </div>
     <section className="homepage-section title">
       <Container maxWidth="md">
         <div className="title-container">
@@ -32,6 +39,7 @@ const Homepage = React.memo(() => {
           </div>
         </div>
       </Container>
+
     </section>
     <section className="homepage-section even">
       <Container maxWidth="md">
