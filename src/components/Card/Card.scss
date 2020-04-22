@@ -7,8 +7,15 @@
   width: 25%;
   // margin: 0 auto 0 0;
   perspective: 100vw;
-  font-size: 0.9rem;
-  max-width: 200px;
+  max-width: 400px;
+  font-size: 0.4rem;
+  
+  @media (min-width: 600px) {
+    font-size: 0.6rem;
+  }
+  @media (min-width: 800px) {
+    font-size: 0.9rem;
+  }
 
   .blank-space {
     display: block;

@@ -1,10 +1,14 @@
 .card-group-wrapper {
-  // position: absolute;
-  // top: 0;
-  // right: 15%;
-  display: none;
-  @media (min-width: 800px) {
-    display: block;
+  position: absolute;
+  z-index: -1;
+  width: 1000px;
+  right: -90%;
+  bottom: 50%;
+
+  @media (min-width: 600px) {
+    width: 100%;
+    top: -2.5%;
+    right: -5%;
   }
 
   .card-group {
@@ -13,13 +17,34 @@
     margin-right: 20%;
     margin-top: 10%;
     pointer-events: none;
+    position: relative;
+
     .first-card {
+      color: black;
+      font-size: 1.2em !important;
       z-index: 2;
       transform: rotate(-15deg) translateY(1.5em) translateX(0em);
+
+      @media (max-width: 600px) {
+        .blank-space {
+          border: none;
+        }
+      }
+      @media (min-width: 600px) {
+        color: white;
+        font-size: unset;
+      }
     }
     .second-card {
+      color: white;
+      font-size: 1.2em !important;
       z-index: 2;
       transform: rotate(4deg) translateY(0.5em) translateX(-4em);
+
+      @media (min-width: 600px) {
+        color: black;
+        font-size: unset;
+      }
     }
   }
 }
@@ -38,15 +63,6 @@
   &.title {
     display: flex;
     width: 100%;
-
-    background: url(./cards.png) no-repeat 150px 10%;
-    background-size: contain;
-
-    @media (min-width: 800px) {
-      background: none;
-      position: absolute;
-      top: -50px;
-    }
   }
 
   @media (min-width: 600px) {

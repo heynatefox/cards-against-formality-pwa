@@ -19,14 +19,14 @@ const Homepage = React.memo(() => {
   }
 
   return <div>
-    <div className="card-group-wrapper">
-      <div className="card-group">
-        <Card className="first-card" card={{ cardType: 'black', _id: '1', text: `MTV's new reality show features eight washed-up celebrities living with _.`, pick: 1 }} />
-        <Card className="second-card" card={{ cardType: 'white', _id: '2', text: `Coat hanger abortions.` }} />
-      </div>
-    </div>
     <section className="homepage-section title">
       <Container maxWidth="md">
+        <div className="card-group-wrapper">
+          <div className="card-group">
+            <Card className="first-card" card={{ cardType: 'black', _id: '1', text: `In the newest and most difficult stunt. David Blaine must escape from _.`, pick: 1 }} />
+            <Card className="second-card" card={{ cardType: 'white', _id: '2', text: `My inner demons.` }} />
+          </div>
+        </div>
         <div className="title-container">
           <Typography className="title" variant="h2" style={{ width: 200 }}>
             Cards Against Formality
@@ -54,6 +54,7 @@ const Homepage = React.memo(() => {
         <br />
         <Typography variant="body1" style={{ color: "black" }}>
           The project is opensource. To find out more, visit the <Link onClick={() => onWindowOpen('https://github.com/jordanpawlett/cards-against-formality')} rel="noopener">github</Link>.
+          Currently the API servers will only be online intermittently.
         </Typography>
       </Container>
     </section>
