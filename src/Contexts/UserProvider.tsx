@@ -54,7 +54,8 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
         if (_user) {
           _user.getIdToken(true).then(idToken => {
             setToken(idToken);
-            setAuthUser(_user);
+            const { uid, displayName, photoURL, email, emailVerified, phoneNumber, isAnonymous } = _user;
+            setAuthUser({ uid, displayName, photoURL, email, emailVerified, phoneNumber, isAnonymous });
             setIsProviderSigningIn(false);
           })
         } else {

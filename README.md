@@ -5,6 +5,7 @@
 
 Cards Against Formality aims to be a web based clone of the popular card game "Cards against humanity".
 
+Play [here!](https://cardsagainstformality.io/)
   
 
 # Getting started

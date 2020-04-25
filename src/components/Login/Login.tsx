@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText, Typography } from '@material-ui/core';
 import { debounce } from 'lodash';
 
@@ -6,6 +6,7 @@ import { UserContext } from '../../Contexts/UserProvider';
 import googleLogo from './Google__G__Logo.svg';
 import './Login.scss';
 import useFetchData, { FetchType } from '../../Hooks/useFetchData';
+import { RouterContext } from '../../Contexts/RouteProvider';
 
 function LoginProviders({ onProviderSelect }: any) {
   return <div className="login-providers-content">
@@ -22,6 +23,7 @@ function LoginProviders({ onProviderSelect }: any) {
 
 export default React.memo(() => {
 
+  const { history } = useContext(RouterContext);
   const { login, user, signup, authUser } = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [, , , check] = useFetchData<any>(`/api/check/username`, FetchType.POST);
@@ -49,6 +51,14 @@ export default React.memo(() => {
     setUsername(e.target.value);
     checkUsername(e.target.value);
   }, [checkUsername]);
+
+
+  useEffect(() => {
+    // user that is logged in, is trying to go to the login page.
+    if (user && authUser) {
+      history.push('/rooms');
+    }
+  }, [user, authUser, history])
 
   function _handleLogin() {
     setIsLoading(true);
