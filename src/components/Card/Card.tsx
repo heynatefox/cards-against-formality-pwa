@@ -36,8 +36,12 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
       <div className="card-content">
         <div className="text">
           {words.map((word, index) => {
+            // Write generic parse for special char codes...
             if (word.includes('&reg;')) {
-              return <span key={index} className="word">®</span>
+              return <span key={index} className="word">{word.replace('&reg;', '®')}</span>
+            }
+            if (word.includes('&iacute;')) {
+              return <span key={index} className="word">{word.replace('&iacute;', 'í')}</span>
             }
             if (word.includes('_')) {
               return <span key={index} className="blank-space" />
