@@ -7,9 +7,10 @@ import useSocket from "../../Hooks/useSocket";
 import genericReducer from "../../Reducers/genericReducer";
 
 export default function useGameRoom() {
+
   const { user, token } = useContext(UserContext);
   // We need to keep the room state up to date.
-  const [res, isLoading, errorMessage, next] = useFetchData(`https:////api.cardsagainstformality.io/api/rooms/join/players`, FetchType.PUT);
+  const [res, isLoading, errorMessage, next] = useFetchData(`/api/rooms/join/players`, FetchType.PUT);
   const { location: { search, state }, history } = useContext(RouterContext);
   const [roomId, setRoomId] = useState<null | string>(null);
 
@@ -20,6 +21,7 @@ export default function useGameRoom() {
   const [game, setGame] = useState<any>(null);
   const [isHost, setIsHost] = useState(false);
   const [isCzar, setIsCzar] = useState(false);
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
 
   const onRoomEvent = useCallback(({ updateType, payload }) => {
     if (updateType === 'removed') {
@@ -32,6 +34,23 @@ export default function useGameRoom() {
   const onGameEvent = useCallback(d => setGame(d.payload), []);
   const [socketMapping] = useState({ room: onRoomEvent, game: onGameEvent, deal: onDealEvent });
   const [socket] = useSocket(token, socketMapping, '/games', false);
+  const joinRoom = useCallback((passcode?: string) => {
+    if (!user) {
+      return;
+    }
+
+    const data: any = { roomId, clientId: user._id };
+    if (passcode?.length) {
+      data.passcode = passcode;
+    }
+    // reroute to room.
+    next(data, true)
+      .catch((err) => {
+        if (err.response?.status === 401) {
+          setShowPasswordDialog(true);
+        }
+      });
+  }, [roomId, user, next])
 
   // check if the player is already in the room. If yes, join it.
   // if the game is password protected, prompt password, or take from url.
@@ -54,23 +73,17 @@ export default function useGameRoom() {
 
 
   useEffect(() => {
-    console.log('Try getting game data', roomId, user)
     if (user && roomId?.length) {
-      // we've got the roomId... Try join the room. If 401. Prompt password dialog.
-      const data: any = { roomId, clientId: user._id };
-      // reroute to room.
-      next(data, true)
-        .catch((err) => {
-
-        });
+      // we've got the roomId... Try join the room.
+      joinRoom()
     }
 
     // investigate issue where next causes update, even though it's wrapped in useCallback
-  }, [roomId, next, user]);
+  }, [roomId, joinRoom, user]);
 
-  // WARNING: This only happens if the user joined by a link
   useEffect(() => {
     if (res) {
+      setShowPasswordDialog(false);
       setRoom(res);
     }
   }, [res]);
@@ -92,10 +105,9 @@ export default function useGameRoom() {
   useEffect(() => {
     if (game) {
       setIsCzar(game.czar === user?._id);
-      console.log(game);
       dispatchPlayers({ type: 'MULTI_UPDATE_DATA', data: game.players });
     }
   }, [game, user]);
 
-  return [user?._id, room, isHost, isCzar, game, cards, players, spectators, isLoading, errorMessage];
+  return [user?._id, room, isHost, isCzar, game, cards, players, spectators, isLoading, errorMessage, showPasswordDialog, joinRoom];
 }

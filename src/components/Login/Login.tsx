@@ -24,7 +24,7 @@ export default React.memo(() => {
 
   const { login, user, signup, authUser } = useContext(UserContext);
   const [username, setUsername] = useState('');
-  const [, , , check] = useFetchData<any>(`https:////api.cardsagainstformality.io/api/check/username`, FetchType.POST);
+  const [, , , check] = useFetchData<any>(`/api/check/username`, FetchType.POST);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const handleLogin = useCallback(_handleLogin, [username, login]);

@@ -2,56 +2,46 @@
   flex: 1 1 auto;
 }
 
-.cards-list {
-  display: flex;
-  flex-flow: column;
-  width: 100%;
-
-  .cards-list-container {
-    display: flex;
-    justify-content: center;
-    overflow: auto;
-    width: 100%;
-  }
-}
-
 .game-container {
   display: flex;
   flex-flow: column;
-  align-items: center;
   height: 100%;
   width: 100%;
+  margin-left: 2%;
+
   .game-content {
     flex: 1 1 auto;
-  }
-
-  .card-selector-container {
-    flex-grow: 0;
-    flex-shrink: 0;
-    height: fit-content;
+    height: 100%;
     width: 100%;
+    padding: 0 2%;
   }
 }
 
-.user-selection {
+.card-group {
   display: flex;
-  width: fit-content;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 10% 2%;
+  pointer-events: none;
+  .first-card {
+    z-index: 2;
+    transform: rotate(-15deg) translateY(1.5em) translateX(0em);
 
-  &.selected {
-    border: 2px solid blue;
+    @media (max-width: 600px) {
+      .blank-space {
+        border: none;
+      }
+    }
+    @media (min-width: 600px) {
+    }
+  }
+  .second-card {
+    z-index: 2;
+    transform: rotate(4deg) translateY(0.5em) translateX(-4em);
+
+    @media (min-width: 600px) {
+    }
   }
 }
-
-// .container {
-//   background-color: black;
-//   position: relative;
-//   width: 25%;
-//   margin: 0 auto 0 0;
-//   perspective: 100vw;
-// }
-
-// .inner {
-//   height: 0;
-//   padding-top: calc(1/0.72 * 100%);
-// }
-

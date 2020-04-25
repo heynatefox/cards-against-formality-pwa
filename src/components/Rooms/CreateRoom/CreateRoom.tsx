@@ -49,15 +49,14 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
   </FormControl>
 }
 
-export default function CreateRoom({ onJoin }: any) {
+export default function CreateRoom({ onJoin, decksData }: any) {
   const [isProtected, setIsProtected] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [name, setName] = useState('');
   const [target, setTarget] = useState(10);
   const [maxPlayers, setMaxPlayers] = useState(10);
   const [maxSpectators, setMaxSpectators] = useState(10);
-  const [, isLoading, errorMessage, createRoom] = useFetchData(`https:////api.cardsagainstformality.io/api/rooms`, FetchType.POST);
-  const [decksData, loadingDecks] = useFetchData<{ rows: any[] } | null>(`https:////api.cardsagainstformality.io/api/decks?fields=name,_id&pageSize=100`, FetchType.GET);
+  const [, isLoading, errorMessage, createRoom] = useFetchData(`/api/rooms`, FetchType.POST);
   const [decks, setDecks] = useState([]);
 
   function handleSubmit() {
@@ -81,6 +80,12 @@ export default function CreateRoom({ onJoin }: any) {
     // route to the room.
   }
 
+  function onKeyPress(e: any) {
+    if (e.charCode === 13) {
+      handleSubmit();
+    }
+  }
+
   function renderPasswordForm() {
     if (!isProtected) {
       return null;
@@ -94,18 +99,11 @@ export default function CreateRoom({ onJoin }: any) {
   }
 
   function renderCardContent() {
-    if (loadingDecks) {
-      return <div className="deck-loading-container">
-        <CircularProgress />
-      </div>;
-    }
-
     return <CardContent className="create-form-card-content">
-      <form className="create-room-form">
+      <form className="create-room-form" onKeyPress={onKeyPress}>
         <FormControl required={true}>
           <InputLabel htmlFor="name">Game Name</InputLabel>
-          <Input id="name" aria-describedby="game-name-helper" value={name} onChange={e => setName(e.target.value)} />
-          <FormHelperText id="game-name-helper">This is how people will find your game.</FormHelperText>
+          <Input id="name" autoFocus={true} aria-describedby="game-name-helper" value={name} onChange={e => setName(e.target.value)} />
         </FormControl>
         <FormControl required={true}>
           <InputLabel htmlFor="target">Target Score</InputLabel>
@@ -115,12 +113,10 @@ export default function CreateRoom({ onJoin }: any) {
         <FormControl required={true}>
           <InputLabel htmlFor="max-players">Max Players</InputLabel>
           <Input id="max-players" type="number" aria-describedby="max-players-helper" value={target} onChange={e => setMaxPlayers(parseInt(e.target.value, 10))} />
-          <FormHelperText id="max-players-helper">Maximum number of players allowed in the game.</FormHelperText>
         </FormControl>
         <FormControl required={true}>
           <InputLabel htmlFor="max-spectators">Max Spectators</InputLabel>
           <Input id="max-spectators" type="number" aria-describedby="max-spectators-helper" value={target} onChange={e => setMaxSpectators(parseInt(e.target.value, 10))} />
-          <FormHelperText id="max-spectators-helper">Maximum number of players allowed in the game.</FormHelperText>
         </FormControl>
         {!decksData?.rows ? null : <DeckSelector decks={decksData.rows} onChange={setDecks as any} />}
         <FormControlLabel

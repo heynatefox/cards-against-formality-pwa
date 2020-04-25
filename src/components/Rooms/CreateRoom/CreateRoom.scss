@@ -20,13 +20,13 @@
     .MuiFormControl-root {
       margin-bottom: 5%;
       @media (min-width: 600px) {
-       margin-bottom: 2%;
+        margin-bottom: 2%;
       }
     }
   }
 }
 
-
 .form-container {
   height: 100%;
+  overflow: auto;
 }

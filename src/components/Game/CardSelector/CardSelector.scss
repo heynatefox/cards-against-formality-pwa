@@ -1,0 +1,28 @@
+.cards-list {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+
+  .cards-action {
+    margin-left: 2%;
+    button {
+      width: 100px !important;
+    }
+  }
+
+  .cards-list-container {
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+    width: 100%;
+    padding: 2% 2% 1%;
+
+    .card-selector-card {
+      font-size: 0.5em;
+
+      @media (min-width: 850px) {
+        font-size: 0.8em;
+      }
+    }
+  }
+}

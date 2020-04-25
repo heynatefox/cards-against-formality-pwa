@@ -35,7 +35,6 @@ function App() {
   const [isFirebaseInit, setIsFirebaseInit] = useState(false);
   useEffect(() => {
     // Initialize Firebase
-    console.log('initialize app');
     firebase.initializeApp(firebaseConfig);
 
     if (process.env.NODE_ENV === 'production') {
@@ -77,7 +76,7 @@ function App() {
         </Route>
 
         <Route path="/game">
-          <Container className="app-container" maxWidth="lg">
+          <Container className="app-container" maxWidth="xl">
             <div className="app">
               <Suspense fallback={<RouteLoadingFallback />}>
                 <Game />

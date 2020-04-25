@@ -1,4 +1,45 @@
 .pending-container {
   display: flex;
   flex-flow: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+
+  .start-button {
+    pointer-events: all;
+
+    @media (max-width: 800px) {
+      font-size: 0.5em;
+    }
+  }
+
+  .card-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0 10% 2%;
+    pointer-events: none;
+    .first-card {
+      z-index: 2;
+      transform: rotate(-15deg) translateY(1.5em) translateX(0em);
+
+      @media (max-width: 600px) {
+        .blank-space {
+          border: none;
+        }
+      }
+      @media (min-width: 600px) {
+      }
+    }
+    .second-card {
+      z-index: 2;
+      transform: rotate(4deg) translateY(0.5em) translateX(-4em);
+
+      @media (min-width: 600px) {
+      }
+    }
+  }
 }

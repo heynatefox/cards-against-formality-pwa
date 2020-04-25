@@ -27,7 +27,7 @@ export default function useRooms(token: string): [any[], boolean] {
 
   useSocket(token, socketMapping, '/rooms');
   // TODO: implement infinite scrolling.
-  const [res, isLoading] = useFetchData<{ rows: any[] }>(`https:////api.cardsagainstformality.io/api/rooms?pageSize=100`);
+  const [res, isLoading] = useFetchData<{ rows: any[] }>(`/api/rooms?pageSize=100`);
 
   useEffect(() => {
     if (res) {

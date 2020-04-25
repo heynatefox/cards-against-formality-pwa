@@ -31,7 +31,7 @@ const Players = React.memo(({ players, host, czar }: PlayersProps) => {
     {players.map((player, index) => {
       return <>
         <Player key={player._id} player={player} isHost={player._id === host} isCzar={player?._id === czar} />
-        {index !== players?.length -1 ? <Divider variant="inset" component="li" /> : null}
+        {index !== players?.length - 1 ? <Divider variant="inset" component="li" /> : null}
       </>
     })}
   </List>;

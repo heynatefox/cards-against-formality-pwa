@@ -4,14 +4,40 @@
 
 .game-container-content {
   display: flex;
-  height: 90%;
+  height: 60%;
+
+  .left-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+  }
+
+  .top-content {
+    display: flex;
+    height: 94%;
+    width: 100%;
+    flex-grow: 1;
+    flex-shrink: 0;
+
+    .black-card-container {
+      width: 200px;
+      margin-left: 2%;
+      .master-black-card {
+        position: absolute;
+        width: 200px;
+      }
+    }
+  }
 
   .game-container-children-wrapper {
     flex: 1 1 auto;
+    padding: 0 2%;
     height: 100%;
     display: flex;
     justify-content: center;
-    width: 80%;
+    width: 100%;
+    overflow: auto;
   }
 
   .players-container {
@@ -31,4 +57,18 @@
   display: flex;
   flex-flow: column;
   padding: 10%;
+}
+
+.sub-header-container {
+  display: flex;
+  align-items: center;
+
+  .round-number {
+    margin-right: 5%;
+  }
+
+  .timer {
+    margin-right: 5px;
+    line-height: 1px;
+  }
 }

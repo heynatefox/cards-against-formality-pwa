@@ -38,9 +38,9 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   const [isProviderSigningIn, setIsProviderSigningIn] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [renewData, isRenewing, , renew] = useFetchData<any>(`https:////api.cardsagainstformality.io/api/login/renew`, FetchType.PUT);
-  const [, , , logoutHttp] = useFetchData<any>(`https:////api.cardsagainstformality.io/api/logout`, FetchType.PUT);
-  const [loginData, isSigningin, , next] = useFetchData<any>(`https:////api.cardsagainstformality.io/api/login`, FetchType.POST);
+  const [renewData, isRenewing, , renew] = useFetchData<any>(`/api/login/renew`, FetchType.PUT);
+  const [, , , logoutHttp] = useFetchData<any>(`/api/logout`, FetchType.PUT);
+  const [loginData, isSigningin, , next] = useFetchData<any>(`/api/login`, FetchType.POST);
 
   const logout = useCallback(_logout, [setUser, setToken]);
 
@@ -77,9 +77,15 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     // if there is an auth user. Try login.
     if (authUser && token && renew) {
       renew({}, false, token)
-        .catch(() => {
+        .catch((err) => {
+          if (err.message === 'Network Error') {
+            // api servers are down, redirect to /rooms to see the error page.
+            routerRef.current.history.push('/rooms');
+            return;
+          }
+
           if (authUser.isAnonymous) {
-            next(authUser).catch(err => console.log(err));
+            next(authUser).catch(err => { });
           }
         })
     }
@@ -137,7 +143,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     let redirectPath = '/rooms';
     if (prevLocation) {
       const userDest = `${prevLocation.pathname}${prevLocation.search}`;
-      if (userDest !== '/login') {
+      if (userDest !== '/login' && userDest !== '/') {
         redirectPath = userDest;
       }
     }
@@ -150,7 +156,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     // here we should handle the different sign up types.
     if (providerStr === 'anonymous') {
       return firebase.auth().signInAnonymously()
-        .catch((err) => { console.log(err) });
+        .catch((err) => { });
     }
 
     let provider: firebase.auth.GoogleAuthProvider | firebase.auth.FacebookAuthProvider;
@@ -163,11 +169,11 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
 
     if (window.innerWidth < 600) {
       return firebase.auth().signInWithRedirect(provider)
-        .catch(err => console.log(err));
+        .catch(err => { });
     }
 
     return firebase.auth().signInWithPopup(provider)
-      .catch(err => console.log(err));
+      .catch(err => { });
   }
 
   function _login(username: string) {

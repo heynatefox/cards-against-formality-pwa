@@ -37,7 +37,7 @@ export default React.memo(() => {
       onClick={() => setOpen(prevOpen => !prevOpen)}
       color="inherit"
     >
-      <AccountCircle />
+      <AccountCircle fontSize="large" />
     </IconButton>
     <Menu
       id="menu-appbar"

@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from 'axios';
 
 import { RouterContext } from '../Contexts/RouteProvider';
 import { UserContext } from "../Contexts/UserProvider";
+import ConfigContext from "../Contexts/ConfigContext";
 
 export enum FetchType {
   GET = 'get',
@@ -40,6 +41,7 @@ function useFetchData<T>(
   interval?: number
 ): [T | null, boolean, string | null, (body?: any, noRedirect?: boolean, token?: string) => Promise<any>, () => void] {
 
+  const { baseUrl } = useContext(ConfigContext);
   const { token } = useContext(UserContext);
   const { history } = useContext(RouterContext);
   const historyRef = useRef(history);
@@ -49,7 +51,7 @@ function useFetchData<T>(
   const [errorMessage, setErrorMessage] = useState(null);
   const cancelToken = useRef<Canceler | null>(null);
 
-  const next = useCallback(_next, [uri, type, options, token]);
+  const next = useCallback(_next, [baseUrl, uri, type, options, token]);
 
   useEffect(() => {
     historyRef.current = history;
@@ -84,7 +86,7 @@ function useFetchData<T>(
       axios.defaults.headers['Authorization'] = `Bearer ${token}`;
     }
 
-    return constructRequest(uri, type, _options, body)
+    return constructRequest(`${baseUrl}${uri}`, type, _options, body)
       .then(res => {
         setLoading(false);
         setErrorMessage(null);

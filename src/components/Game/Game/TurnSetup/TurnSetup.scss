@@ -1,0 +1,15 @@
+.turn-setup-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+  flex-flow: column;
+  padding: 5%;
+
+  .winning-cards {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+  }
+}

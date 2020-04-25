@@ -3,6 +3,7 @@ import { Container, Button, Card, CardHeader, CardContent, Typography } from "@m
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
 
+import GameCard from '../Card/Card';
 import { UserContext } from '../../Contexts/UserProvider';
 import Room from './Room/Room';
 import useFetchData, { FetchType } from '../../Hooks/useFetchData';
@@ -19,7 +20,8 @@ export default function Rooms() {
   const [isCreating, setIsCreating] = useState(false);
   const onCreate = useCallback(() => setIsCreating(prevIsCreating => !prevIsCreating), []);
 
-  const [, , joinRoomErrorMessage, join] = useFetchData(`https:////api.cardsagainstformality.io/api/rooms/join/players`, FetchType.PUT, undefined);
+  const [decksData] = useFetchData<{ rows: any[] } | null>(`/api/decks?fields=name,_id&pageSize=100`, FetchType.GET);
+  const [, , joinRoomErrorMessage, join] = useFetchData(`/api/rooms/join/players`, FetchType.PUT, undefined);
   useEffect(() => {
     // display error toast.
   }, [joinRoomErrorMessage]);
@@ -38,7 +40,6 @@ export default function Rooms() {
 
     join(data)
       .then((axiosRes) => {
-        console.log('joining room', `/game?_id=${roomId}`)
         history.push(`/game?_id=${roomId}`, axiosRes.data)
         // todo: fire success toasty.
       })
@@ -47,7 +48,7 @@ export default function Rooms() {
 
   function renderRooms() {
     if (isCreating) {
-      return <CreateRoom onJoin={joinRoom} />
+      return <CreateRoom onJoin={joinRoom} decksData={decksData} />
     }
 
     if (!rooms?.length && !isLoading) {
@@ -61,25 +62,50 @@ export default function Rooms() {
     </div>;
   }
 
+  function renderHeaderButton() {
+    if ((user as any)?.roomId) {
+      return <Button
+        onClick={() => joinRoom((user as any).roomId)}
+        className="create-button"
+        variant="outlined"
+        color="secondary"
+        size="medium"
+      >
+        Re-Join room
+      </Button>
+    }
+
+    return <Button
+      onClick={onCreate}
+      className="create-button"
+      variant="outlined"
+      color="secondary"
+      size="medium"
+      endIcon={!isCreating ? <AddCircleIcon /> : <RemoveIcon />}
+    >
+      {!isCreating ? 'Create Room' : 'Exit'}
+    </Button>
+  }
+
+  if (!user) {
+    return <div className="card-group">
+      <GameCard className="first-card" card={{ cardType: 'black', _id: '1', text: 'Try again later! _', pick: 1 }}>
+        <Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>
+      </GameCard>
+      <GameCard className="second-card" card={{ cardType: 'white', _id: '2', text: `Our API Servers are currently offline` }}>
+        <Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>
+      </GameCard>
+    </div>
+  }
+
   return <Container className="rooms-container" maxWidth="lg">
     <Card className="rooms-card" raised={true}>
       <CardHeader
         title={!isCreating ? 'Create or Join a Room!' : 'Creating a New Room'}
         subheader="Fun fun fun!"
-        action={
-          <Button
-            onClick={onCreate}
-            className="create-button"
-            variant="outlined"
-            color="secondary"
-            size="medium"
-            endIcon={!isCreating ? <AddCircleIcon /> : <RemoveIcon />}
-          >
-            {!isCreating ? 'Create Room' : 'Exit'}
-          </Button>
-        }
+        action={renderHeaderButton()}
       />
-      <CardContent>
+      <CardContent className="rooms-content-container">
         {renderRooms()}
       </CardContent>
     </Card>

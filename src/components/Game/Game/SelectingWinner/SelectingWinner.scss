@@ -1,0 +1,27 @@
+.user-selection-container {
+  width: 100%;
+  height: 100%;
+  padding: 2%;
+  display: flex;
+  flex-wrap: wrap;
+
+  .user-selection {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    height: fit-content;
+    margin: 0 2%;
+
+    &.selected {
+      transform: scale(1.1) translateY(-1em);
+    }
+
+    .user-selection-card {
+      font-size: 0.6em;
+    }
+  }
+}
+
+.user-submit {
+  width: 50px;
+}

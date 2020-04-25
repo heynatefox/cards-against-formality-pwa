@@ -7,9 +7,10 @@ export interface CardProps {
   isSelected?: boolean;
   isUnselectable?: boolean;
   className?: string;
+  children?: React.ReactNode;
 }
 
-export default React.memo(({ card, onSelect, isSelected, isUnselectable, className }: CardProps) => {
+export default React.memo(({ card, onSelect, isSelected, isUnselectable, className, children }: CardProps) => {
   const onClick = useCallback(_onClick, [card, onSelect, isUnselectable]);
   const words = useMemo(() => card.text.split(' '), [card]);
   const calculatedClassName = useMemo(() => {
@@ -35,12 +36,17 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
       <div className="card-content">
         <div className="text">
           {words.map((word, index) => {
+            if (word.includes('&reg;')) {
+              return <span key={index} className="word">®</span>
+            }
             if (word.includes('_')) {
               return <span key={index} className="blank-space" />
             }
             return <span key={index} className="word"> {word}</span>;
           })}
         </div>
+        <div className="spacer" />
+        {children}
         <div className="spacer" />
         <div className="options">
           <span className="title-plugin">Cards Against Formality</span>

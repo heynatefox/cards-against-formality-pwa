@@ -1,6 +1,8 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import io from 'socket.io-client';
+
+import ConfigContext from '../Contexts/ConfigContext';
 
 
 export interface SocketEventMap {
@@ -11,9 +13,10 @@ export interface SocketEventMap {
 export default function useSocket(token: string, socketEventMap: SocketEventMap, namespace: string = '/', autoConnect: boolean = true): [SocketIOClient.Socket | null] {
 
   const socket = useRef<SocketIOClient.Socket | null>(null);
+  const { baseUrl } = useContext(ConfigContext);
   useEffect(() => {
     if (token?.length) {
-      socket.current = io(`api.cardsagainstformality.io${namespace}`, {
+      socket.current = io(`${baseUrl}${namespace}`, {
         transports: ['websocket'],
         path: '/socket',
         autoConnect: false,
@@ -40,7 +43,7 @@ export default function useSocket(token: string, socketEventMap: SocketEventMap,
         socket.current.removeAllListeners();
       }
     }
-  }, [token, namespace, socketEventMap, autoConnect]);
+  }, [token, namespace, socketEventMap, autoConnect, baseUrl]);
 
   return [socket?.current]
 }
