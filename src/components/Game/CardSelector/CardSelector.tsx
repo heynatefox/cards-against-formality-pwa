@@ -55,6 +55,9 @@ export default React.memo(({ cards, onCardsSubmit, isCzar }: CardSelectorProps) 
   }
 
   return <div className="cards-list">
+    <div className="cards-action">
+      {renderAction()}
+    </div>
     <div className="cards-list-container">
       {cards.map(card => <GameCard
         className="card-selector-card"
@@ -64,9 +67,6 @@ export default React.memo(({ cards, onCardsSubmit, isCzar }: CardSelectorProps) 
         isSelected={selectedCards.includes(card._id)}
         isUnselectable={isCzar || hasSubmitted}
       />)}
-    </div>
-    <div className="cards-action">
-      {renderAction()}
     </div>
   </div>
 });
