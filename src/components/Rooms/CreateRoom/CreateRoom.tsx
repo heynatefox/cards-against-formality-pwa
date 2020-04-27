@@ -112,11 +112,11 @@ export default function CreateRoom({ onJoin, decksData }: any) {
         </FormControl>
         <FormControl required={true}>
           <InputLabel htmlFor="max-players">Max Players</InputLabel>
-          <Input id="max-players" type="number" aria-describedby="max-players-helper" value={target} onChange={e => setMaxPlayers(parseInt(e.target.value, 10))} />
+          <Input id="max-players" type="number" aria-describedby="max-players-helper" value={maxPlayers} onChange={e => setMaxPlayers(parseInt(e.target.value, 10))} />
         </FormControl>
         <FormControl required={true}>
           <InputLabel htmlFor="max-spectators">Max Spectators</InputLabel>
-          <Input id="max-spectators" type="number" aria-describedby="max-spectators-helper" value={target} onChange={e => setMaxSpectators(parseInt(e.target.value, 10))} />
+          <Input id="max-spectators" type="number" aria-describedby="max-spectators-helper" value={maxSpectators} onChange={e => setMaxSpectators(parseInt(e.target.value, 10))} />
         </FormControl>
         {!decksData?.rows ? null : <DeckSelector decks={decksData.rows} onChange={setDecks as any} />}
         <FormControlLabel

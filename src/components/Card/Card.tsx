@@ -12,7 +12,8 @@ export interface CardProps {
 
 export default React.memo(({ card, onSelect, isSelected, isUnselectable, className, children }: CardProps) => {
   const onClick = useCallback(_onClick, [card, onSelect, isUnselectable]);
-  const words = useMemo(() => card.text.split(' '), [card]);
+  const words = useMemo(() => card.text.replace(/<br>/g, '<br> ').split(/[ ,]+/), [card]);
+
   const calculatedClassName = useMemo(() => {
     return `playing-card ${card.cardType} ${isSelected ? 'selected' : ''} ${isUnselectable ? 'unselectable' : ''} ${className ? className : ''}`;
   }, [card, isSelected, isUnselectable, className]);
@@ -42,6 +43,15 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
             }
             if (word.includes('&iacute;')) {
               return <span key={index} className="word">{word.replace('&iacute;', 'í')}</span>
+            }
+            if (word.includes('&trade;')) {
+              return <span key={index} className="word">{word.replace('&trade;', '™')}</span>
+            }
+            if (word.includes('&Uuml;')) {
+              return <span key={index} className="word">{word.replace('&Uuml;', 'Ü')}</span>
+            }
+            if (word.includes('<br>')) {
+              return <br />;
             }
             if (word.includes('_')) {
               return <span key={index} className="blank-space" />

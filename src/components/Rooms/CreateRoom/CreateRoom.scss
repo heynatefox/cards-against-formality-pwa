@@ -6,12 +6,7 @@
 
 .create-form-card-content {
   height: 100%;
-  max-height: 200px;
   overflow: auto;
-
-  @media (min-height: 630px) {
-    max-height: 70%;
-  }
 
   .create-room-form {
     display: flex;

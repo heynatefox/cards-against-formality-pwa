@@ -63,17 +63,17 @@ export default function Rooms() {
   }
 
   function renderHeaderButton() {
-    if ((user as any)?.roomId) {
-      return <Button
-        onClick={() => joinRoom((user as any).roomId)}
-        className="create-button"
-        variant="outlined"
-        color="secondary"
-        size="medium"
-      >
-        Re-Join room
-      </Button>
-    }
+    // if ((user as any)?.roomId) {
+    //   return <Button
+    //     onClick={() => joinRoom((user as any).roomId)}
+    //     className="create-button"
+    //     variant="outlined"
+    //     color="secondary"
+    //     size="medium"
+    //   >
+    //     Re-Join room
+    //   </Button>
+    // }
 
     return <Button
       onClick={onCreate}

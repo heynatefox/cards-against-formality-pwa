@@ -62,7 +62,7 @@ export default function GameManager() {
       </Backdrop>
     }
 
-    return <GameContainer key={game?.turn} host={game?.host} isHost={isHost} roomName={room?.name} players={players} onLeave={onLeave} cards={cards} isCzar={isCzar} onCardsSubmit={onCardsSubmit} game={game}>
+    return <GameContainer key={game?.state} host={game?.host} isHost={isHost} roomName={room?.name} players={players} onLeave={onLeave} cards={cards} isCzar={isCzar} onCardsSubmit={onCardsSubmit} game={game}>
       {room?.status === 'pending' ?
         <Pending isHost={isHost} numberOfPlayers={players.length} startGame={onGameStart} room={room} /> :
         <Game players={players} game={game} isCzar={isCzar} onWinnerSelect={onWinnerSelect} />

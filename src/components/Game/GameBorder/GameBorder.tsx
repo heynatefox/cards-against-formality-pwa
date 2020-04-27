@@ -6,6 +6,7 @@ import CardSelector from '../CardSelector/CardSelector';
 import GameCard from '../../Card/Card';
 import Players from './PlayersContainer';
 import './GameBorder.scss';
+import { GameState } from '../Game/Game';
 
 interface Card {
   _id: string;
@@ -28,7 +29,9 @@ export interface GameBorderProps {
 }
 
 function GameBorderSubHeader({ game, isHost }: { game: any, isHost: boolean }) {
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(
+    game?.state === GameState.PICKING_CARDS || game?.state === GameState.SELECTING_WINNER ? 60 : 0
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -91,7 +94,7 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
         </div>
 
         <div className="card-selector-container">
-          <CardSelector cards={cards} onCardsSubmit={onCardsSubmit} isCzar={isCzar} />
+          <CardSelector pick={game?.blackCard?.pick} state={game?.state} cards={cards} onCardsSubmit={onCardsSubmit} isCzar={isCzar} />
         </div>
       </div>
       <div className="players-container">

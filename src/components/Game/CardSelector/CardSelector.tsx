@@ -3,15 +3,18 @@ import { Button, Typography } from '@material-ui/core';
 
 import GameCard from '../../Card/Card';
 import './CardSelector.scss';
+import { GameState } from '../Game/Game';
 
 export interface CardSelectorProps {
+  state: GameState;
   cards: any[];
   onCardsSubmit: (cards: string[]) => Promise<any>;
   isCzar: boolean;
+  pick: number;
 }
 
 // expansion pannel of cards. Default open. Allow selection and submition. Disable if you're the czar.
-export default React.memo(({ cards, onCardsSubmit, isCzar }: CardSelectorProps) => {
+export default React.memo(({ state, cards, onCardsSubmit, isCzar, pick }: CardSelectorProps) => {
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
@@ -30,7 +33,6 @@ export default React.memo(({ cards, onCardsSubmit, isCzar }: CardSelectorProps) 
   function onSubmit() {
     onCardsSubmit(selectedCards)
       .then(() => {
-        setSelectedCards([]);
         setHasSubmitted(true);
       })
       .catch((err) => {
@@ -48,7 +50,14 @@ export default React.memo(({ cards, onCardsSubmit, isCzar }: CardSelectorProps) 
     }
 
     if (!isCzar) {
-      return <Button disabled={!selectedCards.length} variant="contained" color="primary" onClick={onSubmit}>Submit</Button>
+      return <Button
+        disabled={!selectedCards.length || state !== GameState.PICKING_CARDS || selectedCards.length !== pick}
+        variant="contained"
+        color="primary"
+        onClick={onSubmit}
+      >
+        Submit
+         </Button>
     }
 
     return <Typography>The Czar is not allowed to select cards to play</Typography>;
@@ -65,7 +74,7 @@ export default React.memo(({ cards, onCardsSubmit, isCzar }: CardSelectorProps) 
         card={card}
         onSelect={onSelect}
         isSelected={selectedCards.includes(card._id)}
-        isUnselectable={isCzar || hasSubmitted}
+        isUnselectable={isCzar || hasSubmitted || state !== GameState.PICKING_CARDS}
       />)}
     </div>
   </div>

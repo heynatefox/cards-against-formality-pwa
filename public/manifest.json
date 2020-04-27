@@ -23,7 +23,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/rooms",
   "scope": ".",
   "display": "fullscreen",
   "theme_color": "#303030",
