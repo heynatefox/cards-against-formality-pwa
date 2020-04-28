@@ -8,6 +8,7 @@ import App from './App';
 import ConfigContext from './Contexts/ConfigContext';
 import ThemeProvider from './Contexts/ThemeProvider';
 import RouteProvider from './Contexts/RouteProvider';
+import SnackbarProvider from './Contexts/SnackbarProvider';
 import * as serviceWorker from './serviceWorker';
 import './index.scss';
 
@@ -23,7 +24,9 @@ ReactDOM.render(
       <ThemeProvider>
         <CssBaseline />
         <RouteProvider>
-          <App />
+          <SnackbarProvider>
+            <App />
+          </SnackbarProvider>
         </RouteProvider>
       </ThemeProvider>
     </ConfigContext.Provider>

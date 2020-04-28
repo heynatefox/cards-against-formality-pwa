@@ -1,14 +1,10 @@
 import React, { useCallback, useState, useEffect, useContext, useRef } from "react";
-import { Snackbar, Backdrop, CircularProgress } from '@material-ui/core';
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import { Backdrop, CircularProgress } from '@material-ui/core';
 import * as firebase from "firebase/app";
 
 import useFetchData, { FetchType } from "../Hooks/useFetchData";
 import { RouterContext } from "./RouteProvider";
-
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+import { SnackbarContext } from "./SnackbarProvider";
 
 export interface UserContextInterface {
   login: (username: string) => Promise<string>;
@@ -24,6 +20,7 @@ export const UserContext = React.createContext<UserContextInterface>(
 );
 
 export default function UserProvider({ children, isFirebaseInit }: any) {
+  const { openSnack } = useContext(SnackbarContext);
   const routerContext = useContext(RouterContext);
   const routerRef = useRef(routerContext);
   useEffect(() => {
@@ -33,7 +30,6 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
 
   const [token, setToken] = useState('');
   const [user, setUser] = useState<{ _id: string, username: string, isAnonymous: boolean } | null>(null);
-  const [hasLoggedIn, setHasLoggedIn] = useState(false);
 
   const [isProviderSigningIn, setIsProviderSigningIn] = useState(false);
   const [isLoadingAuth, setIsLoadingAuth] = useState(true);
@@ -105,10 +101,10 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   useEffect(() => {
     // if loginData exists, continue to the application.
     if (user && authUser && token) {
-      setHasLoggedIn(true);
+      openSnack({ text: 'Successfully logged in!', severity: 'success' })
       redirect();
     }
-  }, [user, authUser, token]);
+  }, [user, authUser, token, openSnack]);
 
   // Handle smoother transitions between multiple loading states
   useEffect(() => {
@@ -118,7 +114,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     if (!newIsLoading) {
       timeout = setTimeout(() => {
         setIsLoading(false);
-      }, 200);
+      }, 1000);
     } else {
       setIsLoading(true);
     }
@@ -183,7 +179,6 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
 
   function _logout() {
     const handleComplete = () => {
-      setHasLoggedIn(false);
       setUser(null);
       setAuthUser(null);
       setToken('');
@@ -203,11 +198,6 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
 
   return <UserContext.Provider value={{ login: (login as any), logout, user, authUser, token, signup }}>
     {isLoading ? null : children}
-    <Snackbar open={hasLoggedIn} autoHideDuration={3000} onClose={() => setHasLoggedIn(false)} >
-      <Alert severity="success">
-        Successfully logged in!
-        </Alert>
-    </Snackbar>
     <Backdrop className="backdrop" open={isLoading}>
       <CircularProgress color="inherit" />
     </Backdrop>

@@ -97,7 +97,7 @@ function useFetchData<T>(
         setLoading(false);
         if (!noRedirect && (err.code === 401 || err.response?.status === 401)) {
           historyRef.current.push('/login');
-          return;
+          throw err;
         }
 
         setErrorMessage(err.response?.data ? err.response.data.message : 'Something went wrong.')

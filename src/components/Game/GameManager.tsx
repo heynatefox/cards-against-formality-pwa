@@ -9,19 +9,20 @@ import { RouterContext } from '../../Contexts/RouteProvider';
 import Pending from './Pending/Pending';
 import Game from './Game/Game'
 import PasswordDialog from '../Rooms/Room/PasswordDialog';
+import { SnackbarContext } from '../../Contexts/SnackbarProvider';
 
 export default function GameManager() {
   const [clientId, room, isHost, isCzar, game, cards, players, , isLoading, , showPasswordDialog, joinRoom] = useGameRoom();
-
+  const { openSnack } = useContext(SnackbarContext);
   const [, , , leave] = useFetchData(`/api/rooms/leave`, FetchType.PUT);
   const [, , , startGame] = useFetchData(`/api/games/start`, FetchType.PUT);
   const [, , , submitCards] = useFetchData(`/api/games/cards`, FetchType.POST);
   const [, , , selectWinner] = useFetchData(`/api/games/winner`, FetchType.POST);
   const { history } = useContext(RouterContext);
   const onLeave = useCallback(_onLeave, [room, leave, history]);
-  const onGameStart = useCallback(_onGameStart, [room, startGame]);
-  const onCardsSubmit = useCallback(_onCardsSubmit, [room, submitCards, clientId]);
-  const onWinnerSelect = useCallback(_onWinnerSelect, [room, clientId, selectWinner]);
+  const onGameStart = useCallback(_onGameStart, [room, startGame, openSnack]);
+  const onCardsSubmit = useCallback(_onCardsSubmit, [room, submitCards, clientId, openSnack]);
+  const onWinnerSelect = useCallback(_onWinnerSelect, [room, clientId, selectWinner, openSnack]);
 
 
   function _onLeave() {
@@ -37,8 +38,8 @@ export default function GameManager() {
 
   function _onGameStart() {
     startGame({ roomId: room?._id })
-      .catch(() => {
-        // handle toasty error.
+      .catch((err) => {
+        openSnack({ text: err?.response?.data?.message, severity: 'error' });
       })
   }
 
@@ -46,12 +47,18 @@ export default function GameManager() {
     return submitCards({ roomId: room._id, clientId, cards })
       .then(() => {
         // remove cards from current pick
-        // handle error
+      })
+      .catch(err => {
+        openSnack({ text: err?.response?.data?.message, severity: 'error' });
       })
   }
 
   function _onWinnerSelect(winnerId: string) {
     return selectWinner({ roomId: room._id, clientId, winnerId })
+      .catch(err => {
+        openSnack({ text: err?.response?.data?.message, severity: 'error' });
+        return null;
+      })
   }
 
   function renderMain() {

@@ -9,7 +9,8 @@
 
   .winning-cards {
     display: flex;
-    flex-flow: row;
+    flex-flow: row-reverse;
     justify-content: space-around;
+    width: 100%;
   }
 }

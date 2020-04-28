@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { CircularProgress, FormControl, InputLabel, Input, FormHelperText, Switch, FormControlLabel, Card, CardContent, CardHeader, CardActions, Button, FormLabel, FormGroup, Checkbox } from '@material-ui/core';
 
 import './CreateRoom.scss';
 import useFetchData, { FetchType } from '../../../Hooks/useFetchData';
-import Message, { MessageType } from '../../Message/Message';
+import { SnackbarContext } from '../../../Contexts/SnackbarProvider';
 
 function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: string[]) => void }) {
   const [deckOptions, setDeckOptions] = useState<{ name: string; _id: string, value?: boolean }[]>([]);
@@ -50,14 +50,16 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
 }
 
 export default function CreateRoom({ onJoin, decksData }: any) {
+  const { openSnack } = useContext(SnackbarContext);
   const [isProtected, setIsProtected] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [name, setName] = useState('');
   const [target, setTarget] = useState(10);
   const [maxPlayers, setMaxPlayers] = useState(10);
   const [maxSpectators, setMaxSpectators] = useState(10);
-  const [, isLoading, errorMessage, createRoom] = useFetchData(`/api/rooms`, FetchType.POST);
+  const [, isLoading, , createRoom] = useFetchData(`/api/rooms`, FetchType.POST);
   const [decks, setDecks] = useState([]);
+  const [errorField, setErrorField] = useState<string | null>(null);
 
   function handleSubmit() {
     const room = {
@@ -76,8 +78,13 @@ export default function CreateRoom({ onJoin, decksData }: any) {
       .then((axiosRes) => {
         onJoin(axiosRes.data._id, passcode);
       })
-      .catch(() => { });
-    // route to the room.
+      .catch((err) => {
+        if (err?.response?.data.type === 'VALIDATION_ERROR') {
+          const errObj = err?.response?.data.data[0];
+          setErrorField(errObj.field as string);
+        }
+        openSnack({ text: 'Something went wrong...', severity: 'error' });
+      });
   }
 
   function onKeyPress(e: any) {
@@ -91,19 +98,22 @@ export default function CreateRoom({ onJoin, decksData }: any) {
       return null;
     }
 
-    return <FormControl>
+    return <FormControl error={errorField === 'passcode'}>
       <InputLabel htmlFor="passcode">Password</InputLabel>
       <Input id="passcode" aria-describedby="password-helper" required={false} value={passcode} onChange={e => setPasscode(e.target.value)} />
-      <FormHelperText id="password-helper">People will need this password to enter your game.</FormHelperText>
+      <FormHelperText id="password-helper">
+        {errorField !== 'passcode' ? 'People will need this password to enter your game.' : 'Password must be between 4-12 characters long with no special characters.'}
+      </FormHelperText>
     </FormControl>;
   }
 
   function renderCardContent() {
     return <CardContent className="create-form-card-content">
       <form className="create-room-form" onKeyPress={onKeyPress}>
-        <FormControl required={true}>
+        <FormControl required={true} error={errorField === 'name'}>
           <InputLabel htmlFor="name">Game Name</InputLabel>
           <Input id="name" autoFocus={true} aria-describedby="game-name-helper" value={name} onChange={e => setName(e.target.value)} />
+          {errorField === 'name' ? <FormHelperText id="score-helper">Game name must be between 2-16 characters long with no special characters!</FormHelperText> : null}
         </FormControl>
         <FormControl required={true}>
           <InputLabel htmlFor="target">Target Score</InputLabel>
@@ -124,7 +134,6 @@ export default function CreateRoom({ onJoin, decksData }: any) {
           label="Password"
         />
         {renderPasswordForm()}
-        {errorMessage ? <Message message={{ text: errorMessage, type: MessageType.ERROR }} /> : null}
       </form>
       <CardActions>
         {!isLoading ? <Button variant="contained" color="primary" size="small" onClick={handleSubmit}>Create</Button> : <CircularProgress />}

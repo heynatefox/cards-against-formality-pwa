@@ -30,7 +30,7 @@ export default function TurnSetup({ game, players }: TurnSetupProps) {
   return <div className="turn-setup-container">
     <Typography variant="h5">{players.find(player => player._id === game.winner)?.username} wins!</Typography>
     <div className="winning-cards">
-      {game.winningCards.map(card => <Card key={card._id + 'user-selection'} card={card} />)}
+      {game.winningCards.map(card => <Card key={card._id + 'user-selection'} card={card} />).reverse()}
     </div>
   </div>;
 }

@@ -9,11 +9,13 @@ import Room from './Room/Room';
 import useFetchData, { FetchType } from '../../Hooks/useFetchData';
 import CreateRoom from './CreateRoom/CreateRoom';
 import { RouterContext } from '../../Contexts/RouteProvider';
+import { SnackbarContext } from '../../Contexts/SnackbarProvider';
 import useRooms from '../../Hooks/useRooms';
 import './Rooms.scss';
 
 export default function Rooms() {
 
+  const { openSnack } = useContext(SnackbarContext);
   const { user, token } = useContext(UserContext);
   const [hasServerIssue, setHasServerIssue] = useState(false);
   useEffect(() => {
@@ -39,12 +41,9 @@ export default function Rooms() {
   const onCreate = useCallback(() => setIsCreating(prevIsCreating => !prevIsCreating), []);
 
   const [decksData] = useFetchData<{ rows: any[] } | null>(`/api/decks?fields=name,_id&pageSize=100`, FetchType.GET);
-  const [, , joinRoomErrorMessage, join] = useFetchData(`/api/rooms/join/players`, FetchType.PUT, undefined);
-  useEffect(() => {
-    // display error toast.
-  }, [joinRoomErrorMessage]);
+  const [, , , join] = useFetchData(`/api/rooms/join/players`, FetchType.PUT, undefined);
 
-  const joinRoom = useCallback(_joinRoom, [join, history, user]);
+  const joinRoom = useCallback(_joinRoom, [join, history, user, openSnack]);
   function _joinRoom(roomId: string, passcode?: string) {
     if (!user) {
       // display toast error.
@@ -56,12 +55,14 @@ export default function Rooms() {
       data.passcode = passcode;
     }
 
-    join(data)
+    join(data, true)
       .then((axiosRes) => {
         history.push(`/game?_id=${roomId}`, axiosRes.data)
-        // todo: fire success toasty.
+        openSnack({ text: 'Success!', severity: 'success' })
       })
-      .catch(() => { });
+      .catch((err) => {
+        openSnack({ text: err?.response?.data?.message, severity: 'error' })
+      });
   }
 
   function renderRooms() {
