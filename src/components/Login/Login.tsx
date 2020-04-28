@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText, Typography } from '@material-ui/core';
 import { debounce } from 'lodash';
-
+import FacebookIcon from '@material-ui/icons/Facebook';
 import { UserContext } from '../../Contexts/UserProvider';
 import googleLogo from './Google__G__Logo.svg';
 import './Login.scss';
@@ -17,6 +17,10 @@ function LoginProviders({ onProviderSelect }: any) {
     <Button className="button bottom" onClick={() => onProviderSelect('google')} variant="contained" color="primary">
       <img className="google-icon-svg" src={googleLogo} alt="google" />
       <div>Sign in with Google</div>
+    </Button>
+    <Button className="button bottom" onClick={() => onProviderSelect('facebook')} variant="contained" color="primary">
+      <FacebookIcon className="google-icon-svg"/>
+      <div>Continue with Facebook</div>
     </Button>
   </div>
 }
