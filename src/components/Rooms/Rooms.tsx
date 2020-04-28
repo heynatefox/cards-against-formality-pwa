@@ -14,8 +14,26 @@ import './Rooms.scss';
 
 export default function Rooms() {
 
-  const { history } = useContext(RouterContext);
   const { user, token } = useContext(UserContext);
+  const [hasServerIssue, setHasServerIssue] = useState(false);
+  useEffect(() => {
+    // If there's no user yet. Check if ther's an issue.
+    let timeout: any;
+    if (!user) {
+      timeout = setTimeout(() => {
+        setHasServerIssue(true);
+      }, 10000);
+    }
+
+    return () => {
+      if (timeout && user) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+    }
+  }, [user])
+
+  const { history } = useContext(RouterContext);
   const [rooms, isLoading] = useRooms(token);
   const [isCreating, setIsCreating] = useState(false);
   const onCreate = useCallback(() => setIsCreating(prevIsCreating => !prevIsCreating), []);
@@ -87,7 +105,7 @@ export default function Rooms() {
     </Button>
   }
 
-  if (!user) {
+  if (hasServerIssue) {
     return <div className="card-group">
       <GameCard className="first-card" card={{ cardType: 'black', _id: '1', text: 'Try again later! _', pick: 1 }}>
         <Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>
