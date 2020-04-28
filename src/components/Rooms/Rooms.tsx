@@ -3,7 +3,7 @@ import { Container, Button, Card, CardHeader, CardContent, Typography } from "@m
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
 
-// import GameCard from '../Card/Card';
+import GameCard from '../Card/Card';
 import { UserContext } from '../../Contexts/UserProvider';
 import Room from './Room/Room';
 import useFetchData, { FetchType } from '../../Hooks/useFetchData';
@@ -14,8 +14,26 @@ import './Rooms.scss';
 
 export default function Rooms() {
 
-  const { history } = useContext(RouterContext);
   const { user, token } = useContext(UserContext);
+  const [hasServerIssue, setHasServerIssue] = useState(false);
+  useEffect(() => {
+    // If there's no user yet. Check if ther's an issue.
+    let timeout: any;
+    if (!user) {
+      timeout = setTimeout(() => {
+        setHasServerIssue(true);
+      }, 10000);
+    }
+
+    return () => {
+      if (timeout && user) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+    }
+  }, [user])
+
+  const { history } = useContext(RouterContext);
   const [rooms, isLoading] = useRooms(token);
   const [isCreating, setIsCreating] = useState(false);
   const onCreate = useCallback(() => setIsCreating(prevIsCreating => !prevIsCreating), []);
@@ -87,17 +105,16 @@ export default function Rooms() {
     </Button>
   }
 
-  // implement a more robust version of this.
-  // if (!user) {
-  //   return <div className="card-group">
-  //     <GameCard className="first-card" card={{ cardType: 'black', _id: '1', text: 'Try again later! _', pick: 1 }}>
-  //       <Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>
-  //     </GameCard>
-  //     <GameCard className="second-card" card={{ cardType: 'white', _id: '2', text: `Our API Servers are currently offline` }}>
-  //       <Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>
-  //     </GameCard>
-  //   </div>
-  // }
+  if (hasServerIssue) {
+    return <div className="card-group">
+      <GameCard className="first-card" card={{ cardType: 'black', _id: '1', text: 'Try again later! _', pick: 1 }}>
+        <Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>
+      </GameCard>
+      <GameCard className="second-card" card={{ cardType: 'white', _id: '2', text: `Our API Servers are currently offline` }}>
+        <Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>
+      </GameCard>
+    </div>
+  }
 
   return <Container className="rooms-container" maxWidth="lg">
     <Card className="rooms-card" raised={true}>

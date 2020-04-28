@@ -4,9 +4,11 @@ import { Link, Typography, Container, Button } from '@material-ui/core';
 import Card from '../Card/Card';
 import './Homepage.scss';
 import { RouterContext } from '../../Contexts/RouteProvider';
+import { ThemeContext } from '../../Contexts/ThemeProvider';
 
 const Homepage = React.memo(() => {
   const { history } = useContext(RouterContext);
+  const { name } = useContext(ThemeContext);
 
   function onPlay() {
     if (history) {
@@ -18,13 +20,25 @@ const Homepage = React.memo(() => {
     window.open(target);
   }
 
+  function renderCards() {
+    const cards = [
+      { cardType: 'black', _id: '1', text: `In the newest and most difficult stunt. David Blaine must escape from _.`, pick: 1 },
+      { cardType: 'white', _id: '2', text: `My inner demons.` }
+    ];
+
+    if (name === 'dark') {
+      return cards.map((card, i) => <Card key={card._id} className={i === 0 ? 'first-card' : 'second-card'} card={card} />);
+    }
+
+    return cards.reverse().map((card, i) => <Card key={card._id} className={i === 0 ? 'first-card' : 'second-card'} card={card} />);
+  }
+
   return <div>
     <section className="homepage-section title">
       <Container maxWidth="md">
         <div className="card-group-wrapper">
           <div className="card-group">
-            <Card className="first-card" card={{ cardType: 'black', _id: '1', text: `In the newest and most difficult stunt. David Blaine must escape from _.`, pick: 1 }} />
-            <Card className="second-card" card={{ cardType: 'white', _id: '2', text: `My inner demons.` }} />
+            {renderCards()}
           </div>
         </div>
         <div className="title-container">
@@ -49,7 +63,7 @@ const Homepage = React.memo(() => {
         <Typography variant="body1" style={{ color: "black" }}>
           Cards Against Formality is a party card game based on <Link rel="noopener" onClick={() => onWindowOpen('https://cardsagainsthumanity.com/')}>Cards Against Humanity</Link>.
           The game is still under development, and not currently fully functional.
-          Expect many bugs, and lack of features! 
+          Expect many bugs, and lack of features!
           Currently the API servers will only be online intermittently.
         </Typography>
         <br />
