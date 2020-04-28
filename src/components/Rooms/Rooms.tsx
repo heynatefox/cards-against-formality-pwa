@@ -3,7 +3,7 @@ import { Container, Button, Card, CardHeader, CardContent, Typography } from "@m
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
 
-import GameCard from '../Card/Card';
+// import GameCard from '../Card/Card';
 import { UserContext } from '../../Contexts/UserProvider';
 import Room from './Room/Room';
 import useFetchData, { FetchType } from '../../Hooks/useFetchData';
@@ -87,16 +87,17 @@ export default function Rooms() {
     </Button>
   }
 
-  if (!user) {
-    return <div className="card-group">
-      <GameCard className="first-card" card={{ cardType: 'black', _id: '1', text: 'Try again later! _', pick: 1 }}>
-        <Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>
-      </GameCard>
-      <GameCard className="second-card" card={{ cardType: 'white', _id: '2', text: `Our API Servers are currently offline` }}>
-        <Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>
-      </GameCard>
-    </div>
-  }
+  // implement a more robust version of this.
+  // if (!user) {
+  //   return <div className="card-group">
+  //     <GameCard className="first-card" card={{ cardType: 'black', _id: '1', text: 'Try again later! _', pick: 1 }}>
+  //       <Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>
+  //     </GameCard>
+  //     <GameCard className="second-card" card={{ cardType: 'white', _id: '2', text: `Our API Servers are currently offline` }}>
+  //       <Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>
+  //     </GameCard>
+  //   </div>
+  // }
 
   return <Container className="rooms-container" maxWidth="lg">
     <Card className="rooms-card" raised={true}>

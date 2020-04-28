@@ -1,11 +1,13 @@
 import React, { useContext, useState, useRef } from 'react';
-import { Typography, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { Typography, IconButton, Menu, MenuItem, Switch, Grid } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import { UserContext } from '../../Contexts/UserProvider';
+import { ThemeContext } from '../../Contexts/ThemeProvider';
 import './Navbar.scss';
 
 export default React.memo(() => {
+  const { name, onChange } = useContext(ThemeContext);
   const { user, logout } = useContext(UserContext);
   const [isOpen, setOpen] = useState(false);
   const anchorEl = useRef(null);
@@ -50,6 +52,17 @@ export default React.memo(() => {
       onClose={handleClose}
     >
       <MenuItem>{user?.username}</MenuItem>
+      <MenuItem>
+        <Typography component="div">
+          <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item>Light</Grid>
+            <Grid item>
+              <Switch checked={name === 'dark'} onChange={onChange} />
+            </Grid>
+            <Grid item>Dark</Grid>
+          </Grid>
+        </Typography>
+      </MenuItem>
       <MenuItem onClick={() => { handleClose(); logout(); }}>Logout</MenuItem>
     </Menu>
   </div>
