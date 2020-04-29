@@ -44,6 +44,7 @@ export interface TurnDataWithState extends TurnData {
   selectedCards: { [id: string]: Card[] };
   winner: string;
   winningCards: Card[];
+  errorMessage?: string;
 }
 
 export interface GameProps {

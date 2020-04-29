@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
-import { Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText, Typography } from '@material-ui/core';
+import { Link, Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText, Typography } from '@material-ui/core';
 import { debounce } from 'lodash';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import { UserContext } from '../../Contexts/UserProvider';
@@ -18,10 +18,11 @@ function LoginProviders({ onProviderSelect }: any) {
       <img className="google-icon-svg" src={googleLogo} alt="google" />
       <div>Sign in with Google</div>
     </Button>
-    <Button className="button bottom" onClick={() => onProviderSelect('facebook')} variant="contained" color="primary">
-      <FacebookIcon className="google-icon-svg"/>
+    <Button className="button" onClick={() => onProviderSelect('facebook')} variant="contained" color="primary">
+      <FacebookIcon className="google-icon-svg" />
       <div>Continue with Facebook</div>
     </Button>
+    <FormHelperText >By Proceeding, you agreeing to our terms of service and that you have read our privacy policy found <Link color="secondary" onClick={() => window.open('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link>.</FormHelperText>
   </div>
 }
 

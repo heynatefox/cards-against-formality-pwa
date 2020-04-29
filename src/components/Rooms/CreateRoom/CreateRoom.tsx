@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { CircularProgress, FormControl, InputLabel, Input, FormHelperText, Switch, FormControlLabel, Card, CardContent, CardHeader, CardActions, Button, FormLabel, FormGroup, Checkbox } from '@material-ui/core';
 
 import './CreateRoom.scss';
@@ -54,12 +54,39 @@ export default function CreateRoom({ onJoin, decksData }: any) {
   const [isProtected, setIsProtected] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [name, setName] = useState('');
+
   const [target, setTarget] = useState(10);
+  const limitedSetTarget = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setTarget(rangeLimit(event, { min: 5, max: 100 }));
+  }, []);
   const [maxPlayers, setMaxPlayers] = useState(10);
+  const limitedSetMaxPlayers = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setMaxPlayers(rangeLimit(event));
+  }, []);
   const [maxSpectators, setMaxSpectators] = useState(10);
+  const limitedSetMaxSpectators = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setMaxSpectators(rangeLimit(event));
+  }, []);
   const [, isLoading, , createRoom] = useFetchData(`/api/rooms`, FetchType.POST);
   const [decks, setDecks] = useState([]);
   const [errorField, setErrorField] = useState<string | null>(null);
+
+  function rangeLimit(
+    event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
+    { min, max }: { min: number; max: number } = { min: 4, max: 10 }
+  ): number {
+    const value = parseInt(event.target.value, 10);
+
+    if (value < min) {
+      return min;
+    }
+
+    if (value > max) {
+      return max;
+    }
+
+    return value;
+  }
 
   function handleSubmit() {
     const room = {
@@ -115,18 +142,18 @@ export default function CreateRoom({ onJoin, decksData }: any) {
           <Input id="name" autoFocus={true} aria-describedby="game-name-helper" value={name} onChange={e => setName(e.target.value)} />
           {errorField === 'name' ? <FormHelperText id="score-helper">Game name must be between 2-16 characters long with no special characters!</FormHelperText> : null}
         </FormControl>
-        <FormControl required={true}>
+        <FormControl>
           <InputLabel htmlFor="target">Target Score</InputLabel>
-          <Input id="target" type="number" aria-describedby="score-helper" value={target} onChange={e => setTarget(parseInt(e.target.value, 10))} />
+          <Input id="target" type="number" aria-describedby="score-helper" value={target} onChange={limitedSetTarget} />
           <FormHelperText id="score-helper">Number of points required to end the game.</FormHelperText>
         </FormControl>
-        <FormControl required={true}>
+        <FormControl>
           <InputLabel htmlFor="max-players">Max Players</InputLabel>
-          <Input id="max-players" type="number" aria-describedby="max-players-helper" value={maxPlayers} onChange={e => setMaxPlayers(parseInt(e.target.value, 10))} />
+          <Input id="max-players" type="number" aria-describedby="max-players-helper" value={maxPlayers} onChange={limitedSetMaxPlayers} />
         </FormControl>
-        <FormControl required={true}>
+        <FormControl>
           <InputLabel htmlFor="max-spectators">Max Spectators</InputLabel>
-          <Input id="max-spectators" type="number" aria-describedby="max-spectators-helper" value={maxSpectators} onChange={e => setMaxSpectators(parseInt(e.target.value, 10))} />
+          <Input id="max-spectators" type="number" aria-describedby="max-spectators-helper" value={maxSpectators} onChange={limitedSetMaxSpectators} />
         </FormControl>
         {!decksData?.rows ? null : <DeckSelector decks={decksData.rows} onChange={setDecks as any} />}
         <FormControlLabel

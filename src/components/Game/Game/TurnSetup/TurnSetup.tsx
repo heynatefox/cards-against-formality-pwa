@@ -22,7 +22,7 @@ export default function TurnSetup({ game, players }: TurnSetupProps) {
   if (!game.winner) {
     return <div className="turn-setup-container">
       <Typography variant="h5">
-        No one selected any cards. Everyone loses!
+        {game?.errorMessage?.length ? game.errorMessage : 'Something went very wrong... No one wins!'}
       </Typography>
     </div>;
   }
