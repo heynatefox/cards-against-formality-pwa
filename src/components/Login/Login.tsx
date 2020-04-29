@@ -22,7 +22,7 @@ function LoginProviders({ onProviderSelect }: any) {
       <FacebookIcon className="google-icon-svg" />
       <div>Continue with Facebook</div>
     </Button>
-    <FormHelperText >By Proceeding, you agreeing to our terms of service and that you have read our privacy policy found <Link color="secondary" onClick={() => window.open('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link>.</FormHelperText>
+    <FormHelperText >By Proceeding, you are agreeing to our terms of service and that you have read our privacy policy found <Link color="secondary" onClick={() => window.open('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link>.</FormHelperText>
   </div>
 }
 
