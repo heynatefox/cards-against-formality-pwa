@@ -10,18 +10,26 @@
     width: fit-content;
     align-items: center;
     height: fit-content;
-    margin: 0 2%;
+    margin: 0 2% 1%;
 
-    &.selected {
-      transform: scale(1.1) translateY(-1em);
+    .playing-card {
+      min-width: 150px !important;
     }
 
+    &.selected {
+      transform: scale(1.1) translateY(-1em) rotate(-1deg) !important;
+    }
     .user-selection-card {
-      font-size: 0.6em;
+      font-size: 0.8em;
     }
   }
 }
 
-.user-submit {
-  width: 50px;
+.submit-wrapper {
+  display: flex;
+  margin-bottom: 1%;
+
+  .submit-text {
+    margin-right: 5%;
+  }
 }

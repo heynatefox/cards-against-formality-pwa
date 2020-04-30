@@ -11,10 +11,10 @@ export default React.memo(({ isDialogOpen, onClose, onSubmit }: any) => {
   }
 
   return <Dialog open={isDialogOpen} onClose={onClose} aria-labelledby="form-dialog-title" onKeyPress={onKeyPress}>
-    <DialogTitle id="form-dialog-title">Password Required</DialogTitle>
+    <DialogTitle id="form-dialog-title">Private Room</DialogTitle>
     <DialogContent>
       <DialogContentText>
-        Enter the super secret secure password to enter this room
+        The host has protected this game with a super secret password
         </DialogContentText>
       <TextField
         color="secondary"

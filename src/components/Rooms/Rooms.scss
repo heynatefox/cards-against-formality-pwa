@@ -6,18 +6,20 @@
 
   .rooms-content-container {
     height: 100%;
+    flex: 1 1 auto;
+    overflow: auto;
   }
 
   .rooms-card {
     width: 100%;
+    display: flex;
+    flex-flow: column;
   }
 }
 
 .rooms-list {
   display: flex;
   flex-flow: wrap;
-  max-height: 500px;
-  overflow: auto;
 }
 
 .create-button {

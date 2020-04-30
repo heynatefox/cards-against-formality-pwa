@@ -13,9 +13,14 @@
   .cards-list-container {
     display: flex;
     justify-content: center;
-    overflow: auto;
-    width: 100%;
     padding: 2% 2% 1%;
+    width: 300%;
+    overflow: auto;
+
+    @media (min-width: 600px) {
+      width: 100%;
+      overflow: none;
+    }
 
     .card-selector-card {
       font-size: 0.5em;

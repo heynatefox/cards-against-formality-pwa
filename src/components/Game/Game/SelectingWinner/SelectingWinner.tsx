@@ -50,6 +50,12 @@ export default function SelectingWinner({ onWinnerSelect, game, isCzar }: Select
   }
 
   return <>
+    <div className="submit-wrapper">
+      <Typography className="submit-text">
+        {isCzar ? 'Select your favourite answer!' : 'Wait while the Czar picks his favourite!'}
+      </Typography>
+      {renderSubmit()}
+    </div>
     <div className="user-selection-container">
       {Object.entries(game.selectedCards).map(([userId, cards]) => {
         return <UserSelection
@@ -61,9 +67,5 @@ export default function SelectingWinner({ onWinnerSelect, game, isCzar }: Select
         />
       })}
     </div>
-    <Typography>
-      {isCzar ? 'Select your favourite answer!' : 'Wait while the czar picks his favourite!'}
-    </Typography>
-    {renderSubmit()}
   </ >;
 }

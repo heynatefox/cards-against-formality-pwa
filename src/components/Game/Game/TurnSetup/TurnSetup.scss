@@ -8,9 +8,11 @@
   padding: 5%;
 
   .winning-cards {
+    margin-top: 1%;
     display: flex;
     flex-flow: row-reverse;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    max-width: 600px;
     width: 100%;
   }
 }

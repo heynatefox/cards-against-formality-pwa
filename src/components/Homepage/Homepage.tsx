@@ -64,11 +64,14 @@ const Homepage = React.memo(() => {
           Cards Against Formality is a party card game based on <Link rel="noopener" onClick={() => onWindowOpen('https://cardsagainsthumanity.com/')}>Cards Against Humanity</Link>.
           The game is still under development, and not currently fully functional.
           Expect many bugs, and lack of features!
-          Currently the API servers will only be online intermittently.
         </Typography>
         <br />
         <Typography variant="body1" style={{ color: "black" }}>
           This is an Open Source project. To find out more, visit <Link onClick={() => onWindowOpen('https://github.com/jordanpawlett/cards-against-formality')} rel="noopener">github</Link>.
+        </Typography>
+        <br />
+        <Typography variant="body1" style={{ color: "black" }}>
+          Whilst this application is under development, there will be a small routine mainenance period to save on server costs. This will normal occur sometime between 3-7am UTC+1
         </Typography>
       </Container>
     </section>

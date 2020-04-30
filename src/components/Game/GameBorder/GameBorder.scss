@@ -1,31 +1,62 @@
 .game-border-container {
   height: 100%;
+  display: flex;
+  flex-flow: column;
+
+  .card-selector-container {
+    width: 100%;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: -10%;
+    position: absolute;
+    bottom: 0;
+
+    @media (min-width: 600px) {
+      position: unset;
+      margin-left: 0%;
+      width: 100%;
+      overflow: none;
+    }
+  }
+}
+
+.header {
+  flex: 0 0 auto;
 }
 
 .game-container-content {
   display: flex;
-  height: 60%;
+  flex: 1 1 auto;
 
   .left-content {
     width: 100%;
-    height: 100%;
     display: flex;
     flex-flow: column;
+
+    @media (min-width: 600px) {
+      width: 85%;
+    }
   }
 
   .top-content {
     display: flex;
-    height: 94%;
     width: 100%;
-    flex-grow: 1;
-    flex-shrink: 0;
+    flex: 1 1 auto;
 
     .black-card-container {
-      width: 200px;
       margin-left: 2%;
-      .master-black-card {
-        position: absolute;
+      
+      @media (min-width: 600px) {
         width: 200px;
+      }
+
+      .master-black-card {
+        @media (min-width: 600px) {
+          position: absolute;
+          width: 200px;
+        }
       }
     }
   }
@@ -38,25 +69,27 @@
     justify-content: center;
     width: 100%;
     overflow: auto;
+    max-height: 400px;
   }
 
   .players-container {
     flex-grow: 0;
     flex-shrink: 1;
-    width: 20%;
+    width: 15%;
+    min-width: 200px;
+    height: 100%;
+    max-height: 500px;
+    display: none;
+
+    @media (min-width: 600px) {
+      display: block;
+    }
   }
 }
 
 .players-list {
-  display: flex;
-  flex-flow: column;
-}
-
-.player-container {
-  border: 1px solid grey;
-  display: flex;
-  flex-flow: column;
-  padding: 10%;
+  height: 100%;
+  overflow: auto;
 }
 
 .sub-header-container {
