@@ -71,7 +71,7 @@ const Homepage = React.memo(() => {
         </Typography>
         <br />
         <Typography variant="body1" style={{ color: "black" }}>
-          Whilst this application is under development, there will be a small routine mainenance period to save on server costs. This will normal occur sometime between 3-7am UTC+1
+          Whilst this application is under development, there will be a small routine maintenance period to save on server costs. This will normal occur sometime between 3-7am UTC+1
         </Typography>
       </Container>
     </section>
