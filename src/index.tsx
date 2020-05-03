@@ -14,7 +14,7 @@ import './index.scss';
 
 const config = { baseUrl: 'https://api.cardsagainstformality.io' };
 if (process.env.NODE_ENV !== 'production') {
-  // config.baseUrl = `http://${window.location.hostname}`;
+  config.baseUrl = `http://${window.location.hostname}`;
 }
 
 

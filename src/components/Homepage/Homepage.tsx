@@ -1,5 +1,8 @@
 import React, { useContext } from 'react';
 import { Link, Typography, Container, Button } from '@material-ui/core';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
 
 import Card from '../Card/Card';
 import './Homepage.scss';
@@ -62,8 +65,7 @@ const Homepage = React.memo(() => {
         </Typography>
         <Typography variant="body1" style={{ color: "black" }}>
           Cards Against Formality is a party card game based on <Link rel="noopener" onClick={() => onWindowOpen('https://cardsagainsthumanity.com/')}>Cards Against Humanity</Link>.
-          The game is still under development, and not currently fully functional.
-          Expect many bugs, and lack of features!
+          The game is still under development. However, it is fully functional on larger devices!
         </Typography>
         <br />
         <Typography variant="body1" style={{ color: "black" }}>
@@ -71,11 +73,16 @@ const Homepage = React.memo(() => {
         </Typography>
         <br />
         <Typography variant="body1" style={{ color: "black" }}>
-          Whilst this application is under development, there will be a small routine maintenance period to save on server costs. This will normal occur sometime between 3-7am UTC+1
+          Servers are expensive! Whilst this application is under development, there will be a small routine maintenance period to save on server costs. This will normal occur sometime between 3-7am UTC+1
         </Typography>
       </Container>
     </section>
     <section className="homepage-section footer">
+      <div className="link-icons">
+        <TwitterIcon className="icon" fontSize="large" onClick={() => onWindowOpen('https://twitter.com/CardsFormality')} />
+        <GitHubIcon className="icon" fontSize="large" onClick={() => onWindowOpen('https://github.com/jordanpawlett/cards-against-formality')} />
+        <LinkedInIcon className="icon" fontSize="large" onClick={() => onWindowOpen('https://www.linkedin.com/in/jordanpawlett/')} />
+      </div>
       <Typography variant="caption">
         To view the privacy and terms of use, click <Link color="secondary" onClick={() => onWindowOpen('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link> and <Link color="secondary" onClick={() => onWindowOpen('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/license.html')}>here</Link>
       </Typography>

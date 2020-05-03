@@ -59,11 +59,28 @@
   padding: 10% 0 10%;
   height: 450px;
 
+  a {
+    cursor: pointer;
+  }
+
   &.footer {
     height: 180px;
     display: flex;
+    flex-flow: column;
     align-items: center;
     justify-content: center;
+
+    .link-icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1%;
+
+      .icon {
+        margin-right: 5%;
+        cursor: pointer;
+      }
+    }
   }
 
   &.title {
