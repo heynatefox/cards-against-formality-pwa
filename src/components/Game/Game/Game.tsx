@@ -8,6 +8,7 @@ import SelectingWinner from './SelectingWinner/SelectingWinner';
 import GameEnded from './GameEnded/GameEnded';
 
 import './Game.scss';
+import GenericGardGroup from '../../GenericCardGroup/GenericCardGroup';
 
 export interface Card {
   _id: string;
@@ -73,11 +74,12 @@ export default function Game({ game, players, isCzar, onWinnerSelect }: GameProp
       case GameState.ENEDED:
         return <GameEnded game={game} players={players} />;
       default:
-        return <div className="card-group">
-          <Card className="first-card" card={{ cardType: 'black', _id: '1', text: `You have recently joined`, pick: 1 }}>
-            <CircularProgress color="inherit" />
-          </Card>
-          <Card className="second-card" card={{ cardType: 'white', _id: '2', text: `You will join when the next round starts` }} />
+        return <div className="generic-cards-wrapper">
+          <GenericGardGroup
+            leftCardText="You have recently joined"
+            leftCardChild={<CircularProgress color="inherit" />}
+            rightCardText="You will join when the next round starts."
+          />
         </div>
     }
   }

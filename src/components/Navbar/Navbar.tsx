@@ -1,5 +1,5 @@
 import React, { useContext, useState, useRef } from 'react';
-import { Typography, IconButton, Menu, MenuItem, Switch, Grid } from '@material-ui/core';
+import { Typography, IconButton, Menu, MenuItem, Switch, Grid, Button } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import { UserContext } from '../../Contexts/UserProvider';
@@ -8,7 +8,7 @@ import './Navbar.scss';
 
 export default React.memo(() => {
   const { name, onChange } = useContext(ThemeContext);
-  const { user, logout } = useContext(UserContext);
+  const { user, logout, authUser } = useContext(UserContext);
   const [isOpen, setOpen] = useState(false);
   const anchorEl = useRef(null);
 
@@ -22,6 +22,8 @@ export default React.memo(() => {
   if (!user) {
     return <div className="nav-bar">
       {logo}
+      {authUser ? <><div className="spacer" />
+        <Button onClick={() => { handleClose(); logout(); }}>Logout</Button></> : null}
     </div>
   }
 

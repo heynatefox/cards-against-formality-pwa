@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import io from 'socket.io-client';
 
 import ConfigContext from '../Contexts/ConfigContext';
@@ -10,8 +10,11 @@ export interface SocketEventMap {
 }
 
 
-export default function useSocket(token: string, socketEventMap: SocketEventMap, namespace: string = '/', autoConnect: boolean = true): [SocketIOClient.Socket | null] {
+export default function useSocket(
+  token: string, socketEventMap: SocketEventMap, namespace: string = '/', autoConnect: boolean = true
+): [SocketIOClient.Socket | null, boolean] {
 
+  const [disconnected, setDisconnected] = useState(false);
   const socket = useRef<SocketIOClient.Socket | null>(null);
   const { baseUrl } = useContext(ConfigContext);
   useEffect(() => {
@@ -26,6 +29,10 @@ export default function useSocket(token: string, socketEventMap: SocketEventMap,
       });
 
       if (socket?.current) {
+        socket.current.on('disconnect', () => {
+          setDisconnected(true);
+        })
+
         Object.entries(socketEventMap).forEach(([eventName, onEvent]) => {
           (socket as any).current.on(eventName, onEvent);
         });
@@ -45,5 +52,5 @@ export default function useSocket(token: string, socketEventMap: SocketEventMap,
     }
   }, [token, namespace, socketEventMap, autoConnect, baseUrl]);
 
-  return [socket?.current]
+  return [socket?.current, disconnected]
 }

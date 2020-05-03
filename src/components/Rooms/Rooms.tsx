@@ -3,7 +3,6 @@ import { Container, Button, Card, CardHeader, CardContent, Typography } from "@m
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
 
-import GameCard from '../Card/Card';
 import { UserContext } from '../../Contexts/UserProvider';
 import Room from './Room/Room';
 import useFetchData, { FetchType } from '../../Hooks/useFetchData';
@@ -11,6 +10,7 @@ import CreateRoom from './CreateRoom/CreateRoom';
 import { RouterContext } from '../../Contexts/RouteProvider';
 import { SnackbarContext } from '../../Contexts/SnackbarProvider';
 import useRooms from '../../Hooks/useRooms';
+import GenericGardGroup from '../GenericCardGroup/GenericCardGroup';
 import './Rooms.scss';
 
 export default function Rooms() {
@@ -24,7 +24,7 @@ export default function Rooms() {
     if (!user) {
       timeout = setTimeout(() => {
         setHasServerIssue(true);
-      }, 10000);
+      }, 6000);
     }
 
     return () => {
@@ -36,7 +36,7 @@ export default function Rooms() {
   }, [user])
 
   const { history } = useContext(RouterContext);
-  const [rooms, isLoading] = useRooms(token);
+  const [rooms, isLoading, disconnected] = useRooms(token);
   const [isCreating, setIsCreating] = useState(false);
   const onCreate = useCallback(() => setIsCreating(prevIsCreating => !prevIsCreating), []);
 
@@ -107,14 +107,20 @@ export default function Rooms() {
   }
 
   if (hasServerIssue) {
-    return <div className="card-group">
-      <GameCard className="first-card" card={{ cardType: 'black', _id: '1', text: 'Try again later! _', pick: 1 }}>
-        <Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>
-      </GameCard>
-      <GameCard className="second-card" card={{ cardType: 'white', _id: '2', text: `Our API Servers are currently offline` }}>
-        <Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>
-      </GameCard>
-    </div>
+    return <GenericGardGroup
+      leftCardText="Try again later!"
+      leftCardChild={<Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>}
+      rightCardText="Our API Servers are currently offline"
+      rightCardChild={<Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>}
+    />
+  }
+
+  if (disconnected) {
+    return <GenericGardGroup
+      leftCardText="Game Disconnected!"
+      leftCardChild={<Button color="secondary" variant="contained" onClick={() => history.push('/login')}>Reconnect</Button>}
+      rightCardText="Ensure you do not have more than one instance of the game open."
+    />
   }
 
   return <Container className="rooms-container" maxWidth="lg">

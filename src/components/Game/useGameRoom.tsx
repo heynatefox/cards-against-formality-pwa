@@ -33,7 +33,7 @@ export default function useGameRoom() {
   const onDealEvent = useCallback(d => setCards(d.payload), []);
   const onGameEvent = useCallback(d => setGame(d.payload), []);
   const [socketMapping] = useState({ room: onRoomEvent, game: onGameEvent, deal: onDealEvent });
-  const [socket] = useSocket(token, socketMapping, '/games', false);
+  const [socket, disconnected] = useSocket(token, socketMapping, '/games', false);
   const joinRoom = useCallback((passcode?: string) => {
     if (!user) {
       return;
@@ -109,5 +109,5 @@ export default function useGameRoom() {
     }
   }, [game, user]);
 
-  return [user?._id, room, isHost, isCzar, game, cards, players, spectators, isLoading, errorMessage, showPasswordDialog, joinRoom];
+  return [user?._id, room, isHost, isCzar, game, cards, players, spectators, isLoading, errorMessage, showPasswordDialog, joinRoom, disconnected];
 }

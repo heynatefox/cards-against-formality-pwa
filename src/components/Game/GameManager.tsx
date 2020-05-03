@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { Container, Backdrop, CircularProgress } from '@material-ui/core';
+import { Container, Backdrop, CircularProgress, Button } from '@material-ui/core';
 
 import GameContainer from './GameBorder/GameBorder';
 import useGameRoom from './useGameRoom';
@@ -10,9 +10,10 @@ import Pending from './Pending/Pending';
 import Game from './Game/Game'
 import PasswordDialog from '../Rooms/Room/PasswordDialog';
 import { SnackbarContext } from '../../Contexts/SnackbarProvider';
+import GenericGardGroup from '../GenericCardGroup/GenericCardGroup';
 
 export default function GameManager() {
-  const [clientId, room, isHost, isCzar, game, cards, players, , isLoading, , showPasswordDialog, joinRoom] = useGameRoom();
+  const [clientId, room, isHost, isCzar, game, cards, players, , isLoading, , showPasswordDialog, joinRoom, disconnected] = useGameRoom();
   const { openSnack } = useContext(SnackbarContext);
   const [, , , leave] = useFetchData(`/api/rooms/leave`, FetchType.PUT);
   const [, , , startGame] = useFetchData(`/api/games/start`, FetchType.PUT);
@@ -75,6 +76,14 @@ export default function GameManager() {
         <Game players={players} game={game} isCzar={isCzar} onWinnerSelect={onWinnerSelect} />
       }
     </GameContainer>
+  }
+
+  if (disconnected) {
+    return <GenericGardGroup
+      leftCardText="Game Disconnected!"
+      leftCardChild={<Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Reconnect</Button>}
+      rightCardText="Ensure you do not have more than one instance of the game open."
+    />
   }
 
   return <Container className="game-manager-container" maxWidth="xl">
