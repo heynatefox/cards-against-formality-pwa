@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Button, CardHeader, CardContent, Card } from "@material-ui/core";
+import React, { useState, useEffect, useCallback } from 'react';
+import { Button, CardHeader, CardContent, Card, IconButton } from "@material-ui/core";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import ShareIcon from '@material-ui/icons/Share';
 
 import CardSelector from '../CardSelector/CardSelector';
 import GameCard from '../../Card/Card';
 import Players from './PlayersContainer';
 import './GameBorder.scss';
 import { GameState } from '../Game/Game';
+import { SnackbarMessage } from '../../../Contexts/SnackbarProvider';
 
 interface Card {
   _id: string;
@@ -26,6 +28,7 @@ export interface GameBorderProps {
   onCardsSubmit: (cards: string[]) => Promise<any>;
   game: any;
   isHost: boolean;
+  openSnack: (data: SnackbarMessage | null) => void;
 }
 
 function GameBorderSubHeader({ game, isHost }: { game: any, isHost: boolean }) {
@@ -58,13 +61,29 @@ function GameBorderSubHeader({ game, isHost }: { game: any, isHost: boolean }) {
   </div>
 }
 
-export default React.memo(({ roomName, host, isHost, players, children, onLeave, cards, onCardsSubmit, isCzar, game }: GameBorderProps) => {
+export default React.memo(({ roomName, host, isHost, players, children, onLeave, cards, onCardsSubmit, isCzar, game, openSnack }: GameBorderProps) => {
+  const onShare = useCallback((e: any) => {
+    const dummy = document.createElement('input'),
+      text = window.location.href;
+
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy);
+    openSnack({ text: 'Link copied to clipboard!', severity: 'success' });
+  }, [openSnack])
 
   return <Card raised={true} className="game-border-container">
     <CardHeader
       className="header"
       titleTypographyProps={{ color: 'secondary' }}
-      title={`${roomName} room`}
+      title={<>
+        <span>{roomName} room</span>
+        {document.queryCommandEnabled ? <IconButton color="primary" aria-label="upload picture" component="span" onClick={onShare} title="Invite your friends!">
+          <ShareIcon />
+        </IconButton> : null}
+      </>}
       subheader={<GameBorderSubHeader game={game} isHost={isHost} />}
       action={
         <Button
