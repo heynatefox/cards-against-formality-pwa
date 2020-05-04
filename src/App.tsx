@@ -48,7 +48,7 @@ function App() {
   useEffect(() => {
     document.addEventListener('service_worker-updated', () => {
       // handle this more gracefully.
-      window.location.reload();
+      // window.location.reload();
     })
   });
 
