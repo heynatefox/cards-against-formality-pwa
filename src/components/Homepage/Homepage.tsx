@@ -25,7 +25,7 @@ const Homepage = React.memo(() => {
 
   function renderCards() {
     const cards = [
-      { cardType: 'black', _id: '1', text: `In the newest and most difficult stunt. David Blaine must escape from _.`, pick: 1 },
+      { cardType: 'black', _id: '1', text: `During my first game of D&amp;D, I accidentally summoned _.`, pick: 1 },
       { cardType: 'white', _id: '2', text: `My inner demons.` }
     ];
 

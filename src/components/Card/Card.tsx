@@ -10,11 +10,12 @@ export interface CardProps {
   children?: React.ReactNode;
 }
 
+const parser = new DOMParser();
 export default React.memo(({ card, onSelect, isSelected, isUnselectable, className, children }: CardProps) => {
   const onClick = useCallback(_onClick, [card, onSelect, isUnselectable]);
   const words = useMemo(() =>
-    card.text.replace(/<br>/g, ' <br> ').replace('&reg;', '®').replace('&iacute;', 'í').replace('&trade;', '™').replace('&Uuml;', 'Ü').split(/[ ]+/)
-  , [card]);
+    card.text.replace(/<br>/g, ' <br> ').split(/[ ]+/)
+    , [card]);
 
   const calculatedClassName = useMemo(() => {
     return `playing-card ${card.cardType} ${isSelected ? 'selected' : ''} ${isUnselectable ? 'unselectable' : ''} ${className ? className : ''}`;
@@ -44,7 +45,8 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
             if (word.includes('_')) {
               return <span key={index} className="blank-space" />
             }
-            return <span key={index} className="word"> {word}</span>;
+            const str = parser.parseFromString(word, 'text/html').body.textContent;
+            return <span key={index} className="word"> {str}</span>;
           })}
         </div>
         <div className="spacer" />

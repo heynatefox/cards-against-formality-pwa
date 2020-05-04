@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { CircularProgress, FormControl, InputLabel, Input, FormHelperText, Switch, FormControlLabel, Card, CardContent, CardHeader, CardActions, Button, FormLabel, FormGroup, Checkbox } from '@material-ui/core';
-
+import { CircularProgress, FormControl, InputLabel, Input, FormHelperText, Switch, FormControlLabel, Card, CardContent, CardHeader, CardActions, Button, FormLabel, FormGroup, Checkbox, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Divider } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './CreateRoom.scss';
 import useFetchData, { FetchType } from '../../../Hooks/useFetchData';
 import { SnackbarContext } from '../../../Contexts/SnackbarProvider';
 
 function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: string[]) => void }) {
   const [deckOptions, setDeckOptions] = useState<{ name: string; _id: string, value?: boolean }[]>([]);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isAllSelected, setIsAllSelected] = useState(false);
+  const toggleSelectAll = useCallback(() => {
+    setDeckOptions(prevDeck => {
+      prevDeck.forEach(deck => deck.value = !isAllSelected);
+      return [...prevDeck];
+    });
+
+    setIsAllSelected(!isAllSelected);
+  }, [isAllSelected])
 
   useEffect(() => {
     if (decks) {
@@ -19,6 +29,7 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
   useEffect(() => {
     onChange(deckOptions.filter(deck => deck.value).map(deck => deck._id));
   }, [deckOptions, onChange]);
+
 
   function _onChange(e: React.ChangeEvent<HTMLInputElement>) {
     setDeckOptions(prevDeck => {
@@ -34,19 +45,35 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
     return null;
   }
 
-  return <FormControl required component="fieldset" error={!deckOptions.some(deck => deck.value)}>
-    <FormLabel component="legend">Select which decks you would like to play with</FormLabel>
-    <FormGroup>
-      {deckOptions.map(deck => {
-        return <FormControlLabel
-          key={deck._id}
-          control={<Checkbox checked={deck.value} onChange={_onChange} name={deck._id} />}
-          label={deck.name}
+  return <ExpansionPanel expanded={isExpanded} onChange={() => { setIsExpanded(prev => !prev) }}>
+    <ExpansionPanelSummary
+      expandIcon={<ExpandMoreIcon />}
+      aria-controls="panel1bh-content"
+      id="panel1bh-header"
+    >
+      <Typography>Available Decks!</Typography>
+    </ExpansionPanelSummary>
+    <ExpansionPanelDetails>
+      <FormControl required component="fieldset" error={!deckOptions.some(deck => deck.value)}>
+        <FormControlLabel
+          control={<Checkbox checked={isAllSelected} onChange={toggleSelectAll} name="Select all" />}
+          label="Select all"
         />
-      })}
-    </FormGroup>
-    <FormHelperText>You must select at least one</FormHelperText>
-  </FormControl>
+        <Divider />
+        <FormLabel component="legend">Select which decks you would like to play with</FormLabel>
+        <FormGroup className="deck-checkbox-group">
+          {deckOptions.map(deck => {
+            return <FormControlLabel
+              key={deck._id}
+              control={<Checkbox checked={deck.value} onChange={_onChange} name={deck._id} />}
+              label={deck.name}
+            />
+          })}
+        </FormGroup>
+        <FormHelperText>You must select at least one</FormHelperText>
+      </FormControl>
+    </ExpansionPanelDetails>
+  </ExpansionPanel>
 }
 
 export default function CreateRoom({ onJoin, decksData }: any) {

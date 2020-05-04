@@ -34,4 +34,12 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-serviceWorker.register();
+serviceWorker.register({
+  onUpdate: registration => {
+    if (registration && registration.waiting) {
+      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+    }
+    const event = new Event('service_worker-updated')
+    document.dispatchEvent(event)
+  }
+});

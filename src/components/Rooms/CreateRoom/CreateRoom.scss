@@ -6,7 +6,6 @@
 
 .create-form-card-content {
   height: 100%;
-  overflow: auto;
 
   .create-room-form {
     display: flex;
@@ -18,6 +17,10 @@
         margin-bottom: 2%;
       }
     }
+  }
+
+  .deck-checkbox-group {
+    flex-direction: row;
   }
 }
 

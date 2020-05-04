@@ -33,6 +33,7 @@ const firebaseConfig = {
 
 function App() {
   const [isFirebaseInit, setIsFirebaseInit] = useState(false);
+
   useEffect(() => {
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
@@ -43,6 +44,13 @@ function App() {
 
     setIsFirebaseInit(true);
   }, []);
+
+  useEffect(() => {
+    document.addEventListener('service_worker-updated', () => {
+      // handle this more gracefully.
+      window.location.reload();
+    })
+  });
 
   return <>
     <Switch>
