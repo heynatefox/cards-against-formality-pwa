@@ -107,20 +107,25 @@ export default function Rooms() {
   }
 
   if (hasServerIssue) {
-    return <GenericGardGroup
-      leftCardText="Try again later!"
-      leftCardChild={<Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>}
-      rightCardText="Our API Servers are currently offline"
-      rightCardChild={<Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>}
-    />
+    return <div className="game-disconnected">
+      <GenericGardGroup
+        leftCardText="Try again later!"
+        leftCardChild={<Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>}
+        rightCardText="Our API Servers are currently offline"
+        rightCardChild={<Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>}
+      />
+    </div>
   }
 
   if (disconnected) {
-    return <GenericGardGroup
-      leftCardText="Game Disconnected!"
-      leftCardChild={<Button color="secondary" variant="contained" onClick={() => history.push('/login')}>Reconnect</Button>}
-      rightCardText="Ensure you do not have more than one instance of the game open."
-    />
+
+    return <div className="game-disconnected">
+      <GenericGardGroup
+        leftCardText="Game Disconnected!"
+        leftCardChild={<Button color="secondary" variant="contained" onClick={() => history.push('/login')}>Reconnect</Button>}
+        rightCardText="Ensure you do not have more than one instance of the game open."
+      />
+    </div>
   }
 
   return <Container className="rooms-container" maxWidth="lg">
