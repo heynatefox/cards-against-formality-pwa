@@ -39,7 +39,7 @@ serviceWorker.register({
     if (registration && registration.waiting) {
       registration.waiting.postMessage({ type: 'SKIP_WAITING' });
     }
-    const event = new Event('service_worker-updated')
+    const event = new Event('service_worker_updated')
     document.dispatchEvent(event)
   }
 });

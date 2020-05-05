@@ -4,13 +4,14 @@
   padding: 2%;
   display: flex;
   flex-wrap: wrap;
+  // overflow: auto;
 
   .user-selection {
     display: flex;
     width: fit-content;
     align-items: center;
     height: fit-content;
-    margin: 0 2% 1%;
+    margin: 5% 2% 1%;
 
     .playing-card {
       min-width: 150px !important;

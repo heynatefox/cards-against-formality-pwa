@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Button, CardHeader, CardContent, Card, IconButton } from "@material-ui/core";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import ShareIcon from '@material-ui/icons/Share';
@@ -62,6 +62,8 @@ function GameBorderSubHeader({ game, isHost }: { game: any, isHost: boolean }) {
 }
 
 export default React.memo(({ roomName, host, isHost, players, children, onLeave, cards, onCardsSubmit, isCzar, game, openSnack }: GameBorderProps) => {
+  const [maxChildHeight, setMaxChildHeight] = useState(0);
+  const leftContent = useRef<any>();
   const onShare = useCallback((e: any) => {
     const dummy = document.createElement('input'),
       text = window.location.href;
@@ -73,6 +75,13 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
     document.body.removeChild(dummy);
     openSnack({ text: 'Link copied to clipboard!', severity: 'success' });
   }, [openSnack])
+
+  useEffect(() => {
+    if (leftContent?.current) {
+      const { height } = (leftContent as any).current.getBoundingClientRect();
+      setMaxChildHeight(height);
+    }
+  }, []);
 
   return <Card raised={true} className="game-border-container">
     <CardHeader
@@ -100,20 +109,20 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
       }
     />
     <CardContent className="game-container-content">
-      <div className="left-content">
+      <div className="left-content" ref={leftContent}>
 
         <div className="top-content">
           <div className="black-card-container">
             {game?.blackCard ? <GameCard card={game.blackCard} className="master-black-card" /> : null}
           </div>
 
-          <div className="game-container-children-wrapper">
+          <div className="game-container-children-wrapper" style={{ maxHeight: maxChildHeight - 190 }}>
             {children}
           </div>
         </div>
 
         <div className="card-selector-container">
-          <CardSelector pick={game?.blackCard?.pick} state={game?.state} cards={cards} onCardsSubmit={onCardsSubmit} isCzar={isCzar} />
+          {game?.state === GameState.SELECTING_WINNER ? null : <CardSelector pick={game?.blackCard?.pick} state={game?.state} cards={cards} onCardsSubmit={onCardsSubmit} isCzar={isCzar} />}
         </div>
       </div>
       <div className="players-container">

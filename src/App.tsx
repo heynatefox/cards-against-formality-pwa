@@ -46,7 +46,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.addEventListener('service_worker-updated', () => {
+    document.addEventListener('service_worker_updated', () => {
       // handle this more gracefully.
       // window.location.reload();
     })
@@ -80,6 +80,7 @@ function App() {
                 <Rooms />
               </Suspense>
             </div>
+
           </Container>
         </Route>
 

@@ -8,49 +8,10 @@
 
   .start-button {
     pointer-events: all;
-
-    @media (max-width: 800px) {
-      font-size: 0.5em;
-    }
-  }
-
-  .card-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 160%;
-    height: 100%;
-    padding: 0 10% 2%;
-    pointer-events: none;
-    position: absolute;
-    bottom: 0;
+    width: 70%;
 
     @media (min-width: 600px) {
-      width: 80%;
-    }
-
-    .first-card {
-      z-index: 2;
-      transform: rotate(-15deg) translateY(1.5em) translateX(0em);
-      font-size: 0.8em;
-
-      @media (max-width: 600px) {
-        .blank-space {
-          border: none;
-        }
-      }
-      @media (min-width: 600px) {
-        font-size: 1em;
-      }
-    }
-    .second-card {
-      z-index: 2;
-      transform: rotate(4deg) translateY(0.5em) translateX(-4em);
-      font-size: 0.8em;
-
-      @media (min-width: 600px) {
-        font-size: 1em;
-      }
+      width: 50%;
     }
   }
 }

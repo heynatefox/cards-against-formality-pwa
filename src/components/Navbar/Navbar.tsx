@@ -2,11 +2,13 @@ import React, { useContext, useState, useRef } from 'react';
 import { Typography, IconButton, Menu, MenuItem, Switch, Grid, Button } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
+import { RouterContext } from '../../Contexts/RouteProvider';
 import { UserContext } from '../../Contexts/UserProvider';
 import { ThemeContext } from '../../Contexts/ThemeProvider';
 import './Navbar.scss';
 
 export default React.memo(() => {
+  const { history } = useContext(RouterContext);
   const { name, onChange } = useContext(ThemeContext);
   const { user, logout, authUser } = useContext(UserContext);
   const [isOpen, setOpen] = useState(false);
@@ -16,7 +18,7 @@ export default React.memo(() => {
     setOpen(false);
   }
 
-  const logo = <Typography className="logo" variant="h4">
+  const logo = <Typography className="logo" variant="h4" onClick={() => history.push('/')}>
     Cards Against Formality
               </Typography>;
   if (!user) {

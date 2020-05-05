@@ -1,5 +1,5 @@
 import React from "react";
-import { List, ListItem, ListItemText, Divider, ListItemAvatar, Avatar } from "@material-ui/core";
+import { List, ListItem, ListItemText, Divider, ListItemAvatar, Avatar, Badge } from "@material-ui/core";
 // import PersonIcon from '@material-ui/icons/Person';
 import StyleIcon from '@material-ui/icons/Style';
 
@@ -27,6 +27,18 @@ const Player = React.memo(({ player, isHost, isCzar }: any) => {
 });
 
 const Players = React.memo(({ players, host, czar }: PlayersProps) => {
+  if (window.screen.width < 650) {
+    return <>
+      {players.sort((a, b) => b.score - a.score).map((player) => {
+        return <div key={player._id} className="player">
+          <Badge badgeContent={player.score} color="error">
+            {player?.username}
+          </Badge>
+        </div>
+      })}
+    </>
+  }
+
   return <List className="players-list">
     {players.map((player, index) => {
       return <React.Fragment key={player._id}>
