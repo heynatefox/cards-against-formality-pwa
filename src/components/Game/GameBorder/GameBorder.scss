@@ -9,16 +9,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: -10%;
-    position: absolute;
-    bottom: 0;
 
     @media (min-width: 600px) {
-      position: unset;
-      margin-left: 0%;
-      width: 100%;
-      overflow: none;
     }
+  }
+}
+
+.MuiCardHeader-action {
+  @media (max-wwidth: 600px) {
+    margin-top: 0 !important;
   }
 }
 
@@ -29,6 +28,11 @@
 .game-container-content {
   display: flex;
   flex: 1 1 auto;
+  padding: 0;
+
+  @media (min-width: 600px) {
+    padding: 16px;
+  }
 
   .left-content {
     width: 100%;
@@ -44,12 +48,21 @@
     display: flex;
     width: 100%;
     flex: 1 1 auto;
+    flex-flow: column;
+    @media (min-width: 600px) {
+      flex-flow: row;
+    }
 
     .black-card-container {
-      margin-left: 2%;
+      width: 120%;
+      margin-left: -10%;
+      display: flex;
+      justify-content: center;
 
       @media (min-width: 600px) {
+        position: unset;
         width: 200px;
+        margin-left: 2%;
       }
 
       .master-black-card {
@@ -68,21 +81,42 @@
     display: flex;
     justify-content: center;
     width: 100%;
+    // max-height: 45vh;
+    margin-top: 2%;
     overflow: auto;
-    max-height: 400px;
+    padding: 0;
+    @media (min-width: 600px) {
+      margin-top: 0%;
+      padding: 0 2%;
+      // max-height: 65vh;
+    }
   }
 
   .players-container {
+    .player {
+      width: 20%;
+      margin-left: 5%;
+    }
     flex-grow: 0;
     flex-shrink: 1;
-    width: 15%;
-    min-width: 200px;
-    height: 100%;
-    max-height: 500px;
-    display: none;
+    width: 100%;
+    overflow: auto;
+    // display: none;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    padding-top: 10%;
 
-    @media (min-width: 600px) {
+    @media (min-width: 650px) {
+      padding: 0;
+      min-width: 200px;
+      max-height: 500px;
+      width: 15%;
+      justify-content: unset;
+      bottom: unset;
+      position: unset;
       display: block;
+      height: 100%;
     }
   }
 }

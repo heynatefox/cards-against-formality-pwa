@@ -45,19 +45,23 @@ export default React.memo(({ state, cards, onCardsSubmit, isCzar, pick }: CardSe
   }
 
   function renderAction() {
-    if (hasSubmitted) {
+    if (hasSubmitted || state !== GameState.PICKING_CARDS) {
       return null;
     }
 
     if (!isCzar) {
-      return <Button
-        disabled={!selectedCards.length || state !== GameState.PICKING_CARDS || selectedCards.length !== pick}
-        variant="contained"
-        color="primary"
-        onClick={onSubmit}
-      >
-        Submit
+      return <>
+        <Button
+          className="submit-button"
+          disabled={!selectedCards.length || state !== GameState.PICKING_CARDS || selectedCards.length !== pick}
+          variant="contained"
+          color="primary"
+          onClick={onSubmit}
+        >
+          Submit
          </Button>
+        <Typography>{selectedCards.length}/{pick} cards selected</Typography>
+      </>
     }
 
     return <Typography>The Czar is not allowed to select cards to play</Typography>;
@@ -67,15 +71,17 @@ export default React.memo(({ state, cards, onCardsSubmit, isCzar, pick }: CardSe
     <div className="cards-action">
       {renderAction()}
     </div>
-    <div className="cards-list-container">
-      {cards.map(card => <GameCard
-        className="card-selector-card"
-        key={card._id + 'cards-display'}
-        card={card}
-        onSelect={onSelect}
-        isSelected={selectedCards.includes(card._id)}
-        isUnselectable={isCzar || hasSubmitted || state !== GameState.PICKING_CARDS}
-      />)}
+    <div className="scroll-wrapper">
+      <div className="cards-list-container">
+        {cards.map(card => <GameCard
+          className="card-selector-card"
+          key={card._id + 'cards-display'}
+          card={card}
+          onSelect={onSelect}
+          isSelected={selectedCards.includes(card._id)}
+          isUnselectable={isCzar || hasSubmitted || state !== GameState.PICKING_CARDS}
+        />)}
+      </div>
     </div>
   </div>
 });

@@ -3,27 +3,43 @@
   flex-flow: column;
   width: 100%;
 
+  @media (max-width: 800px) {
+    position: absolute;
+    bottom: 4%;
+  }
+
   .cards-action {
     margin-left: 2%;
-    button {
-      width: 100px !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    .submit-button {
+      margin-right: 2%;
+      width: 50px !important;
+      @media (min-width: 600px) {
+        width: 100px !important;
+      }
     }
+  }
+  .scroll-wrapper {
+    overflow: auto;
   }
 
   .cards-list-container {
     display: flex;
     justify-content: center;
-    padding: 2% 2% 1%;
+    padding: 6% 2% 1%;
     width: 300%;
     overflow: auto;
 
     @media (min-width: 600px) {
+      padding: 2% 2% 1%;
       width: 100%;
       overflow: none;
     }
 
     .card-selector-card {
-      font-size: 0.5em;
+      font-size: 0.6em;
 
       @media (min-width: 850px) {
         font-size: 0.8em;

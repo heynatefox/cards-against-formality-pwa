@@ -79,11 +79,13 @@ export default function GameManager() {
   }
 
   if (disconnected) {
-    return <GenericGardGroup
-      leftCardText="Game Disconnected!"
-      leftCardChild={<Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Reconnect</Button>}
-      rightCardText="Ensure you do not have more than one instance of the game open."
-    />
+    return <div className="game-disconnected">
+      <GenericGardGroup
+        leftCardText="Game Disconnected!"
+        leftCardChild={<Button className="reconnect-button" color="secondary" variant="contained" onClick={() => window.location.reload()}>Reconnect</Button>}
+        rightCardText="Ensure you do not have more than one instance of the game open."
+      />
+    </div>
   }
 
   return <Container className="game-manager-container" maxWidth="xl">

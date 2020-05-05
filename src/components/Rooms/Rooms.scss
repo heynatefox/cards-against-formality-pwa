@@ -25,3 +25,11 @@
 .create-button {
   margin: 1% 0 1% !important;
 }
+
+.app,
+.MuiContainer-root {
+  @media (max-width: 600px) {
+    padding: 0;
+    width: 100vw;
+  }
+}
