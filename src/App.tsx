@@ -55,14 +55,14 @@ function App() {
   return <>
     <Switch>
 
+      <Route exact={true} path="/">
+        <Suspense fallback={<RouteLoadingFallback />}>
+          <Homepage />
+        </Suspense>
+      </Route>
+
       <UserProvider isFirebaseInit={isFirebaseInit}>
         <Navbar />
-        <Route exact={true} path="/">
-          <Suspense fallback={<RouteLoadingFallback />}>
-            <Homepage />
-          </Suspense>
-        </Route>
-
         <Route path="/login">
           <Container className="app-container" maxWidth="lg">
             <div className="app">
