@@ -4,7 +4,7 @@ import RoomsReducer from "../Reducers/genericReducer";
 import useFetchData from "./useFetchData";
 import useSocket from "./useSocket";
 
-export default function useRooms(token: string): [any[], boolean, boolean] {
+export default function useRooms(token: string): [any[], boolean, boolean, boolean] {
 
   const [rooms, dispatch] = useReducer(RoomsReducer, []);
 
@@ -25,7 +25,7 @@ export default function useRooms(token: string): [any[], boolean, boolean] {
   }, []);
   const [socketMapping] = useState({ rooms: onEvent });
 
-  const [, disconnected] = useSocket(token, socketMapping, '/rooms');
+  const [, disconnected, reconnecting] = useSocket(token, socketMapping, '/rooms');
   // TODO: implement infinite scrolling.
   const [res, isLoading] = useFetchData<{ rows: any[] }>(`/api/rooms?pageSize=100`);
 
@@ -36,5 +36,5 @@ export default function useRooms(token: string): [any[], boolean, boolean] {
     }
   }, [res]);
 
-  return [rooms, isLoading, disconnected];
+  return [rooms, isLoading, disconnected, reconnecting];
 }

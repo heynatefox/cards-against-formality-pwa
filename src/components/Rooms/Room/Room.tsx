@@ -43,7 +43,7 @@ export default React.memo(({ room, onJoin }: any) => {
             onClick={() => { room.passcode ? setIsDialogOpen(true) : joinRoom() }}
             disabled={room.players.length >= room.options.maxPlayers}
           >
-            Join Room
+            Join Game
         </Button>
         }
       />

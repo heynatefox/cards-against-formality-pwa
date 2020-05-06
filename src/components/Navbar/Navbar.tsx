@@ -13,9 +13,12 @@ export default React.memo(() => {
   const { user, logout, authUser } = useContext(UserContext);
   const [isOpen, setOpen] = useState(false);
   const anchorEl = useRef(null);
-
   function handleClose() {
     setOpen(false);
+  }
+
+  if (history?.location.pathname === '/') {
+    return null;
   }
 
   const logo = <Typography className="logo" variant="h4" onClick={() => history.push('/')}>

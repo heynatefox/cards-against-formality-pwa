@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Button, CardHeader, CardContent, Card, IconButton } from "@material-ui/core";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import ShareIcon from '@material-ui/icons/Share';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import CardSelector from '../CardSelector/CardSelector';
 import GameCard from '../../Card/Card';
@@ -77,36 +78,57 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
   }, [openSnack])
 
   useEffect(() => {
-    if (leftContent?.current) {
-      const { height } = (leftContent as any).current.getBoundingClientRect();
-      setMaxChildHeight(height);
+    const listener = () => {
+      if (leftContent?.current) {
+        const { height } = (leftContent as any).current.getBoundingClientRect();
+        setMaxChildHeight(window.screen.width < 600 ? height - 160 : height);
+      }
+    }
+    listener();
+    window.addEventListener('resize', listener);
+
+    return () => {
+      window.removeEventListener('resize', listener);
     }
   }, []);
+
+  function renderActionButton() {
+    if (window.screen.width < 600) {
+      return <IconButton
+        className="leave-button-mb"
+        color="secondary"
+        onClick={onLeave}
+      >
+        <ExitToAppIcon />
+      </IconButton>
+
+    }
+
+    return <Button
+      // handle leaving room.
+      onClick={onLeave}
+      className="leave-button"
+      variant="outlined"
+      color="secondary"
+      size="medium"
+      endIcon={null}
+    >
+      Leave Room
+  </Button>;
+  }
 
   return <Card raised={true} className="game-border-container">
     <CardHeader
       className="header"
       titleTypographyProps={{ color: 'secondary' }}
       title={<>
-        <span>{roomName} room</span>
-        {document.queryCommandEnabled ? <IconButton color="primary" aria-label="upload picture" component="span" onClick={onShare} title="Invite your friends!">
+        <span>{roomName} Game</span>
+        {document.queryCommandEnabled ? <IconButton color="secondary" onClick={onShare} title="Invite your friends!">
           <ShareIcon />
         </IconButton> : null}
       </>}
       subheader={<GameBorderSubHeader game={game} isHost={isHost} />}
-      action={
-        <Button
-          // handle leaving room.
-          onClick={onLeave}
-          className="leave-button"
-          variant="outlined"
-          color="secondary"
-          size="medium"
-          endIcon={null}
-        >
-          Leave Room
-        </Button>
-      }
+      action={renderActionButton()}
     />
     <CardContent className="game-container-content">
       <div className="left-content" ref={leftContent}>
@@ -116,13 +138,13 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
             {game?.blackCard ? <GameCard card={game.blackCard} className="master-black-card" /> : null}
           </div>
 
-          <div className="game-container-children-wrapper" style={{ maxHeight: maxChildHeight - 190 }}>
+          <div className="game-container-children-wrapper" style={{ maxHeight: maxChildHeight }}>
             {children}
           </div>
         </div>
 
         <div className="card-selector-container">
-          {game?.state === GameState.SELECTING_WINNER ? null : <CardSelector pick={game?.blackCard?.pick} state={game?.state} cards={cards} onCardsSubmit={onCardsSubmit} isCzar={isCzar} />}
+          {game?.state !== GameState.PICKING_CARDS ? null : <CardSelector pick={game?.blackCard?.pick} state={game?.state} cards={cards} onCardsSubmit={onCardsSubmit} isCzar={isCzar} />}
         </div>
       </div>
       <div className="players-container">

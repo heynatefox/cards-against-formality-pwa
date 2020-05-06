@@ -13,7 +13,7 @@ export default function GameEnded({ game, players }: { game: any, players: any }
       Game over!
     </Typography>
     {winners?.length ? winners.map(({ username, score }: any) => {
-      return <Typography variant="h3">
+      return <Typography variant="h3" key={username}>
         {username === user?.username ? "You win!" : `${username} wins!`} with {score} points
       </Typography>
     }) : null}

@@ -8,14 +8,16 @@ import Card from '../Card/Card';
 import './Homepage.scss';
 import { RouterContext } from '../../Contexts/RouteProvider';
 import { ThemeContext } from '../../Contexts/ThemeProvider';
+import { UserContext } from '../../Contexts/UserProvider';
 
 const Homepage = React.memo(() => {
+  const { user } = useContext(UserContext);
   const { history } = useContext(RouterContext);
   const { name } = useContext(ThemeContext);
 
   function onPlay() {
     if (history) {
-      history.push('/rooms');
+      history.push(user ? '/rooms' : '/login');
     }
   }
 

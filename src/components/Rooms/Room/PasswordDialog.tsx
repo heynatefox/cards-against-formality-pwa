@@ -32,7 +32,7 @@ export default React.memo(({ isDialogOpen, onClose, onSubmit }: any) => {
       <Button color="secondary" onClick={onClose}>
         Cancel
         </Button>
-      <Button onClick={() => onSubmit(password)} color="secondary">
+      <Button onClick={() => onSubmit(password)} color="secondary" disabled={!password?.length}>
         Submit
         </Button>
     </DialogActions>

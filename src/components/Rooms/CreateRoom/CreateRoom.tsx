@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import { CircularProgress, FormControl, InputLabel, Input, FormHelperText, Switch, FormControlLabel, Card, CardContent, CardHeader, CardActions, Button, FormLabel, FormGroup, Checkbox, ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Divider } from '@material-ui/core';
+import {
+  CircularProgress, FormControl, InputLabel, Input, FormHelperText, Switch,
+  FormControlLabel, Card, CardContent, CardActions, Button, FormLabel, FormGroup, Checkbox,
+  ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Divider
+} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './CreateRoom.scss';
 import useFetchData, { FetchType } from '../../../Hooks/useFetchData';
@@ -76,7 +80,7 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
   </ExpansionPanel>
 }
 
-export default function CreateRoom({ onJoin, decksData }: any) {
+export default function CreateRoom({ onJoin, decksData, user }: any) {
   const { openSnack } = useContext(SnackbarContext);
   const [isProtected, setIsProtected] = useState(false);
   const [passcode, setPasscode] = useState('');
@@ -117,7 +121,7 @@ export default function CreateRoom({ onJoin, decksData }: any) {
 
   function handleSubmit() {
     const room = {
-      name,
+      name: name?.length ? name : user?.username,
       options: {
         target,
         maxPlayers,
@@ -165,9 +169,8 @@ export default function CreateRoom({ onJoin, decksData }: any) {
     return <CardContent className="create-form-card-content">
       <form className="create-room-form" onKeyPress={onKeyPress}>
         <FormControl required={true} error={errorField === 'name'}>
-          <InputLabel htmlFor="name">Game Name</InputLabel>
-          <Input id="name" autoFocus={true} aria-describedby="game-name-helper" value={name} onChange={e => setName(e.target.value)} />
-          {errorField === 'name' ? <FormHelperText id="score-helper">Game name must be between 2-16 characters long with no special characters!</FormHelperText> : null}
+          <Input id="name" aria-describedby="game-name-helper" value={name} onChange={e => { setName(e.target.value); }} placeholder={user?.username} />
+          <FormHelperText id="score-helper">{errorField === 'name' ? "Game name must be between 2-16 characters long with no special characters!" : "Game name"}</FormHelperText>
         </FormControl>
         <FormControl>
           <InputLabel htmlFor="target">Target Score</InputLabel>
@@ -189,14 +192,15 @@ export default function CreateRoom({ onJoin, decksData }: any) {
         />
         {renderPasswordForm()}
       </form>
-      <CardActions>
-        {!isLoading ? <Button variant="contained" color="primary" size="small" onClick={handleSubmit}>Create</Button> : <CircularProgress />}
-      </CardActions>
     </CardContent>
   }
 
+  const Submit = <CardActions>
+    {!isLoading ? <Button variant="contained" color="primary" size="small" onClick={handleSubmit}>Create</Button> : <CircularProgress />}
+  </CardActions>;
   return <Card className="form-container" variant="elevation">
-    <CardHeader title="Create Game" subheader="Invite your friends!" />
+    {Submit}
     {renderCardContent()}
+    {Submit}
   </Card>
 }

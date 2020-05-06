@@ -27,10 +27,13 @@ const Player = React.memo(({ player, isHost, isCzar }: any) => {
 });
 
 const Players = React.memo(({ players, host, czar }: PlayersProps) => {
-  if (window.screen.width < 650) {
+
+  if (window.screen.width < 600) {
     return <>
       {players.sort((a, b) => b.score - a.score).map((player) => {
-        return <div key={player._id} className="player">
+        const isHost = player._id === host;
+        const isCzar = player?._id === czar;
+        return <div key={player._id} className={`player ${isCzar || isHost ? 'special' : ''}`}>
           <Badge badgeContent={player.score} color="error">
             {player?.username}
           </Badge>
@@ -41,8 +44,10 @@ const Players = React.memo(({ players, host, czar }: PlayersProps) => {
 
   return <List className="players-list">
     {players.map((player, index) => {
+      const isHost = player._id === host;
+      const isCzar = player?._id === czar;
       return <React.Fragment key={player._id}>
-        <Player player={player} isHost={player._id === host} isCzar={player?._id === czar} />
+        <Player player={player} isHost={isHost} isCzar={isCzar} />
         {index !== players?.length - 1 ? <Divider variant="inset" component="li" /> : null}
       </React.Fragment>
     })}

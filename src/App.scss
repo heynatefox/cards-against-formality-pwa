@@ -25,10 +25,9 @@
   z-index: 10 !important;
 }
 
-.app,
-.MuiContainer-root {
-  @media (max-width: 600px) {
-    padding: 0;
-    width: 100vw;
-  }
+.reconnecting-typog {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
 }

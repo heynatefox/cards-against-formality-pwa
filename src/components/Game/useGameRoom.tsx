@@ -5,8 +5,9 @@ import useFetchData, { FetchType } from "../../Hooks/useFetchData";
 import { RouterContext } from "../../Contexts/RouteProvider";
 import useSocket from "../../Hooks/useSocket";
 import genericReducer from "../../Reducers/genericReducer";
+import { SnackbarMessage } from "../../Contexts/SnackbarProvider";
 
-export default function useGameRoom() {
+export default function useGameRoom(openSnack: (data: SnackbarMessage | null) => void) {
 
   const { user, token } = useContext(UserContext);
   // We need to keep the room state up to date.
@@ -33,7 +34,7 @@ export default function useGameRoom() {
   const onDealEvent = useCallback(d => setCards(d.payload), []);
   const onGameEvent = useCallback(d => setGame(d.payload), []);
   const [socketMapping] = useState({ room: onRoomEvent, game: onGameEvent, deal: onDealEvent });
-  const [socket, disconnected] = useSocket(token, socketMapping, '/games', false);
+  const [socket, disconnected, reconnecting] = useSocket(token, socketMapping, '/games', false);
   const joinRoom = useCallback((passcode?: string) => {
     if (!user) {
       return;
@@ -46,11 +47,19 @@ export default function useGameRoom() {
     // reroute to room.
     next(data, true)
       .catch((err) => {
+        if (err.response?.status === 404) {
+          openSnack({ text: 'Game no longer exists', severity: "error" });
+          history.push('/rooms');
+          return;
+        }
         if (err.response?.status === 401) {
           setShowPasswordDialog(true);
+          if (passcode?.length) {
+            openSnack({ text: 'Invalid password', severity: "error" })
+          }
         }
       });
-  }, [roomId, user, next])
+  }, [roomId, user, next, history, openSnack])
 
   // check if the player is already in the room. If yes, join it.
   // if the game is password protected, prompt password, or take from url.
@@ -109,5 +118,5 @@ export default function useGameRoom() {
     }
   }, [game, user]);
 
-  return [user?._id, room, isHost, isCzar, game, cards, players, spectators, isLoading, errorMessage, showPasswordDialog, joinRoom, disconnected];
+  return [user?._id, room, isHost, isCzar, game, cards, players, spectators, isLoading, errorMessage, showPasswordDialog, joinRoom, disconnected, reconnecting];
 }

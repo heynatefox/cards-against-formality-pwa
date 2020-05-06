@@ -18,7 +18,7 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
     , [card]);
 
   const calculatedClassName = useMemo(() => {
-    return `playing-card ${card.cardType} ${isSelected ? 'selected' : ''} ${isUnselectable ? 'unselectable' : ''} ${className ? className : ''}`;
+    return `no-select playing-card ${card.cardType} ${isSelected ? 'selected' : ''} ${isUnselectable ? 'unselectable' : ''} ${className ? className : ''}`;
   }, [card, isSelected, isUnselectable, className]);
   function _onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (!onSelect || isUnselectable) {

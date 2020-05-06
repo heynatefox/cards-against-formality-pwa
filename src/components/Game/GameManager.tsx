@@ -1,5 +1,5 @@
 import React, { useCallback, useContext } from 'react';
-import { Container, Backdrop, CircularProgress, Button } from '@material-ui/core';
+import { Typography, Container, Backdrop, CircularProgress, Button } from '@material-ui/core';
 
 import GameContainer from './GameBorder/GameBorder';
 import useGameRoom from './useGameRoom';
@@ -13,8 +13,8 @@ import { SnackbarContext } from '../../Contexts/SnackbarProvider';
 import GenericGardGroup from '../GenericCardGroup/GenericCardGroup';
 
 export default function GameManager() {
-  const [clientId, room, isHost, isCzar, game, cards, players, , isLoading, , showPasswordDialog, joinRoom, disconnected] = useGameRoom();
   const { openSnack } = useContext(SnackbarContext);
+  const [clientId, room, isHost, isCzar, game, cards, players, , isLoading, , showPasswordDialog, joinRoom, disconnected, reconnecting] = useGameRoom(openSnack);
   const [, , , leave] = useFetchData(`/api/rooms/leave`, FetchType.PUT);
   const [, , , startGame] = useFetchData(`/api/games/start`, FetchType.PUT);
   const [, , , submitCards] = useFetchData(`/api/games/cards`, FetchType.POST);
@@ -78,11 +78,14 @@ export default function GameManager() {
     </GameContainer>
   }
 
-  if (disconnected) {
+  if (disconnected || reconnecting) {
+
     return <div className="game-disconnected">
       <GenericGardGroup
         leftCardText="Game Disconnected!"
-        leftCardChild={<Button className="reconnect-button" color="secondary" variant="contained" onClick={() => window.location.reload()}>Reconnect</Button>}
+        leftCardChild={
+          reconnecting ? <Typography className="reconnecting-typog"> Reconnecting<CircularProgress /></Typography> : <Button color="secondary" variant="contained" onClick={() => history.push('/login')}>Reconnect</Button>
+        }
         rightCardText="Ensure you do not have more than one instance of the game open."
       />
     </div>
@@ -90,6 +93,6 @@ export default function GameManager() {
 
   return <Container className="game-manager-container" maxWidth="xl">
     {renderMain()}
-    {showPasswordDialog ? <PasswordDialog isDialogOpen={true} onSubmit={joinRoom} /> : null}
+    {showPasswordDialog ? <PasswordDialog isDialogOpen={true} onSubmit={joinRoom} onClose={() => history.push('/rooms')} /> : null}
   </Container>
 }

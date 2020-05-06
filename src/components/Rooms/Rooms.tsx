@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Container, Button, Card, CardHeader, CardContent, Typography } from "@material-ui/core";
+import { Container, Button, Card, CardHeader, CardContent, Typography, CircularProgress, IconButton } from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import { UserContext } from '../../Contexts/UserProvider';
 import Room from './Room/Room';
@@ -36,7 +37,7 @@ export default function Rooms() {
   }, [user])
 
   const { history } = useContext(RouterContext);
-  const [rooms, isLoading, disconnected] = useRooms(token);
+  const [rooms, isLoading, disconnected, reconnecting] = useRooms(token);
   const [isCreating, setIsCreating] = useState(false);
   const onCreate = useCallback(() => setIsCreating(prevIsCreating => !prevIsCreating), []);
 
@@ -67,13 +68,16 @@ export default function Rooms() {
 
   function renderRooms() {
     if (isCreating) {
-      return <CreateRoom onJoin={joinRoom} decksData={decksData} />
+      return <CreateRoom onJoin={joinRoom} decksData={decksData} user={user} />
     }
 
     if (!rooms?.length && !isLoading) {
-      return <Typography variant="body1">
-        There are currently no active rooms
-      </Typography>;
+      return <div className="no-games">
+        <Typography variant="h4">
+          No active games? Create your own!
+      </Typography>
+        <Button className="button" color="primary" variant="contained" onClick={() => setIsCreating(true)}>Create Game</Button>
+      </div>;
     }
 
     return <div className="rooms-list">
@@ -93,6 +97,15 @@ export default function Rooms() {
     //     Re-Join room
     //   </Button>
     // }
+    if (window.screen.width < 600) {
+      return <IconButton
+        onClick={onCreate}
+        className="create-button"
+        color="secondary"
+      >
+        {isCreating ? <ArrowBackIosIcon /> : <AddCircleIcon />}
+      </IconButton>
+    }
 
     return <Button
       onClick={onCreate}
@@ -102,7 +115,7 @@ export default function Rooms() {
       size="medium"
       endIcon={!isCreating ? <AddCircleIcon /> : <RemoveIcon />}
     >
-      {!isCreating ? 'Create Room' : 'Exit'}
+      {!isCreating ? 'Create Game' : 'Exit'}
     </Button>
   }
 
@@ -111,18 +124,20 @@ export default function Rooms() {
       <GenericGardGroup
         leftCardText="Try again later!"
         leftCardChild={<Button color="secondary" variant="contained" onClick={() => window.location.reload()}>Retry</Button>}
-        rightCardText="Our API Servers are currently offline"
+        rightCardText="Our servers are struggling to reach you"
         rightCardChild={<Button color="primary" variant="contained" onClick={() => history.push('/')}>Home</Button>}
       />
     </div>
   }
 
-  if (disconnected) {
+  if (disconnected || reconnecting) {
 
     return <div className="game-disconnected">
       <GenericGardGroup
         leftCardText="Game Disconnected!"
-        leftCardChild={<Button color="secondary" variant="contained" onClick={() => history.push('/login')}>Reconnect</Button>}
+        leftCardChild={
+          reconnecting ? <Typography className="reconnecting-typog"> Reconnecting<CircularProgress /></Typography> : <Button color="secondary" variant="contained" onClick={() => history.push('/login')}>Reconnect</Button>
+        }
         rightCardText="Ensure you do not have more than one instance of the game open."
       />
     </div>
@@ -131,8 +146,8 @@ export default function Rooms() {
   return <Container className="rooms-container" maxWidth="lg">
     <Card className="rooms-card" raised={true}>
       <CardHeader
-        title={!isCreating ? 'Create or Join a Room!' : 'Creating a New Room'}
-        subheader="Fun fun fun!"
+        title={!isCreating ? 'Join a Game!' : 'Creating a Game'}
+        subheader="Fun fun $#&T!"
         action={renderHeaderButton()}
       />
       <CardContent className="rooms-content-container">

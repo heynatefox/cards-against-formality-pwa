@@ -13,11 +13,16 @@
   }
 }
 
-.app,
-.MuiContainer-root {
+.game {
   @media (max-width: 600px) {
-    padding: 0;
     width: 100vw;
+    padding: 0;
+  }
+  .MuiContainer-root {
+    @media (max-width: 600px) {
+      padding: 0;
+      width: 100vw;
+    }
   }
 }
 

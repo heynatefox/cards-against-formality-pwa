@@ -56,7 +56,9 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
           })
         } else {
           setAuthUser(null);
-          routerRef.current.history.push('/login')
+          if (routerRef.current.location.pathname !== '/') {
+            routerRef.current.history.push('/login')
+          }
         }
         setIsLoadingAuth(false)
       });

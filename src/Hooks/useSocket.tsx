@@ -12,26 +12,45 @@ export interface SocketEventMap {
 
 export default function useSocket(
   token: string, socketEventMap: SocketEventMap, namespace: string = '/', autoConnect: boolean = true
-): [SocketIOClient.Socket | null, boolean] {
+): [SocketIOClient.Socket | null, boolean, boolean] {
 
+  const [reconnecting, setReconnecting] = useState(false);
   const [disconnected, setDisconnected] = useState(false);
   const socket = useRef<SocketIOClient.Socket | null>(null);
   const { baseUrl } = useContext(ConfigContext);
   useEffect(() => {
+    let disconnectedTimeout: NodeJS.Timeout | null;
     if (token?.length) {
       socket.current = io(`${baseUrl}${namespace}`, {
         transports: ['websocket'],
         path: '/socket',
-        autoConnect: false,
+        autoConnect: true,
+        reconnection: true,
+        reconnectionDelay: 500,
         query: {
           auth: token
         }
       });
 
       if (socket?.current) {
+        socket.current.on('connect', function () {
+          if (disconnectedTimeout) {
+            clearTimeout(disconnectedTimeout);
+            disconnectedTimeout = null;
+          }
+          setReconnecting(false);
+          setDisconnected(false);
+        });
+
         socket.current.on('disconnect', () => {
-          setDisconnected(true);
+          disconnectedTimeout = setTimeout(() => {
+            setDisconnected(true);
+          }, 1000);
         })
+
+        socket.current.on('reconnecting', () => {
+          setReconnecting(true);
+        });
 
         Object.entries(socketEventMap).forEach(([eventName, onEvent]) => {
           (socket as any).current.on(eventName, onEvent);
@@ -52,5 +71,5 @@ export default function useSocket(
     }
   }, [token, namespace, socketEventMap, autoConnect, baseUrl]);
 
-  return [socket?.current, disconnected]
+  return [socket?.current, disconnected, reconnecting]
 }

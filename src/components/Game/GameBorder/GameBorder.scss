@@ -96,6 +96,9 @@
     .player {
       width: 20%;
       margin-left: 5%;
+      &.special {
+        color: gold;
+      }
     }
     flex-grow: 0;
     flex-shrink: 1;
@@ -103,11 +106,11 @@
     overflow: auto;
     // display: none;
     position: absolute;
-    bottom: 0;
+    bottom: 0.5%;
     display: flex;
     padding-top: 10%;
 
-    @media (min-width: 650px) {
+    @media (min-width: 600px) {
       padding: 0;
       min-width: 200px;
       max-height: 500px;
