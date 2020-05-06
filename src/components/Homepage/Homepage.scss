@@ -63,6 +63,21 @@
     cursor: pointer;
   }
 
+  &.about {
+    height: 650px;
+    .pick-option {
+      background: black;
+      border-radius: 50%;
+      width: 1.2em;
+      height: 1.2em;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
   &.footer {
     height: 180px;
     display: flex;

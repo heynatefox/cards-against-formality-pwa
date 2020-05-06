@@ -60,22 +60,29 @@ const Homepage = React.memo(() => {
       </Container>
 
     </section>
-    <section className="homepage-section even">
+    <section className="homepage-section even about">
       <Container maxWidth="md">
         <Typography className="title" variant="h2" style={{ color: "black" }}>
           About
         </Typography>
-        <Typography variant="body1" style={{ color: "black" }}>
+        <Typography variant="subtitle1" style={{ color: "black" }}>
           Cards Against Formality is a party card game based on <Link rel="noopener" onClick={() => onWindowOpen('https://cardsagainsthumanity.com/')}>Cards Against Humanity</Link>.
-          The game is still under development. However, it is fully functional on larger devices!
         </Typography>
         <br />
         <Typography variant="body1" style={{ color: "black" }}>
-          This is an Open Source project. To find out more, visit <Link onClick={() => onWindowOpen('https://github.com/jordanpawlett/cards-against-formality')} rel="noopener">github</Link>.
+          Click the play button above. Play anonymously, or sign in with your favourite social media. Then proceed to play with your friends and family! Works great on mobile, desktop or tablet!
         </Typography>
         <br />
+        <Typography variant="h5" style={{ color: "black" }}>
+          How to play.
+        </Typography>
         <Typography variant="body1" style={{ color: "black" }}>
-          Servers are expensive! Whilst this application is under development, there will be a small routine maintenance period to save on server costs. This will normal occur sometime between 3-7am UTC+1
+          <ul>
+            <li> Each player starts with a hand of 10 white cards.</li>
+            <li> A black card is chosen at random and displayed to all players.</li>
+            <li> The black card will present a number i.e. <span className="pick-option">2</span> Each player must play this number of white cards.</li>
+            <li> The first player starts as the Card Czar. Their role is to select their favourite white card as the winner. The winning player receives 1 point!</li>
+          </ul>
         </Typography>
       </Container>
     </section>
@@ -89,7 +96,7 @@ const Homepage = React.memo(() => {
         To view the privacy and terms of use, click <Link color="secondary" onClick={() => onWindowOpen('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link> and <Link color="secondary" onClick={() => onWindowOpen('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/license.html')}>here</Link>
       </Typography>
     </section>
-  </div>;
+  </div >;
 });
 
 export default Homepage;
