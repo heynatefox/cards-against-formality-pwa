@@ -69,6 +69,7 @@ export default React.memo(({ state, cards, onCardsSubmit, isCzar, pick }: CardSe
 
   return <div className="cards-list">
     <div className="cards-action">
+      {window.screen.width > 600 ? <div className="spacer" /> : null}
       {renderAction()}
     </div>
     <div className="scroll-wrapper">

@@ -1,11 +1,23 @@
 .card-group-wrapper {
   position: absolute;
   z-index: -1;
-  width: 1000px;
-  right: -90%;
-  bottom: 50%;
+  width: 600px;
+  top: 20%;
+  right: -70%;
+
+  @media (max-width: 330px) {
+    width: 600px;
+    right: -80%;
+    top: 40%;
+  }
+
+  @media (min-width: 400px) {
+    width: 1000px;
+    right: -90%;
+  }
 
   @media (min-width: 600px) {
+    width: 1000px;
     width: 100%;
     top: -2.5%;
     right: -5%;
@@ -64,7 +76,8 @@
   }
 
   &.about {
-    height: 650px;
+    height: fit-content;
+
     .pick-option {
       background: black;
       border-radius: 50%;
@@ -79,6 +92,7 @@
   }
 
   &.footer {
+    text-align: center;
     height: 180px;
     display: flex;
     flex-flow: column;
