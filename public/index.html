@@ -3,6 +3,14 @@
 
 <head>
   <meta charset="utf-8" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="%PUBLIC_URL%/android-chrome-512x512.png" />
+  <meta property="og:site_name" content="Cards Against Formality" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="%PUBLIC_URL%/android-chrome-512x512.png" />
+  <meta name="twitter:site" content="Cards Against Formality" />
+  <meta name="twitter:creator" content="Cards Against Formality" />
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
   <meta name="theme-color" content="#303030" />
@@ -16,7 +24,7 @@
     !function (f, b, e, v, n, t, s) {
       if (f.fbq) return; n = f.fbq = function () {
         n.callMethod ?
-        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
       };
       if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
       n.queue = []; t = b.createElement(e); t.async = !0;
