@@ -66,9 +66,20 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
   const [maxChildHeight, setMaxChildHeight] = useState(0);
   const leftContent = useRef<any>();
   const onShare = useCallback((e: any) => {
+    const data = {
+      title: 'Cards Against Formality',
+      text: `You've been invited to join a game!`,
+      url: window.location.href,
+    };
+    if ('canShare' in navigator && (navigator as any)?.canShare(data)) {
+      (navigator as any).share(data)
+        .then(() => openSnack({ text: 'Game invite sent!', severity: 'success' }))
+        .catch(() => { });
+      return;
+    }
+
     const dummy = document.createElement('input'),
       text = window.location.href;
-
     document.body.appendChild(dummy);
     dummy.value = text;
     dummy.select();
@@ -95,9 +106,9 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
   function renderActionButton() {
     if (window.screen.width < 600) {
       return <>
-        {document.queryCommandEnabled ? <IconButton onClick={onShare} title="Invite your friends!">
+        <IconButton onClick={onShare} title="Invite your friends!">
           <ShareIcon color="action" />
-        </IconButton> : null}
+        </IconButton>
         <IconButton
           className="leave-button-mb"
           color="secondary"
