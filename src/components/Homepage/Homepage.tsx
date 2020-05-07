@@ -64,7 +64,7 @@ const Homepage = React.memo(() => {
           About
         </Typography>
         <Typography variant="subtitle1" style={{ color: "black" }}>
-          Cards Against Formality is a party card game based on <Link rel="noopener" onClick={() => onWindowOpen('https://cardsagainsthumanity.com/')}>Cards Against Humanity</Link>.
+          The best place to play Cards Against Humanity online.
         </Typography>
         <br />
         <Typography variant="body1" style={{ color: "black" }}>
@@ -81,6 +81,10 @@ const Homepage = React.memo(() => {
             <li> The black card will present a number i.e. <span className="pick-option">2</span> Each player must play this number of white cards.</li>
             <li> The first player starts as the Card Czar. Their role is to select their favourite white card as the winner. The winning player receives 1 point!</li>
           </ul>
+        </Typography>
+        <br />
+        <Typography variant="subtitle1" style={{ color: "black" }}>
+          Cards Against Formality is a party card game based on <Link rel="noopener" onClick={() => onWindowOpen('https://cardsagainsthumanity.com/')}>Cards Against Humanity</Link>.
         </Typography>
       </Container>
     </section>

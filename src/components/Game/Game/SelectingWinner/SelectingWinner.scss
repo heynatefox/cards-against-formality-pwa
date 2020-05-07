@@ -3,6 +3,7 @@
   height: 100%;
   display: flex;
   flex-wrap: wrap;
+  overflow: auto;
 
   .user-selection {
     display: flex;
@@ -30,5 +31,13 @@
 
   .submit-text {
     margin-right: 5%;
+  }
+}
+
+.user-submit {
+  width: 50px;
+
+  @media (min-width: 600px) {
+    width: unset;
   }
 }

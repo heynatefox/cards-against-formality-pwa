@@ -12,6 +12,14 @@
 .app {
   width: 100%;
   height: 95%;
+
+  &.game-app {
+    height: 100%;
+
+    @media (min-width: 600px) {
+      height: 95%;
+    }
+  }
   overflow-x: hidden;
   .backdrop {
     z-index: 999;

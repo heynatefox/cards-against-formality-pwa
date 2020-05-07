@@ -53,9 +53,10 @@ export interface GameProps {
   players: any[];
   isCzar: boolean;
   onWinnerSelect: (winnerId: string) => void;
+  maxChildHeight?: number;
 }
 
-export default function Game({ game, players, isCzar, onWinnerSelect }: GameProps) {
+export default function Game({ game, players, isCzar, onWinnerSelect, maxChildHeight }: GameProps) {
   const [gameState, setGameState] = useState<string | null>(null);
   useEffect(() => {
     if (game?.state) {
@@ -70,7 +71,7 @@ export default function Game({ game, players, isCzar, onWinnerSelect }: GameProp
       case GameState.PICKING_CARDS:
         return <PickingCards game={game} />;
       case GameState.SELECTING_WINNER:
-        return <SelectingWinner game={game} onWinnerSelect={onWinnerSelect} isCzar={isCzar} />;
+        return <SelectingWinner game={game} onWinnerSelect={onWinnerSelect} isCzar={isCzar} maxChildHeight={maxChildHeight} />;
       case GameState.ENEDED:
         return <GameEnded game={game} players={players} />;
       default:

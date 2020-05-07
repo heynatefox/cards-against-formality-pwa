@@ -9,7 +9,7 @@ interface PlayersProps {
   czar: string;
 }
 
-const Player = React.memo(({ player, isHost, isCzar }: any) => {
+const Player = ({ player, isHost, isCzar }: any) => {
   function renderIcon() {
     return <div style={!isHost && !isCzar ? { opacity: 0 } : {}}>
       <ListItemAvatar>
@@ -24,7 +24,7 @@ const Player = React.memo(({ player, isHost, isCzar }: any) => {
     {renderIcon()}
     <ListItemText primary={player.username} secondary={`Score: ${!player?.score ? 0 : player.score}`} />
   </ListItem>;
-});
+};
 
 const Players = React.memo(({ players, host, czar }: PlayersProps) => {
 

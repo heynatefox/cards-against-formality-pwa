@@ -23,6 +23,11 @@
 
 .header {
   flex: 0 0 auto;
+  padding: 6px;
+
+  @media (min-width: 600px) {
+    padding: 16px;
+  }
 }
 
 .game-container-content {
@@ -94,7 +99,7 @@
 
   .players-container {
     .player {
-      width: 20%;
+      flex-shrink: 0;
       margin-left: 5%;
       &.special {
         color: gold;

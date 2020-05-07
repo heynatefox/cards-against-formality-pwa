@@ -94,13 +94,18 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
 
   function renderActionButton() {
     if (window.screen.width < 600) {
-      return <IconButton
-        className="leave-button-mb"
-        color="secondary"
-        onClick={onLeave}
-      >
-        <ExitToAppIcon />
-      </IconButton>
+      return <>
+        {document.queryCommandEnabled ? <IconButton onClick={onShare} title="Invite your friends!">
+          <ShareIcon color="action" />
+        </IconButton> : null}
+        <IconButton
+          className="leave-button-mb"
+          color="secondary"
+          onClick={onLeave}
+        >
+          <ExitToAppIcon />
+        </IconButton>
+      </>
 
     }
 
@@ -117,16 +122,18 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
   </Button>;
   }
 
+  const title = <>
+    <span>{roomName} Game</span>
+    {document.queryCommandEnabled ? <IconButton onClick={onShare} title="Invite your friends!">
+      <ShareIcon color="action" />
+    </IconButton> : null}
+  </>;
+
   return <Card raised={true} className="game-border-container">
     <CardHeader
       className="header"
       titleTypographyProps={{ color: 'secondary' }}
-      title={<>
-        <span>{roomName} Game</span>
-        {document.queryCommandEnabled ? <IconButton color="secondary" onClick={onShare} title="Invite your friends!">
-          <ShareIcon />
-        </IconButton> : null}
-      </>}
+      title={window.screen.width > 600 ? title : null}
       subheader={<GameBorderSubHeader game={game} isHost={isHost} />}
       action={renderActionButton()}
     />
@@ -139,7 +146,13 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
           </div>
 
           <div className="game-container-children-wrapper" style={{ maxHeight: maxChildHeight }}>
-            {children}
+            {React.Children.map(children, (child: any, index: number) => {
+              if (!child || !React.isValidElement(child)) {
+                return null;
+              }
+
+              return React.cloneElement(child, { maxChildHeight } as any);
+            })}
           </div>
         </div>
 

@@ -20,9 +20,10 @@ export interface SelectingWinnerProps {
   game: TurnDataWithState;
   onWinnerSelect: (winnerId: string) => void;
   isCzar: boolean;
+  maxChildHeight?: number
 }
 
-export default function SelectingWinner({ onWinnerSelect, game, isCzar }: SelectingWinnerProps) {
+export default function SelectingWinner({ onWinnerSelect, game, isCzar, maxChildHeight }: SelectingWinnerProps) {
 
   const [selectedWinner, setSelectedWinner] = useState('');
   const onCardSelected = useCallback((id: string) => {
@@ -56,7 +57,7 @@ export default function SelectingWinner({ onWinnerSelect, game, isCzar }: Select
       </Typography>
       {renderSubmit()}
     </div>
-    <div className="user-selection-container">
+    <div className="user-selection-container" style={{ maxHeight: maxChildHeight }}>
       {Object.entries(game.selectedCards).map(([userId, cards]) => {
         return <UserSelection
           key={userId}

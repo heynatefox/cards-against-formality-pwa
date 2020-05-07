@@ -62,8 +62,8 @@ function App() {
       </Route>
 
       <UserProvider isFirebaseInit={isFirebaseInit}>
-        <Navbar />
         <Route path="/login">
+          <Navbar />
           <Container className="app-container" maxWidth="lg">
             <div className="app">
               <Suspense fallback={<RouteLoadingFallback />}>
@@ -74,6 +74,7 @@ function App() {
         </Route>
 
         <Route path="/rooms">
+          <Navbar />
           <Container className="app-container" maxWidth="lg">
             <div className="app">
               <Suspense fallback={<RouteLoadingFallback />}>
@@ -85,8 +86,9 @@ function App() {
         </Route>
 
         <Route path="/game">
+          {window.screen.width > 600 ? <Navbar /> : null}
           <Container className="app-container game" maxWidth="xl">
-            <div className="app">
+            <div className="app game-app">
               <Suspense fallback={<RouteLoadingFallback />}>
                 <Game />
               </Suspense>
