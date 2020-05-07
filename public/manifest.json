@@ -25,7 +25,7 @@
   ],
   "start_url": "/rooms",
   "scope": ".",
-  "display": "fullscreen",
+  "display": "standalone",
   "theme_color": "#303030",
   "background_color": "#303030"
 }
