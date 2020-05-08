@@ -33,23 +33,31 @@ export interface GameBorderProps {
 }
 
 function GameBorderSubHeader({ game, isHost }: { game: any, isHost: boolean }) {
-  const [timer, setTimer] = useState(
-    game?.state === GameState.PICKING_CARDS || game?.state === GameState.SELECTING_WINNER ? 60 : 0
-  );
+
+  const [timeObj, setTimeObj] = useState(() => {
+    if (game?.state === GameState.PICKING_CARDS || game?.state === GameState.SELECTING_WINNER) {
+      const nowTime = new Date().getTime();
+      return { startTime: nowTime, endTime: nowTime + 60000, timer: 60 };
+    }
+    return null;
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimer(prevTimer => {
-        if (prevTimer === 0) {
+      setTimeObj(prevTimer => {
+        if (!prevTimer) {
           return prevTimer;
         }
-        return prevTimer - 1;
+
+        const nowTime = new Date().getTime();
+        return Object.assign({}, prevTimer, { timer: Math.ceil((nowTime - prevTimer.endTime) * -0.001) });
       });
     }, 1000);
+
     return () => {
       clearInterval(interval);
     }
-  }, [game])
+  }, []);
 
 
   if (!game) {
@@ -58,7 +66,7 @@ function GameBorderSubHeader({ game, isHost }: { game: any, isHost: boolean }) {
 
   return <div className="sub-header-container">
     <span className="round-number">Round {game.turn}</span>
-    {timer > 0 ? <><span className="timer">{timer}</span><AccessTimeIcon /></> : null}
+    {timeObj && timeObj.timer > 0 ? <><span className="timer">{timeObj?.timer}</span><AccessTimeIcon /></> : null}
   </div>
 }
 

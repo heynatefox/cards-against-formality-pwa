@@ -188,7 +188,7 @@ export default function CreateRoom({ onJoin, decksData, user }: any) {
         {!decksData?.rows ? null : <DeckSelector decks={decksData.rows} onChange={setDecks as any} />}
         <FormControlLabel
           control={<Switch checked={isProtected} onChange={e => setIsProtected(e.target.checked)} name="checkedA" />}
-          label="Password"
+          label="Private"
         />
         {renderPasswordForm()}
       </form>
