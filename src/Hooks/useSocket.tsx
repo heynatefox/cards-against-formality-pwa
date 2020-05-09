@@ -24,7 +24,7 @@ export default function useSocket(
       socket.current = io(`${baseUrl}${namespace}`, {
         transports: ['websocket'],
         path: '/socket',
-        autoConnect: true,
+        autoConnect: autoConnect,
         reconnection: true,
         reconnectionDelay: 500,
         query: {
