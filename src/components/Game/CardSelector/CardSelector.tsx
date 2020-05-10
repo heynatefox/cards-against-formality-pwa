@@ -64,7 +64,7 @@ export default React.memo(({ state, cards, onCardsSubmit, isCzar, pick }: CardSe
       </>
     }
 
-    return <Typography>The Czar is not allowed to select cards to play</Typography>;
+    return <Typography className="czar-message">You are the Czar. Wait to pick your favourite.</Typography>;
   }
 
   return <div className="cards-list">

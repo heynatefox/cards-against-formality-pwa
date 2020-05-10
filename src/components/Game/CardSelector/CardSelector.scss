@@ -17,6 +17,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+
     .submit-button {
       margin-left: 2%;
       margin-right: 2%;
@@ -24,6 +25,14 @@
       @media (min-width: 600px) {
         margin-right: 0%;
         width: 100px !important;
+      }
+    }
+
+    .czar-message {
+      margin-right: 2%;
+
+      @media (min-width: 600px) {
+        margin-right: 0%;
       }
     }
   }
