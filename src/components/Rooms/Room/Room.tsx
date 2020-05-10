@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { IconButton, Card, CardContent, CardHeader, Button } from "@material-ui/core";
+import { IconButton, Card, CardContent, CardHeader, Button, Typography } from "@material-ui/core";
 import Lock from '@material-ui/icons/Lock';
 import LockOpen from '@material-ui/icons/LockOpen';
 
@@ -23,18 +23,24 @@ export default React.memo(({ room, onJoin }: any) => {
     />;
   }
 
+  function renderIcon() {
+    if (window.screen.width < 600) {
+      return null;
+    }
+
+    return <IconButton edge="start" color="secondary" aria-label="menu" disabled={true}>
+      {room.passcode ? <Lock /> : <LockOpen />}
+    </IconButton>
+  }
+
   return <>
     {renderPasswordDialog()}
     <Card className="room" key={room._id}>
       <CardHeader
         className="room-title"
         title={room.name}
-        subheader={`${room.players.length}/${room.options.maxPlayers} Players, Status: ${room.status}`}
-        avatar={
-          <IconButton edge="start" color="secondary" aria-label="menu" disabled={true}>
-            {room.passcode ? <Lock /> : <LockOpen />}
-          </IconButton>
-        }
+        subheader={`${room.players.length}/${room.options.maxPlayers} Players`}
+        avatar={renderIcon()}
         action={
           <Button
             variant="contained"
@@ -47,8 +53,12 @@ export default React.memo(({ room, onJoin }: any) => {
         </Button>
         }
       />
-      <CardContent>
-        {/* <div>hello</div> */}
+      <CardContent className="room-content">
+        {room.passcode ? <Typography variant="caption" color="secondary">Private</Typography> : null}
+        <Typography color="textSecondary" variant="caption">Status: {room.status}</Typography>
+        <Typography color="textSecondary" variant="caption">Target Score: {room.options.target}</Typography>
+        <Typography color="textSecondary" variant="caption">Round Time: {room.options.roundTime}s</Typography>
+        <Typography color="textSecondary" variant="caption">Number of Decks: {room.options.decks.length}</Typography>
       </CardContent>
     </Card>
   </>;

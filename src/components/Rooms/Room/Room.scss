@@ -11,4 +11,9 @@
   .room-title {
     text-transform: capitalize;
   }
+
+  .room-content {
+    display: flex;
+    flex-flow: column;
+  }
 }
