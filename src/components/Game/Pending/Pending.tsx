@@ -30,7 +30,7 @@ const Pending = React.memo(({ isHost, numberOfPlayers, startGame, room }: Pendin
   }
 
 
-  const { maxPlayers, maxSpectators, target } = room?.options;
+  const { maxPlayers, decks, target, roundTime } = room?.options;
   const text = isHost ? 'Start the game when everyone is ready _' : 'Waiting for the host to start the game _';
   return <div className="pending-container">
     <div className="card-group">
@@ -39,8 +39,9 @@ const Pending = React.memo(({ isHost, numberOfPlayers, startGame, room }: Pendin
       </Card>
       <Card className="second-card" card={{ cardType: 'white', _id: '2', text: `Game Options` }}>
         <span className="word">Max Players: {maxPlayers}</span>
-        <span className="word">Max Spectators: {maxSpectators}</span>
         <span className="word">Target Score: {target}</span>
+        <span className="word">Round Time: {roundTime}s</span>
+        <span className="word">Number of Decks: {decks.length}</span>
       </Card>
     </div>
   </div >

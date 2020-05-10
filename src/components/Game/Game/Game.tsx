@@ -35,7 +35,6 @@ export interface TurnData {
   czar: string;
   blackCard: Card;
   turn: number;
-  totalTime: number;
 }
 
 export interface TurnDataWithState extends TurnData {

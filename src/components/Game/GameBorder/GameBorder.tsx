@@ -23,6 +23,7 @@ export interface GameBorderProps {
   children: React.ReactNode;
   players: any[];
   roomName: string;
+  room: any;
   onLeave: () => void;
   cards: Card[];
   isCzar: boolean;
@@ -32,12 +33,13 @@ export interface GameBorderProps {
   openSnack: (data: SnackbarMessage | null) => void;
 }
 
-function GameBorderSubHeader({ game, isHost }: { game: any, isHost: boolean }) {
+function GameBorderSubHeader({ game, isHost, room }: { game: any, isHost: boolean, room: any }) {
 
   const [timeObj, setTimeObj] = useState(() => {
     if (game?.state === GameState.PICKING_CARDS || game?.state === GameState.SELECTING_WINNER) {
       const nowTime = new Date().getTime();
-      return { startTime: nowTime, endTime: nowTime + 60000, timer: 60 };
+      const timer = room.options?.roundTime;
+      return { startTime: nowTime, endTime: nowTime + (timer * 1000), timer };
     }
     return null;
   });
@@ -70,7 +72,7 @@ function GameBorderSubHeader({ game, isHost }: { game: any, isHost: boolean }) {
   </div>
 }
 
-export default React.memo(({ roomName, host, isHost, players, children, onLeave, cards, onCardsSubmit, isCzar, game, openSnack }: GameBorderProps) => {
+export default React.memo(({ roomName, host, isHost, players, children, onLeave, cards, onCardsSubmit, isCzar, game, openSnack, room }: GameBorderProps) => {
   const [maxChildHeight, setMaxChildHeight] = useState(0);
   const leftContent = useRef<any>();
   const onShare = useCallback((e: any) => {
@@ -143,9 +145,9 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
 
   const title = <>
     <span>{roomName} Game</span>
-    {document.queryCommandEnabled ? <IconButton onClick={onShare} title="Invite your friends!">
+    <IconButton onClick={onShare} title="Invite your friends!">
       <ShareIcon color="action" />
-    </IconButton> : null}
+    </IconButton>
   </>;
 
   return <Card raised={true} className="game-border-container">
@@ -153,7 +155,7 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
       className="header"
       titleTypographyProps={{ color: 'secondary' }}
       title={window.screen.width > 600 ? title : null}
-      subheader={<GameBorderSubHeader game={game} isHost={isHost} />}
+      subheader={<GameBorderSubHeader game={game} isHost={isHost} room={room} />}
       action={renderActionButton()}
     />
     <CardContent className="game-container-content">
@@ -180,7 +182,7 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
         </div>
       </div>
       <div className="players-container">
-        <Players players={players} host={host} czar={game?.czar} />
+        <Players players={players} host={host} czar={game?.czar} roomId={room?._id} isCurrentUserHost={isHost}/>
       </div>
     </CardContent>
   </Card >

@@ -9,7 +9,7 @@
   }
 
   .cards-action {
-
+    flex-flow: row-reverse;
     .spacer {
       flex: 1 1 auto;
     }
@@ -18,9 +18,11 @@
     align-items: center;
     justify-content: flex-start;
     .submit-button {
+      margin-left: 2%;
       margin-right: 2%;
       width: 50px !important;
       @media (min-width: 600px) {
+        margin-right: 0%;
         width: 100px !important;
       }
     }

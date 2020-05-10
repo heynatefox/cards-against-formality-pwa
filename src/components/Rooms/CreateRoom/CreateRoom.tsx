@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   CircularProgress, FormControl, InputLabel, Input, FormHelperText, Switch,
   FormControlLabel, Card, CardContent, CardActions, Button, FormLabel, FormGroup, Checkbox,
-  ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Divider
+  ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Divider, Select, MenuItem
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './CreateRoom.scss';
@@ -85,18 +85,14 @@ export default function CreateRoom({ onJoin, decksData, user }: any) {
   const [isProtected, setIsProtected] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [name, setName] = useState('');
-
+  const [roundTime, setRoundTime] = useState(60);
   const [target, setTarget] = useState(10);
   const limitedSetTarget = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setTarget(rangeLimit(event, { min: 5, max: 100 }));
   }, []);
   const [maxPlayers, setMaxPlayers] = useState(10);
   const limitedSetMaxPlayers = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setMaxPlayers(rangeLimit(event));
-  }, []);
-  const [maxSpectators, setMaxSpectators] = useState(10);
-  const limitedSetMaxSpectators = useCallback((event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setMaxSpectators(rangeLimit(event));
+    setMaxPlayers(rangeLimit(event, { min: 2, max: 50 }));
   }, []);
   const [, isLoading, , createRoom] = useFetchData(`/api/rooms`, FetchType.POST);
   const [decks, setDecks] = useState([]);
@@ -125,8 +121,9 @@ export default function CreateRoom({ onJoin, decksData, user }: any) {
       options: {
         target,
         maxPlayers,
-        maxSpectators,
-        decks
+        maxSpectators: 10,
+        decks,
+        roundTime
       },
     }
     if (isProtected && passcode.length) {
@@ -182,8 +179,19 @@ export default function CreateRoom({ onJoin, decksData, user }: any) {
           <Input id="max-players" type="number" aria-describedby="max-players-helper" value={maxPlayers} onChange={limitedSetMaxPlayers} />
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="max-spectators">Max Spectators</InputLabel>
-          <Input id="max-spectators" type="number" aria-describedby="max-spectators-helper" value={maxSpectators} onChange={limitedSetMaxSpectators} />
+          <InputLabel id="roundTime-label">Round time (seconds)</InputLabel>
+          <Select
+            labelId="roundTime-label"
+            id="roundTime"
+            value={roundTime}
+            onChange={(e: any) => setRoundTime(parseInt(e.target.value, 10))}
+          >
+            <MenuItem value={15}>15</MenuItem>
+            <MenuItem value={30}>30</MenuItem>
+            <MenuItem value={45}>45</MenuItem>
+            <MenuItem value={60}>60</MenuItem>
+          </Select>
+          <FormHelperText>How you have to select your answers</FormHelperText>
         </FormControl>
         {!decksData?.rows ? null : <DeckSelector decks={decksData.rows} onChange={setDecks as any} />}
         <FormControlLabel

@@ -98,6 +98,17 @@ export default function useGameRoom(openSnack: (data: SnackbarMessage | null) =>
   }, [res]);
 
   useEffect(() => {
+    if (socket) {
+      socket.once('message', (data: any) => {
+        if (data.payload?.type?.length && data.payload.type === 'kicked') {
+          history.push('/rooms');
+          openSnack({ text: 'You have been kicked from the game', severity: 'error' });
+        }
+      });
+    }
+  }, [socket, history, openSnack])
+
+  useEffect(() => {
     // once we have a room. We must join the game socket namespace.
     if (room && user) {
       setSpectators(room.spectators);
