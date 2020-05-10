@@ -53,7 +53,7 @@ export default function SelectingWinner({ onWinnerSelect, game, isCzar, maxChild
   return <>
     <div className="submit-wrapper">
       <Typography className="submit-text">
-        {isCzar ? 'Select your favourite answer!' : 'Wait while the Czar picks his favourite!'}
+        {isCzar ? 'Select your favourite answer!' : 'Wait while the Czar picks their favourite!'}
       </Typography>
       {renderSubmit()}
     </div>

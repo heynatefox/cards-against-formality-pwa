@@ -70,6 +70,7 @@
 .homepage-section {
   padding: 10% 0 10%;
   height: 450px;
+  background: #303030;
 
   a {
     cursor: pointer;
@@ -112,9 +113,23 @@
     }
   }
 
+  &.sponsor {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: fit-content;
+  }
+
+  &.page-break {
+    height: 5px;
+  }
+
   &.title {
     display: flex;
     width: 100%;
+    background: none;
   }
 
   @media (min-width: 600px) {
@@ -147,5 +162,56 @@
   }
   &.even {
     background: white;
+  }
+}
+
+.patreon-button {
+  img {
+    height: 50px;
+  }
+  &:hover {
+    transform: scale(1.05);
+    
+    @media (min-width: 600px) {
+      transition: all 0.5s ease;
+    }
+  }
+}
+
+.sponsor-list {
+  @media (min-width: 600px) {
+    margin-top: 5%;
+  }
+
+  margin-top: 10%;
+  width: 100%;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  align-items: center;
+
+  .logo-template {
+    &:last-child {
+      margin-bottom: 0%;
+
+      @media (min-width: 1334px) {
+        margin-top: -5%;
+      }
+    }
+
+    cursor: pointer;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    width: 300px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: dotted grey 1px;
+
+    &:hover {
+      border: dotted grey 2px;
+    }
   }
 }

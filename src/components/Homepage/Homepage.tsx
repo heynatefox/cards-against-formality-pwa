@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, Typography, Container, Button } from '@material-ui/core';
+import { Link, Typography, Container, Button, ButtonBase } from '@material-ui/core';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
@@ -86,6 +86,30 @@ const Homepage = React.memo(() => {
         <Typography variant="subtitle1" style={{ color: "black" }}>
           Cards Against Formality is a party card game based on <Link rel="noopener" onClick={() => onWindowOpen('https://cardsagainsthumanity.com/')}>Cards Against Humanity</Link>.
         </Typography>
+      </Container>
+    </section>
+    <section className="homepage-section sponsor">
+      <Container maxWidth="xl">
+        <Typography variant="h3">
+          Sponsors
+        </Typography>
+        <br />
+        <Typography>
+          Want your logo to appear below? Or just want to help contribute to keeping the servers up and running?
+        </Typography>
+        <br />
+        <ButtonBase
+          className="patreon-button"
+          focusRipple={true}
+          onClick={() => onWindowOpen('https://www.patreon.com/cardsagainstformality')}
+        >
+          <img src={`${process.env.PUBLIC_URL}/sponsor_button.png`} alt="patreon button" />
+        </ButtonBase>
+        <div className="sponsor-list">
+          <div className="logo-template" onClick={() => onWindowOpen('https://www.patreon.com/cardsagainstformality')} title="Become a sponor on Patreon">Your logo</div>
+          <div className="logo-template" onClick={() => onWindowOpen('https://www.patreon.com/cardsagainstformality')} title="Become a sponor on Patreon">Your logo</div>
+          <div className="logo-template" onClick={() => onWindowOpen('https://www.patreon.com/cardsagainstformality')} title="Become a sponor on Patreon">Your logo</div>
+        </div>
       </Container>
     </section>
     <section className="homepage-section footer">
