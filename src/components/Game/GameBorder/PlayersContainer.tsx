@@ -32,7 +32,7 @@ const MobilePlayer = ({ player, isHost, isCzar, onPlayerKick, isCurrentUserHost 
   }
 
   return <>
-    <div className={`player ${isCzar || isHost ? 'special' : ''}`} ref={anchorEl} onClick={() => setIsOpen(prev => !prev)}>
+    <div className={`player ${isCzar ? 'special' : ''}`} ref={anchorEl} onClick={() => setIsOpen(prev => !prev)}>
       <Badge badgeContent={player.score} color="error">
         {player?.username}
       </Badge>
@@ -57,7 +57,7 @@ const MobilePlayer = ({ player, isHost, isCzar, onPlayerKick, isCurrentUserHost 
 
 const Player = ({ player, isHost, isCzar, onPlayerKick, isCurrentUserHost }: any) => {
   function renderIcon() {
-    return <div style={!isHost && !isCzar ? { opacity: 0 } : {}}>
+    return <div style={!isCzar ? { opacity: 0 } : {}}>
       <ListItemAvatar>
         <Avatar>
           <StyleIcon />
@@ -71,7 +71,7 @@ const Player = ({ player, isHost, isCzar, onPlayerKick, isCurrentUserHost }: any
       return null;
     }
 
-    return <ListItemSecondaryAction>
+    return <ListItemSecondaryAction style={{ right: '-10px' }}>
       <Button color="secondary" onClick={() => { onPlayerKick(player?._id) }}>Kick</Button>
     </ListItemSecondaryAction>
   }
