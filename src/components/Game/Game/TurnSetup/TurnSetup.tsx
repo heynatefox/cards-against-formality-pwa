@@ -29,9 +29,9 @@ export default function TurnSetup({ game, players }: TurnSetupProps) {
   }
   const username = players.find(player => player._id === game.winner)?.username;
   return <div className="turn-setup-container">
-    <Typography variant="h5">{username === user?.username ? 'You win' : `${username} wins`}!</Typography>
+    {username?.length ? <Typography variant="h5">{username === user?.username ? 'You win' : `${username} wins`}!</Typography> : <Typography variant="h5">Winner!</Typography>}
     <div className="winning-cards">
-      {game.winningCards.map(card => <Card key={card._id + 'user-selection'} card={card} className="winner"/>).reverse()}
+      {game.winningCards.map(card => <Card key={card._id + 'user-selection'} card={card} className="winner" />).reverse()}
     </div>
   </div>;
 }

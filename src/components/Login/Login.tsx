@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
-import { Link, Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText, Typography } from '@material-ui/core';
+import { Link, Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 import { debounce } from 'lodash';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import { UserContext } from '../../Contexts/UserProvider';
@@ -11,9 +11,9 @@ import { RouterContext } from '../../Contexts/RouteProvider';
 function LoginProviders({ onProviderSelect }: any) {
   return <div className="login-providers-content">
     <Button className="button" onClick={() => onProviderSelect('anonymous')} variant="contained" color="secondary">Play Anonymously</Button>
-    <Typography>
-      Or Sign in to choose a username!
-    </Typography>
+    <FormHelperText color="secondary" className="sign-in-helper">
+      Or Sign in to pick a permanent username.
+      </FormHelperText>
     <Button className="button bottom" onClick={() => onProviderSelect('google')} variant="contained" color="primary">
       <img className="google-icon-svg" src={googleLogo} alt="google" />
       <div>Sign in with Google</div>
@@ -22,9 +22,10 @@ function LoginProviders({ onProviderSelect }: any) {
       <FacebookIcon className="google-icon-svg" />
       <div>Continue with Facebook</div>
     </Button>
-    <FormHelperText >By Proceeding, you are agreeing to our terms of service and that you have read our privacy policy found <Link color="secondary" onClick={() => window.open('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link>.</FormHelperText>
+    <FormHelperText className="legal-helper">By Proceeding, you are agreeing to our terms of service and that you have read our privacy policy found <Link color="secondary" onClick={() => window.open('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link>.</FormHelperText>
   </div>
 }
+
 
 export default React.memo(() => {
 
@@ -100,7 +101,7 @@ export default React.memo(() => {
       return <LoginProviders onProviderSelect={onProviderSelected} />
     }
 
-    if (authUser && !authUser.isAnonymous && !user) {
+    if (authUser && !user) {
       return <div className="input-wrapper">
         <FormControl className="username-input" required={true} error={!!message?.length}>
           <InputLabel htmlFor="target">Username</InputLabel>
@@ -112,14 +113,14 @@ export default React.memo(() => {
     }
   }
 
-  if (user && user.isAnonymous) {
+  if (user) {
     return null;
   }
 
   return <Container maxWidth="lg" className="login-wrapper">
     <Card className="inner-login-container" raised={true}>
       <CardHeader className="header" title="Let's Play!"></CardHeader>
-      <CardContent>
+      <CardContent className="root-login-card-content">
         {renderCardContent()}
       </CardContent>
     </Card>

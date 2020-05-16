@@ -17,7 +17,7 @@ import './Rooms.scss';
 export default function Rooms() {
 
   const { openSnack } = useContext(SnackbarContext);
-  const { user, token } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [hasServerIssue, setHasServerIssue] = useState(false);
   useEffect(() => {
     // If there's no user yet. Check if ther's an issue.
@@ -37,7 +37,7 @@ export default function Rooms() {
   }, [user])
 
   const { history } = useContext(RouterContext);
-  const [rooms, isLoading, disconnected, reconnecting] = useRooms(token);
+  const [rooms, isLoading, disconnected, reconnecting] = useRooms();
   const [isCreating, setIsCreating] = useState(false);
   const onCreate = useCallback(() => setIsCreating(prevIsCreating => !prevIsCreating), []);
 

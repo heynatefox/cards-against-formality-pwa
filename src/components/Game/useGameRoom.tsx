@@ -9,7 +9,7 @@ import { SnackbarMessage } from "../../Contexts/SnackbarProvider";
 
 export default function useGameRoom(openSnack: (data: SnackbarMessage | null) => void) {
 
-  const { user, token } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   // We need to keep the room state up to date.
   const [res, isLoading, errorMessage, next] = useFetchData(`/api/rooms/join/players`, FetchType.PUT);
   const { location: { search, state }, history } = useContext(RouterContext);
@@ -34,7 +34,7 @@ export default function useGameRoom(openSnack: (data: SnackbarMessage | null) =>
   const onDealEvent = useCallback(d => setCards(d.payload), []);
   const onGameEvent = useCallback(d => setGame(d.payload), []);
   const [socketMapping] = useState({ room: onRoomEvent, game: onGameEvent, deal: onDealEvent });
-  const [socket, disconnected, reconnecting] = useSocket(token, socketMapping, '/games', false);
+  const [socket, disconnected, reconnecting] = useSocket(socketMapping, '/games', false);
   const joinRoom = useCallback((passcode?: string) => {
     if (!user) {
       return;

@@ -4,7 +4,7 @@ import RoomsReducer from "../Reducers/genericReducer";
 import useFetchData from "./useFetchData";
 import useSocket from "./useSocket";
 
-export default function useRooms(token: string): [any[], boolean, boolean, boolean] {
+export default function useRooms(): [any[], boolean, boolean, boolean] {
 
   const [rooms, dispatch] = useReducer(RoomsReducer, []);
 
@@ -25,13 +25,12 @@ export default function useRooms(token: string): [any[], boolean, boolean, boole
   }, []);
   const [socketMapping] = useState({ rooms: onEvent });
 
-  const [, disconnected, reconnecting] = useSocket(token, socketMapping, '/rooms');
+  const [, disconnected, reconnecting] = useSocket(socketMapping, '/rooms');
   // TODO: implement infinite scrolling.
   const [res, isLoading] = useFetchData<{ rows: any[] }>(`/api/rooms?pageSize=100`);
 
   useEffect(() => {
     if (res) {
-      // investigate why this is called twice. Might just be a dev thing.
       dispatch({ type: 'MULTI_ADD_DATA', data: res.rows })
     }
   }, [res]);

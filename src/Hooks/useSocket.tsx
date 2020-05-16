@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import io from 'socket.io-client';
 
 import ConfigContext from '../Contexts/ConfigContext';
+import { auth } from 'firebase';
 
 
 export interface SocketEventMap {
@@ -11,7 +12,7 @@ export interface SocketEventMap {
 
 
 export default function useSocket(
-  token: string, socketEventMap: SocketEventMap, namespace: string = '/', autoConnect: boolean = true
+  socketEventMap: SocketEventMap, namespace: string = '/', autoConnect: boolean = true
 ): [SocketIOClient.Socket | null, boolean, boolean] {
 
   const [reconnecting, setReconnecting] = useState(false);
@@ -20,48 +21,50 @@ export default function useSocket(
   const { baseUrl } = useContext(ConfigContext);
   useEffect(() => {
     let disconnectedTimeout: NodeJS.Timeout | null;
-    if (token?.length) {
-      socket.current = io(`${baseUrl}${namespace}`, {
-        transports: ['websocket'],
-        path: '/socket',
-        autoConnect: autoConnect,
-        reconnection: true,
-        reconnectionDelay: 500,
-        query: {
-          auth: token
+    auth().currentUser?.getIdToken()
+      .then((token) => {
+
+        socket.current = io(`${baseUrl}${namespace}`, {
+          transports: ['websocket'],
+          path: '/socket',
+          autoConnect: autoConnect,
+          reconnection: true,
+          reconnectionDelay: 500,
+          query: {
+            auth: token
+          }
+        });
+
+        if (socket?.current) {
+          socket.current.on('connect', function () {
+            if (disconnectedTimeout) {
+              clearTimeout(disconnectedTimeout);
+              disconnectedTimeout = null;
+            }
+            setReconnecting(false);
+            setDisconnected(false);
+          });
+
+          socket.current.on('disconnect', () => {
+            disconnectedTimeout = setTimeout(() => {
+              setDisconnected(true);
+            }, 1000);
+          })
+
+          socket.current.on('reconnecting', () => {
+            setReconnecting(true);
+          });
+
+          Object.entries(socketEventMap).forEach(([eventName, onEvent]) => {
+            (socket as any).current.on(eventName, onEvent);
+          });
+
+          // Only connect if auto correct is true. Else let the hooks user decided.
+          if (autoConnect && socket.current.disconnected) {
+            socket.current.connect()
+          }
         }
       });
-
-      if (socket?.current) {
-        socket.current.on('connect', function () {
-          if (disconnectedTimeout) {
-            clearTimeout(disconnectedTimeout);
-            disconnectedTimeout = null;
-          }
-          setReconnecting(false);
-          setDisconnected(false);
-        });
-
-        socket.current.on('disconnect', () => {
-          disconnectedTimeout = setTimeout(() => {
-            setDisconnected(true);
-          }, 1000);
-        })
-
-        socket.current.on('reconnecting', () => {
-          setReconnecting(true);
-        });
-
-        Object.entries(socketEventMap).forEach(([eventName, onEvent]) => {
-          (socket as any).current.on(eventName, onEvent);
-        });
-
-        // Only connect if auto correct is true. Else let the hooks user decided.
-        if (autoConnect && socket.current.disconnected) {
-          socket.current.connect()
-        }
-      }
-    }
 
     return () => {
       if (socket?.current) {
@@ -69,7 +72,7 @@ export default function useSocket(
         socket.current.removeAllListeners();
       }
     }
-  }, [token, namespace, socketEventMap, autoConnect, baseUrl]);
+  }, [namespace, socketEventMap, autoConnect, baseUrl]);
 
   return [socket?.current, disconnected, reconnecting]
 }

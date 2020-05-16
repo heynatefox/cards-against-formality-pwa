@@ -7,7 +7,10 @@
   display: flex !important;
   justify-content: center;
   align-items: center;
-  height: 70%;
+  height: 100%;
+  @media (min-width: 600px) {
+    height: 70%;
+  }
 }
 
 .inner-login-container {
@@ -28,7 +31,9 @@
     flex-flow: row;
     align-items: center;
     justify-content: center;
-    min-width: 500px;
+    @media (min-width: 600px) {
+      min-width: 500px;
+    }
 
     .username-input {
       margin-right: 5%;
@@ -43,6 +48,10 @@
   align-items: center;
 
   .button {
+    font-size: 0.8em;
+    @media (min-width: 600px) {
+      font-size: 1em;
+    }
     margin-bottom: 5%;
     &.bottom {
       margin-top: 5%;
@@ -53,5 +62,24 @@
     height: 25px;
     width: 25px;
     margin-right: 10px;
+  }
+}
+
+.sign-in-helper {
+  text-align: center;
+  font-size: 0.7em;
+
+  @media (min-width: 600px) {
+    font-size: 0.9em;
+  }
+}
+
+.legal-helper {
+  font-size: 0.6em;
+  margin-top: 20%;
+
+  @media (min-width: 600px) {
+    margin-top: 0;
+    font-size: 0.8em;
   }
 }

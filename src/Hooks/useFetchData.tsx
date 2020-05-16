@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from 'axios';
 
 import { RouterContext } from '../Contexts/RouteProvider';
-import { UserContext } from "../Contexts/UserProvider";
 import ConfigContext from "../Contexts/ConfigContext";
+import { auth } from "firebase";
 
 export enum FetchType {
   GET = 'get',
@@ -32,17 +32,16 @@ const defaultOption = Object.freeze({});
  * @param {string} uri
  * @param {FetchType} [type=FetchType.GET]
  * @param {AxiosRequestConfig} [options]
- * @returns {([T, boolean, string | null, (body: any, noRedirect?: boolean, token?: string) => void, () => void])}
+ * @returns {([T, boolean, string | null, (body: any, noRedirect?: boolean) => void, () => void])}
  */
 function useFetchData<T>(
   uri: string,
   type: FetchType = FetchType.GET,
   options: AxiosRequestConfig = defaultOption,
   interval?: number
-): [T | null, boolean, string | null, (body?: any, noRedirect?: boolean, token?: string) => Promise<any>, () => void] {
+): [T | null, boolean, string | null, (body?: any, noRedirect?: boolean) => Promise<any>, () => void] {
 
   const { baseUrl } = useContext(ConfigContext);
-  const { token } = useContext(UserContext);
   const { history } = useContext(RouterContext);
   const historyRef = useRef(history);
 
@@ -51,23 +50,17 @@ function useFetchData<T>(
   const [errorMessage, setErrorMessage] = useState(null);
   const cancelToken = useRef<Canceler | null>(null);
 
-  const next = useCallback(_next, [baseUrl, uri, type, options, token]);
+  const next = useCallback(_next, [baseUrl, uri, type, options]);
 
   useEffect(() => {
     historyRef.current = history;
   }, [history]);
 
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
-    }
-  }, [token]);
-
-  useEffect(() => {
     if (type === FetchType.GET) {
-      next({}).catch(() => { });
+      next().catch(() => { });
     }
-  }, [token, type, next, interval])
+  }, [type, next, interval])
 
   function cancel() {
     if (cancelToken.current) {
@@ -75,18 +68,24 @@ function useFetchData<T>(
     }
   }
 
-  function _next(body?: any, noRedirect?: boolean, token?: string) {
+  function _next(body?: any, noRedirect?: boolean) {
     if (cancelToken.current) {
       cancel();
+    }
+    const currentUser = auth().currentUser;
+    if (!currentUser) {
+      return Promise.reject(new Error('No user.'));
     }
 
     setLoading(true);
     const _options = Object.assign({}, options, { cancelToken: new axios.CancelToken(token => cancelToken.current = token) });
-    if (token && token.length) {
-      axios.defaults.headers['Authorization'] = `Bearer ${token}`;
-    }
-
-    return constructRequest(`${baseUrl}${uri}`, type, _options, body)
+    return currentUser.getIdToken()
+      .then(token => {
+        if (token?.length) {
+          axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return constructRequest(`${baseUrl}${uri}`, type, _options, body)
+      })
       .then(res => {
         setLoading(false);
         setErrorMessage(null);

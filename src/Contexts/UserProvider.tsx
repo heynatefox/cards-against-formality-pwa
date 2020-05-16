@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect, useContext, useRef } from "react";
 import { Backdrop, CircularProgress } from '@material-ui/core';
-import * as firebase from "firebase/app";
+import { auth } from "firebase/app";
 
 import useFetchData, { FetchType } from "../Hooks/useFetchData";
 import { RouterContext } from "./RouteProvider";
@@ -12,11 +12,10 @@ export interface UserContextInterface {
   logout: () => void;
   user: { _id: string, username: string, isAnonymous: boolean } | null;
   authUser: any | null;
-  token: string;
 }
 
 export const UserContext = React.createContext<UserContextInterface>(
-  { login: () => Promise.resolve(''), logout: () => { }, signup: () => Promise.resolve(), user: null, authUser: null, token: '' }
+  { login: () => Promise.resolve(''), logout: () => { }, signup: () => Promise.resolve(), user: null, authUser: null }
 );
 
 export default function UserProvider({ children, isFirebaseInit }: any) {
@@ -27,8 +26,6 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     routerRef.current = routerContext;
   }, [routerContext]);
 
-
-  const [token, setToken] = useState('');
   const [user, setUser] = useState<{ _id: string, username: string, isAnonymous: boolean } | null>(null);
 
   const [isProviderSigningIn, setIsProviderSigningIn] = useState(false);
@@ -38,7 +35,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   const [, , , logoutHttp] = useFetchData<any>(`/api/logout`, FetchType.PUT);
   const [loginData, isSigningin, , next] = useFetchData<any>(`/api/login`, FetchType.POST);
 
-  const logout = useCallback(_logout, [setUser, setToken]);
+  const logout = useCallback(_logout, [setUser]);
 
   const [authUser, setAuthUser] = useState<any | null>(null);
   const login = useCallback(_login, [next, authUser]);
@@ -46,10 +43,9 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     // get the initial state of the user.
     let unsubscribe: any;
     if (isFirebaseInit) {
-      unsubscribe = firebase.auth().onAuthStateChanged((_user) => {
+      unsubscribe = auth().onAuthStateChanged((_user) => {
         if (_user) {
-          _user.getIdToken(true).then(idToken => {
-            setToken(idToken);
+          _user.getIdToken(true).then(() => {
             const { uid, displayName, photoURL, email, emailVerified, phoneNumber, isAnonymous } = _user;
             setAuthUser({ uid, displayName, photoURL, email, emailVerified, phoneNumber, isAnonymous });
             setIsProviderSigningIn(false);
@@ -71,24 +67,28 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     }
   }, [isFirebaseInit]);
 
+  useEffect(() => {
+    setInterval(() => {
+      auth().currentUser?.getIdToken(true)
+        .catch(() => { });
+      // Refresh token every 30 minutes.
+    }, 60000 * 30)
+  }, [])
+
   // called after it is determined whether a firebase user is logged in.
   useEffect(() => {
     // if there is an auth user. Try login.
-    if (authUser && token && renew) {
-      renew({}, false, token)
+    if (authUser && renew) {
+      renew({}, false)
         .catch((err) => {
           if (err.message === 'Network Error') {
             // api servers are down, redirect to /rooms to see the error page.
             routerRef.current.history.push('/rooms');
             return;
           }
-
-          if (authUser.isAnonymous) {
-            next(authUser).catch(err => { });
-          }
         })
     }
-  }, [authUser, token, renew, next]);
+  }, [authUser, renew, next]);
 
   // Called once renewed or logged in.
   useEffect(() => {
@@ -102,11 +102,11 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   // called once the users data is fetched.
   useEffect(() => {
     // if loginData exists, continue to the application.
-    if (user && authUser && token) {
+    if (user && authUser) {
       openSnack({ text: 'Successfully logged in!', severity: 'success' })
       redirect();
     }
-  }, [user, authUser, token, openSnack]);
+  }, [user, authUser, openSnack]);
 
   // Handle smoother transitions between multiple loading states
   useEffect(() => {
@@ -154,24 +154,24 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     setIsProviderSigningIn(true);
     // here we should handle the different sign up types.
     if (providerStr === 'anonymous') {
-      return firebase.auth().signInAnonymously()
+      return auth().signInAnonymously()
         .catch((err) => { });
     }
 
-    let provider: firebase.auth.GoogleAuthProvider | firebase.auth.FacebookAuthProvider;
+    let provider: auth.GoogleAuthProvider | auth.FacebookAuthProvider;
     if (providerStr === 'facebook') {
-      provider = new firebase.auth.FacebookAuthProvider();
+      provider = new auth.FacebookAuthProvider();
     } else {
       // must be google.
-      provider = new firebase.auth.GoogleAuthProvider();
+      provider = new auth.GoogleAuthProvider();
     }
 
     if (window.innerWidth < 600) {
-      return firebase.auth().signInWithRedirect(provider)
+      return auth().signInWithRedirect(provider)
         .catch(err => { });
     }
 
-    return firebase.auth().signInWithPopup(provider)
+    return auth().signInWithPopup(provider)
       .catch(err => { });
   }
 
@@ -183,12 +183,11 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
     const handleComplete = () => {
       setUser(null);
       setAuthUser(null);
-      setToken('');
       routerRef.current.history.push('/');
       document.cookie = 'auth=;'
     };
 
-    return firebase.auth().signOut()
+    return auth().signOut()
       .then(() => logoutHttp())
       .then(() => {
         handleComplete();
@@ -198,7 +197,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
       })
   }
 
-  return <UserContext.Provider value={{ login: (login as any), logout, user, authUser, token, signup }}>
+  return <UserContext.Provider value={{ login: (login as any), logout, user, authUser, signup }}>
     {isLoading ? null : children}
     <Backdrop className="backdrop" open={isLoading}>
       <CircularProgress color="inherit" />
