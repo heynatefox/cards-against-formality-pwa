@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, Typography, Container, Button, ButtonBase } from '@material-ui/core';
+import { Link, Typography, Container, Button } from '@material-ui/core';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
@@ -63,12 +63,9 @@ const Homepage = React.memo(() => {
         <Typography className="title" variant="h2" style={{ color: "black" }}>
           About
         </Typography>
-        <Typography variant="subtitle1" style={{ color: "black" }}>
-          The best place to play Cards Against Humanity online.
-        </Typography>
         <br />
         <Typography variant="body1" style={{ color: "black" }}>
-          Click the play button above. Play anonymously, or sign in with your favourite social media. Then proceed to play with your friends and family! Works great on mobile, desktop or tablet!
+          Click the play button above. Play anonymously, or sign in with your favourite social media account. Then proceed to play with your friends and family. Works great on mobile, desktop or tablet!
         </Typography>
         <br />
         <Typography variant="h5" style={{ color: "black" }}>
@@ -85,10 +82,20 @@ const Homepage = React.memo(() => {
         <br />
         <Typography variant="subtitle1" style={{ color: "black" }}>
           Cards Against Formality is a party card game based on <Link rel="noopener" onClick={() => onWindowOpen('https://cardsagainsthumanity.com/')}>Cards Against Humanity</Link>.
+          The two are not affiliated with each other in any way.
+        </Typography>
+        <br />
+        <Typography variant="subtitle1" style={{ color: "black" }}>
+          The game is free to play and always will be. The website will never contain any advertisements or bloat.
+          This is to keep an uninterrupted user experience, and to stick well within Cards against humanity's licensing guidelines. All card content is produced and owned by <Link rel="noopener" onClick={() => onWindowOpen('https://cardsagainsthumanity.com/')}>Cards Against Humanity</Link>.
+        </Typography>
+        <br />
+        <Typography variant="subtitle1" style={{ color: "black" }}>
+          We can not accept any payments or donations of any kind. If you would like to contribute please contact us via <Link onClick={() => onWindowOpen('https://twitter.com/CardsFormality')}>Twitter</Link> to discuss further ways you can help!
         </Typography>
       </Container>
     </section>
-    <section className="homepage-section sponsor">
+    {/* <section className="homepage-section sponsor">
       <Container maxWidth="xl">
         <Typography variant="h3">
           Sponsors
@@ -111,7 +118,7 @@ const Homepage = React.memo(() => {
           <div className="logo-template" onClick={() => onWindowOpen('https://www.patreon.com/cardsagainstformality')} title="Become a sponor on Patreon">Your logo</div>
         </div>
       </Container>
-    </section>
+    </section> */}
     <section className="homepage-section footer">
       <div className="link-icons">
         <TwitterIcon className="icon" fontSize="large" onClick={() => onWindowOpen('https://twitter.com/CardsFormality')} />
