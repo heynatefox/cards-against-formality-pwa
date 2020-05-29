@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from 'axios';
+import { auth } from "firebase/app";
+import "firebase/auth";
 
 import { RouterContext } from '../Contexts/RouteProvider';
 import ConfigContext from "../Contexts/ConfigContext";
-import { auth } from "firebase";
 
 export enum FetchType {
   GET = 'get',

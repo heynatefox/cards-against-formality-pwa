@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect, useContext, useRef } from "react";
 import { Backdrop, CircularProgress } from '@material-ui/core';
 import { auth } from "firebase/app";
+import "firebase/auth";
 
 import useFetchData, { FetchType } from "../Hooks/useFetchData";
 import { RouterContext } from "./RouteProvider";

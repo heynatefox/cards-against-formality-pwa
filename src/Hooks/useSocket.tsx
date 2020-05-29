@@ -1,9 +1,10 @@
 
 import { useState, useEffect, useRef, useContext } from 'react';
 import io from 'socket.io-client';
+import { auth } from "firebase/app";
+import "firebase/auth";
 
 import ConfigContext from '../Contexts/ConfigContext';
-import { auth } from 'firebase';
 
 
 export interface SocketEventMap {

@@ -3,7 +3,6 @@ import { Container, Backdrop, CircularProgress, } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
 import * as firebase from "firebase/app";
 import "firebase/analytics";
-import "firebase/auth";
 
 import Navbar from './components/Navbar/Navbar';
 import UserProvider from './Contexts/UserProvider';
