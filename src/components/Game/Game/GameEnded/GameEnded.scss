@@ -1,0 +1,32 @@
+.game-ended-container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  height: 100%;
+
+  .game-ended-header {
+    margin-bottom: 10%;
+
+    @media (min-width: 600px) {
+      margin-bottom: 5%;
+    }
+  }
+
+  .winners-container {
+    text-align: center;
+    margin-bottom: 15%;
+    @media (min-width: 600px) {
+      margin-bottom: 10%;
+    }
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
+    button {
+      margin-top: 5%;
+    }
+  }
+}

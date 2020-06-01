@@ -163,11 +163,11 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
 
         <div className="top-content">
           <div className="black-card-container">
-            {game?.blackCard ? <GameCard card={game.blackCard} className="master-black-card" /> : null}
+            {game?.blackCard && game?.state !== GameState.ENEDED ? <GameCard card={game.blackCard} className="master-black-card" /> : null}
           </div>
 
           <div className="game-container-children-wrapper" style={{ maxHeight: maxChildHeight }}>
-            {React.Children.map(children, (child: any, index: number) => {
+            {React.Children.map(children, (child: any) => {
               if (!child || !React.isValidElement(child)) {
                 return null;
               }
@@ -182,7 +182,7 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
         </div>
       </div>
       <div className="players-container">
-        <Players players={players} host={host} czar={game?.czar} roomId={room?._id} isCurrentUserHost={isHost}/>
+        <Players players={players} host={host} czar={game?.czar} roomId={room?._id} isCurrentUserHost={isHost} />
       </div>
     </CardContent>
   </Card >
