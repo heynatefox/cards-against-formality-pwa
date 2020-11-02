@@ -4,19 +4,13 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import ShareIcon from '@material-ui/icons/Share';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
+import { Card as CardInterface} from '../Game/Game';
 import CardSelector from '../CardSelector/CardSelector';
 import GameCard from '../../Card/Card';
 import Players from './PlayersContainer';
 import './GameBorder.scss';
 import { GameState } from '../Game/Game';
 import { SnackbarMessage } from '../../../Contexts/SnackbarProvider';
-
-interface Card {
-  _id: string;
-  text: string;
-  cardType: 'white' | 'black';
-  pick?: number;
-}
 
 export interface GameBorderProps {
   host: string;
@@ -25,7 +19,7 @@ export interface GameBorderProps {
   roomName: string;
   room: any;
   onLeave: () => void;
-  cards: Card[];
+  cards: CardInterface[];
   isCzar: boolean;
   onCardsSubmit: (cards: string[]) => Promise<any>;
   game: any;

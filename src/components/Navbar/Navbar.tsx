@@ -70,6 +70,7 @@ export default React.memo(() => {
           </Grid>
         </Typography>
       </MenuItem>
+      <MenuItem onClick={() => window.open("https://www.buymeacoffee.com/cards")}><Button color="secondary" variant="contained">Buy me a coffee</Button></MenuItem>
       <MenuItem onClick={() => { handleClose(); logout(); }}>Logout</MenuItem>
     </Menu>
   </div>

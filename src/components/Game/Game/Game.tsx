@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CircularProgress } from '@material-ui/core';
 
-import Card from '../../Card/Card';
 import TurnSetup from './TurnSetup/TurnSetup';
 import PickingCards from './PickingCards/PickingCards';
 import SelectingWinner from './SelectingWinner/SelectingWinner';
@@ -78,7 +77,7 @@ export default function Game({ game, players, isCzar, onWinnerSelect, maxChildHe
           <GenericGardGroup
             leftCardText="You have recently joined"
             leftCardChild={<CircularProgress color="inherit" />}
-            rightCardText="You will join when the next round starts."
+            rightCardText="You will join in a few seconds."
           />
         </div>
     }

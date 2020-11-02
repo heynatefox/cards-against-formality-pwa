@@ -36,16 +36,20 @@ export default React.memo(() => {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const handleLogin = useCallback(_handleLogin, [username, login]);
-  const checkUsername = useCallback(
-    debounce((username: string) => {
-      if (!username?.length) {
-        return;
-      }
-      check({ username })
-        .then(() => setMessage(''))
-        .catch(err => setMessage(err.response.data.message))
-    }, 100),
-    []);
+  const checkUsername = debounce((username: string) => {
+    if (!username?.length) {
+      return;
+    }
+    check({ username })
+      .then(() => setMessage(''))
+      .catch(err => {
+        // request cancelled.
+        if (!err.data) {
+          return;
+        }
+        setMessage(err.response.data.message);
+      })
+  }, 100);
 
   const onKeyPress = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.charCode === 13 && !message?.length) {

@@ -1,5 +1,4 @@
-
-export default (state: any[], action: any) => {
+const reducer = (state: any[], action: any) => {
   switch (action.type) {
     case 'ADD_DATA':
       return [
@@ -56,3 +55,5 @@ export default (state: any[], action: any) => {
       return state;
   }
 };
+
+export default reducer;

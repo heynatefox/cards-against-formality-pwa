@@ -36,7 +36,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   const [, , , logoutHttp] = useFetchData<any>(`/api/logout`, FetchType.PUT);
   const [loginData, isSigningin, , next] = useFetchData<any>(`/api/login`, FetchType.POST);
 
-  const logout = useCallback(_logout, [setUser]);
+  const logout = useCallback(_logout, [setUser, logoutHttp]);
 
   const [authUser, setAuthUser] = useState<any | null>(null);
   const login = useCallback(_login, [next, authUser]);
