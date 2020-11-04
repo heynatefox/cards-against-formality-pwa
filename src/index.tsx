@@ -9,7 +9,7 @@ import ConfigContext from './Contexts/ConfigContext';
 import ThemeProvider from './Contexts/ThemeProvider';
 import RouteProvider from './Contexts/RouteProvider';
 import SnackbarProvider from './Contexts/SnackbarProvider';
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from './service-worker';
 import './index.scss';
 
 const config = { baseUrl: 'https://api.cardsagainstformality.io' };
