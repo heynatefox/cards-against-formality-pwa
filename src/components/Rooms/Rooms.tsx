@@ -3,6 +3,7 @@ import { Container, Button, Card, CardHeader, CardContent, Typography, CircularP
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import QuestionIcon from '@material-ui/icons/HelpOutline';
 
 import { UserContext } from '../../Contexts/UserProvider';
 import Room from './Room/Room';
@@ -142,12 +143,19 @@ export default function Rooms() {
       />
     </div>
   }
-
+  const isDesktop = window.screen.width > 600;
   return <Container className="rooms-container" maxWidth="lg">
     <Card className="rooms-card" raised={true}>
       <CardHeader
         title={!isCreating ? 'Join a Game!' : 'Creating a Game'}
-        subheader="Fun fun $#&T!"
+        subheader={
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {isDesktop ? "Want to help keep the servers alive?" : <span style={{ marginRight: "2%" }}>Want to help?</span>}
+            <IconButton style={{ padding: isDesktop ? 12 : 0 }} onClick={() => window.open("https://www.buymeacoffee.com/cards")} >
+              <QuestionIcon fontSize="small" />
+            </IconButton>
+          </div>
+        }
         action={renderHeaderButton()}
       />
       <CardContent className="rooms-content-container">

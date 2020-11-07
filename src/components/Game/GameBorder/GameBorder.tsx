@@ -4,7 +4,7 @@ import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import ShareIcon from '@material-ui/icons/Share';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { Card as CardInterface} from '../Game/Game';
+import { Card as CardInterface } from '../Game/Game';
 import CardSelector from '../CardSelector/CardSelector';
 import GameCard from '../../Card/Card';
 import Players from './PlayersContainer';
@@ -77,7 +77,10 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
     };
     if ('canShare' in navigator && (navigator as any)?.canShare(data)) {
       (navigator as any).share(data)
-        .then(() => openSnack({ text: 'Game invite sent!', severity: 'success' }))
+        .then(() => {
+          (window as any)?.gtag('event', 'share');
+          openSnack({ text: 'Game invite sent!', severity: 'success' });
+        })
         .catch(() => { });
       return;
     }
@@ -89,6 +92,7 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
     dummy.select();
     document.execCommand('copy');
     document.body.removeChild(dummy);
+    (window as any)?.gtag('event', 'share');
     openSnack({ text: 'Link copied to clipboard!', severity: 'success' });
   }, [openSnack])
 

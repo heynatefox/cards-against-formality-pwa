@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from 'react';
+import React, { useMemo, useContext, useEffect } from 'react';
 import { Typography, Button } from '@material-ui/core';
 import { UserContext } from '../../../../Contexts/UserProvider';
 
@@ -9,6 +9,10 @@ export default function GameEnded({ game, players }: { game: any, players: any }
   const winners = useMemo(() => {
     return game.winner.map((winner: string) => players.find((player: any) => player._id === winner));
   }, [game, players]);
+
+  useEffect(() => {
+    (window as any)?.gtag('event', 'game_ended');
+  }, []);
 
   return <div className="game-ended-container">
     <Typography variant="h3" className="game-ended-header">

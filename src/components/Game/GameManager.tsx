@@ -29,6 +29,7 @@ export default function GameManager() {
   function _onLeave() {
     leave({ roomId: room?._id })
       .then(() => {
+        (window as any)?.gtag('event', 'game_leave');
         history.push('/rooms');
       })
       .catch(() => {
@@ -39,6 +40,9 @@ export default function GameManager() {
 
   function _onGameStart() {
     startGame({ roomId: room?._id })
+      .then(() => {
+        (window as any)?.gtag('event', 'game_started');
+      })
       .catch((err) => {
         openSnack({ text: err?.response?.data?.message, severity: 'error' });
       })
@@ -46,8 +50,9 @@ export default function GameManager() {
 
   function _onCardsSubmit(cards: string[]) {
     return submitCards({ roomId: room._id, clientId, cards })
-      .then(() => {
-        // remove cards from current pick
+      .then((res) => {
+        (window as any)?.gtag('event', 'cards_selected', { value: cards.length });
+        return res;
       })
       .catch(err => {
         openSnack({ text: err?.response?.data?.message, severity: 'error' });
@@ -56,6 +61,10 @@ export default function GameManager() {
 
   function _onWinnerSelect(winnerId: string) {
     return selectWinner({ roomId: room._id, clientId, winnerId })
+      .then(res => {
+        (window as any)?.gtag('event', 'winner_selected');
+        return res;
+      })
       .catch(err => {
         openSnack({ text: err?.response?.data?.message, severity: 'error' });
         return null;

@@ -132,6 +132,7 @@ export default function CreateRoom({ onJoin, decksData, user }: any) {
     createRoom(room)
       .then((axiosRes) => {
         onJoin(axiosRes.data._id, passcode);
+        (window as any)?.gtag('event', 'create_room', { value: passcode?.length ? 'private' : 'public' });
       })
       .catch((err) => {
         if (err?.response?.data.type === 'VALIDATION_ERROR') {

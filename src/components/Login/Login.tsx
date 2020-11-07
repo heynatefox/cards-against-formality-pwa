@@ -97,7 +97,10 @@ export default React.memo(() => {
   }
 
   function onProviderSelected(provider: string) {
-    signup(provider);
+    signup(provider)
+      .then(() => {
+        (window as any)?.gtag('event', 'login', { method: provider });
+      })
   }
 
   function renderCardContent() {
