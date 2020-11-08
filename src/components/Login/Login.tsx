@@ -43,11 +43,9 @@ export default React.memo(() => {
     check({ username })
       .then(() => setMessage(''))
       .catch(err => {
-        // request cancelled.
-        if (!err.data) {
-          return;
+        if (err?.response?.data?.message) {
+          setMessage(err.response.data.message);
         }
-        setMessage(err.response.data.message);
       })
   }, 100);
 
