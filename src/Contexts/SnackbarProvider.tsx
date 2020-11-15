@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Snackbar } from '@material-ui/core';
 
@@ -26,12 +26,23 @@ export default function ThemeProvider({ children }: any) {
     setMessage(data);
   }, []);
 
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (message) {
+      timeout = setTimeout(() => {
+        onClose();
+      }, message.autoHideDuration ? message.autoHideDuration : 3000)
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    }
+  }, [message, onClose])
+
   return <SnackbarContext.Provider value={{ message, openSnack }}>
-    <Snackbar
-      open={!!message}
-      autoHideDuration={message?.autoHideDuration ? message?.autoHideDuration : 3000}
-      onClose={onClose}
-    >
+    <Snackbar open={!!message}>
       {message ? <MuiAlert severity={message?.severity} elevation={6} variant="filled" >
         {message?.text}
       </MuiAlert> : null as any}
