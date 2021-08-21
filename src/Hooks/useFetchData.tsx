@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from 'axios';
-import { auth } from "firebase/app";
+import firebase from "firebase/app";
 import "firebase/auth";
 
 import { RouterContext } from '../Contexts/RouteProvider';
@@ -73,7 +73,7 @@ function useFetchData<T>(
     if (cancelToken.current) {
       cancel();
     }
-    const currentUser = auth().currentUser;
+    const currentUser = firebase.auth().currentUser;
     if (!currentUser) {
       return Promise.reject(new Error('No user.'));
     }

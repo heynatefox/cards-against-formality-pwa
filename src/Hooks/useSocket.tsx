@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef, useContext } from 'react';
 import io from 'socket.io-client';
-import { auth } from "firebase/app";
+import firebase from "firebase/app";
 import "firebase/auth";
 
 import ConfigContext from '../Contexts/ConfigContext';
@@ -22,7 +22,7 @@ export default function useSocket(
   const { baseUrl } = useContext(ConfigContext);
   useEffect(() => {
     let disconnectedTimeout: NodeJS.Timeout | null;
-    auth().currentUser?.getIdToken()
+    firebase.auth().currentUser?.getIdToken()
       .then((token) => {
 
         socket.current = io(`${baseUrl}${namespace}`, {
