@@ -21,7 +21,7 @@ interface Room {
   status: string;
 }
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 12;
 export default function useRooms() {
   const [rooms, dispatch] = useReducer(PaginationReducer<Room>, []);
   const roomsRef = useRef(rooms);
@@ -30,32 +30,42 @@ export default function useRooms() {
   }, [rooms]);
   const [page, setPage] = useState(1);
 
-  useEffect(() => {
-    if (!rooms.length && page > 1) {
-      setPage((prev) => prev - 1);
-    }
-  }, [rooms]);
-
   const onEvent = useCallback(({ payload, updateType }: any) => {
+    const updateTotalRoomCount = (num: number) => {
+      setPaginationProps((prev) => {
+        if (prev) {
+          const newTotal = prev.total + num;
+          return {
+            ...prev,
+            total: newTotal,
+            count: Math.ceil(newTotal / PAGE_SIZE),
+          };
+        }
+        return null;
+      });
+    };
+
     switch (updateType) {
       case "created":
-        if (roomsRef.current.length !== PAGE_SIZE) {
+        // +1 to the total room count
+        updateTotalRoomCount(1);
+
+        const isPageFull = roomsRef.current.length % PAGE_SIZE === 0;
+        // if our page is not full we can just add the data
+        if (!isPageFull) {
           dispatch({ type: "ADD_DATA", data: payload });
-        } else {
-          setPaginationProps((prev) => {
-            if (prev) {
-              return { ...prev, count: prev.count! + 1 };
-            }
-            return prev;
-          });
+          return;
         }
         break;
       case "updated":
         dispatch({ type: "UPDATE_DATA", data: payload });
         break;
       case "removed":
-        dispatch({ type: "REMOVE_DATA", data: payload });
         // if we remove a room and we're on the last page, we need to fetch the previous page
+        dispatch({ type: "REMOVE_DATA", data: payload });
+        // -1 to the total room count
+        updateTotalRoomCount(-1);
+
         break;
       default:
         break;
@@ -74,8 +84,17 @@ export default function useRooms() {
     totalPages: number;
   }>(`/api/rooms?pageSize=${PAGE_SIZE}&page=${page}`);
 
-  const [paginationProps, setPaginationProps] =
-    useState<UsePaginationProps | null>(null);
+  const [paginationProps, setPaginationProps] = useState<
+    (UsePaginationProps & { total: number }) | null
+  >(null);
+
+  useEffect(() => {
+    // if our current page is greater than the total count of pages
+    // go back a page
+    if (paginationProps?.count && page > paginationProps.count) {
+      setPage((prev) => prev - 1);
+    }
+  }, [paginationProps, page]);
 
   const onPageChange = useCallback((_, page: number) => {
     setPage(page);
@@ -90,6 +109,7 @@ export default function useRooms() {
         page: res.page,
         onChange: onPageChange,
         defaultPage: 1,
+        total: res.total,
       });
     }
   }, [res, onPageChange]);
