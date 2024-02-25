@@ -11,7 +11,6 @@ import SnackbarProvider from './Contexts/SnackbarProvider';
 import './index.scss';
 
 const config = { baseUrl: 'https://api.cardsagainstformality.io' };
-console.log(import.meta.env);
 if (!import.meta.env.PROD) {
   config.baseUrl = `http://${window.location.hostname}`;
 }
