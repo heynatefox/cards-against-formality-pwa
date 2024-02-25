@@ -174,11 +174,6 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
       provider = new firebase.auth.GoogleAuthProvider();
     }
 
-    if (isPhoneOrTablet()) {
-      return firebase.auth().signInWithRedirect(provider)
-        .catch(err => { });
-    }
-
     return firebase.auth().signInWithPopup(provider)
       .catch(err => { });
   }
