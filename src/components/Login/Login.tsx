@@ -18,7 +18,7 @@ function LoginProviders({ onProviderSelect }: any) {
       <img className="google-icon-svg" src={googleLogo} alt="google" />
       <div>Sign in with Google</div>
     </Button>
-    <Button disabled={true} className="button" onClick={() => onProviderSelect('facebook')} variant="contained" color="primary">
+    <Button className="button" onClick={() => onProviderSelect('facebook')} variant="contained" color="primary">
       <FacebookIcon className="google-icon-svg" />
       <div>Continue with Facebook</div>
     </Button>
