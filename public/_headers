@@ -1,2 +1,4 @@
 /sw.js
     cache-control: max-age=0,no-cache,no-store,must-revalidate
+/*
+  Access-Control-Allow-Origin: *
