@@ -2,11 +2,16 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import viteTsconfigPaths from "vite-tsconfig-paths";
 import svgPlugin from "vite-plugin-svgr";
+import { VitePWA } from 'vite-plugin-pwa'
+
 
 export default defineConfig({
   // depending on your application, base can also be "/"
   base: "",
-  plugins: [react(), viteTsconfigPaths(), svgPlugin()],
+  plugins: [react(), viteTsconfigPaths(), svgPlugin(), VitePWA({
+      injectRegister: "inline",
+      manifest: false, // supply own at public/manifest.webmanifest/manifest.json
+  })],
   build:{
     outDir: "build"
   },
