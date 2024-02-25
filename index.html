@@ -5,20 +5,19 @@
   <meta charset="utf-8" />
   <meta name="robots" content="index, follow" />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="%PUBLIC_URL%/android-chrome-512x512.png" />
+  <meta property="og:image" content="/android-chrome-512x512.png" />
   <meta property="og:site_name" content="Cards Against Formality" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:image" content="%PUBLIC_URL%/android-chrome-512x512.png" />
+  <meta name="twitter:image" content="/android-chrome-512x512.png" />
   <meta name="twitter:site" content="Cards Against Formality" />
   <meta name="twitter:creator" content="Cards Against Formality" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <link rel="icon" href="/favicon.ico" />
   <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
   <meta name="theme-color" content="#303030" />
   <meta name="description"
     content="Play Cards Against Humanity online, join in with your friends and have a $#&T load of fun." />
-  <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <title>Cards Against Formality - Play Cards Against Humanity online</title>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-VT8SW9FPHY"></script>
   <script>
@@ -43,14 +42,12 @@
     fbq('init', '158717315571816');
     fbq('track', 'PageView');
   </script>
-  <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=158717315571816&ev=PageView&noscript=1"
-      alt="Cards against humanity" /></noscript>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
+  <script type="module" src="/src/index.tsx"></script>
 </body>
 
 </html>

@@ -3,17 +3,15 @@ import ReactDOM from 'react-dom';
 import 'typeface-roboto';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-
 import App from './App';
 import ConfigContext from './Contexts/ConfigContext';
 import ThemeProvider from './Contexts/ThemeProvider';
 import RouteProvider from './Contexts/RouteProvider';
 import SnackbarProvider from './Contexts/SnackbarProvider';
-import * as serviceWorker from './service-worker';
 import './index.scss';
 
 const config = { baseUrl: 'https://api.cardsagainstformality.io' };
-if (process.env.NODE_ENV !== 'production') {
+if (!import.meta.env.PROD) {
   config.baseUrl = `http://${window.location.hostname}`;
 }
 
@@ -33,13 +31,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-serviceWorker.register({
-  onUpdate: registration => {
-    if (registration && registration.waiting) {
-      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-    }
-    const event = new Event('service_worker_updated')
-    document.dispatchEvent(event)
-  }
-});

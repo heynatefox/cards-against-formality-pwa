@@ -37,19 +37,12 @@ function App() {
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.PROD) {
       firebase.analytics();
     }
 
     setIsFirebaseInit(true);
   }, []);
-
-  useEffect(() => {
-    document.addEventListener('service_worker_updated', () => {
-      // handle this more gracefully.
-      // window.location.reload();
-    })
-  });
 
   return <>
     <Switch>

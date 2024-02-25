@@ -95,30 +95,7 @@ const Homepage = React.memo(() => {
         </Typography>
       </Container>
     </section>
-    {/* <section className="homepage-section sponsor">
-      <Container maxWidth="xl">
-        <Typography variant="h3">
-          Sponsors
-        </Typography>
-        <br />
-        <Typography>
-          Want your logo to appear below? Or just want to help contribute to keeping the servers up and running?
-        </Typography>
-        <br />
-        <ButtonBase
-          className="patreon-button"
-          focusRipple={true}
-          onClick={() => onWindowOpen('https://www.patreon.com/cardsagainstformality')}
-        >
-          <img src={`${process.env.PUBLIC_URL}/sponsor_button.png`} alt="patreon button" />
-        </ButtonBase>
-        <div className="sponsor-list">
-          <div className="logo-template" onClick={() => onWindowOpen('https://www.patreon.com/cardsagainstformality')} title="Become a sponor on Patreon">Your logo</div>
-          <div className="logo-template" onClick={() => onWindowOpen('https://www.patreon.com/cardsagainstformality')} title="Become a sponor on Patreon">Your logo</div>
-          <div className="logo-template" onClick={() => onWindowOpen('https://www.patreon.com/cardsagainstformality')} title="Become a sponor on Patreon">Your logo</div>
-        </div>
-      </Container>
-    </section> */}
+
     <section className="homepage-section footer">
       <div className="link-icons">
         <TwitterIcon className="icon" fontSize="large" onClick={() => onWindowOpen('https://twitter.com/CardsFormality')} />
