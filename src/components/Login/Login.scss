@@ -4,22 +4,27 @@
 }
 
 .login-wrapper {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
   height: 100%;
-  @media (min-width: 600px) {
-    height: 70%;
-  }
 }
 
 .inner-login-container {
-  height: 100%;
+  height: max(30em, 100%);
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
   width: 100%;
+  overflow: visible;
+
+  .suggestion-anchor {
+    margin-top: 25em;
+    @media (min-width: 400px) {
+      margin-top: 15em;
+    }
+    @media (min-height: 600px) {
+      margin-top: 0em;
+    }
+  }
 
   .header {
     text-align: center;
