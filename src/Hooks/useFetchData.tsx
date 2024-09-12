@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
+import { useNavigate } from "react-router";
+import { getAuth } from "firebase/auth";
 import axios, { AxiosRequestConfig, AxiosResponse, Canceler } from 'axios';
-import firebase from "firebase/app";
-import "firebase/auth";
 
-import { RouterContext } from '../Contexts/RouteProvider';
 import ConfigContext from "../Contexts/ConfigContext";
+import { FirebaseContext } from "../Contexts/FirebaseProvider";
 
 export enum FetchType {
   GET = 'get',
@@ -41,10 +41,11 @@ function useFetchData<T>(
   options: AxiosRequestConfig = defaultOption,
   interval?: number
 ): [T | null, boolean, string | null, (body?: any, noRedirect?: boolean) => Promise<any>, () => void] {
-
   const { baseUrl } = useContext(ConfigContext);
-  const { history } = useContext(RouterContext);
-  const historyRef = useRef(history);
+  const navigate = useNavigate();
+  const navigateRef = useRef(navigate);
+  const firebase = useContext(FirebaseContext);
+  const firebaseRef = useRef(firebase);
 
   const [data, setData] = useState<T | null>(null);
   const [isLoading, setLoading] = useState(false);
@@ -54,8 +55,12 @@ function useFetchData<T>(
   const next = useCallback(_next, [baseUrl, uri, type, options]);
 
   useEffect(() => {
-    historyRef.current = history;
-  }, [history]);
+    navigateRef.current = navigate;
+  }, [navigate]);
+
+  useEffect(() => {
+    firebaseRef.current = firebase;
+  }, [firebase]);
 
   useEffect(() => {
     if (type === FetchType.GET) {
@@ -73,7 +78,8 @@ function useFetchData<T>(
     if (cancelToken.current) {
       cancel();
     }
-    const currentUser = firebase.auth().currentUser;
+
+    const currentUser = firebaseRef.current ? getAuth(firebaseRef.current)?.currentUser : undefined;
     if (!currentUser) {
       return Promise.reject(new Error('No user.'));
     }
@@ -96,7 +102,7 @@ function useFetchData<T>(
       .catch(err => {
         setLoading(false);
         if (!noRedirect && (err.code === 401 || err.response?.status === 401)) {
-          historyRef.current.push('/login');
+          navigateRef.current('/login');
           throw err;
         }
 

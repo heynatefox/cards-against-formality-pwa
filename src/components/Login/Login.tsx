@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { Link, Container, Button, Input, CircularProgress, Card, CardHeader, CardContent, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 import { debounce } from 'lodash';
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -6,14 +7,14 @@ import { UserContext } from '../../Contexts/UserProvider';
 import googleLogo from './Google__G__Logo.svg';
 import './Login.scss';
 import useFetchData, { FetchType } from '../../Hooks/useFetchData';
-import { RouterContext } from '../../Contexts/RouteProvider';
+import { NewsletterNagOpportunity } from '../Nag/NewsletterNag';
 
 function LoginProviders({ onProviderSelect }: any) {
   return <div className="login-providers-content">
     <Button className="button" onClick={() => onProviderSelect('anonymous')} variant="contained" color="secondary">Play Anonymously</Button>
     <FormHelperText color="secondary" className="sign-in-helper">
       Or Sign in to pick a permanent username.
-      </FormHelperText>
+    </FormHelperText>
     <Button className="button bottom" onClick={() => onProviderSelect('google')} variant="contained" color="primary">
       <img className="google-icon-svg" src={googleLogo} alt="google" />
       <div>Sign in with Google</div>
@@ -22,14 +23,13 @@ function LoginProviders({ onProviderSelect }: any) {
       <FacebookIcon className="google-icon-svg" />
       <div>Continue with Facebook</div>
     </Button>
-    <FormHelperText className="legal-helper">By Proceeding, you are agreeing to our terms of service and that you have read our privacy policy found <Link color="secondary" onClick={() => window.open('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link>.</FormHelperText>
+    <FormHelperText className="legal-helper">By Proceeding, you are agreeing to our terms of service and that you have read our privacy policy found <Link color="secondary" onClick={() => window.open('https://htmlpreview.github.io/?https://github.com/heynatefox/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link>.</FormHelperText>
   </div>
 }
 
 
 export default React.memo(() => {
-
-  const { history } = useContext(RouterContext);
+  const navigate = useNavigate();
   const { login, user, signup, authUser } = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [, , , check] = useFetchData<any>(`/api/check/username`, FetchType.POST);
@@ -64,7 +64,7 @@ export default React.memo(() => {
   useEffect(() => {
     // user that is logged in, is trying to go to the login page.
     if (user && authUser) {
-      history.push('/rooms');
+      navigate('/rooms');
     }
   }, [user, authUser, history])
 
@@ -124,7 +124,9 @@ export default React.memo(() => {
 
   return <Container maxWidth="lg" className="login-wrapper">
     <Card className="inner-login-container" raised={true}>
-      <CardHeader className="header" title="Let's Play!"></CardHeader>
+      <NewsletterNagOpportunity initialActivation={true}>
+        <CardHeader className="header" title="Let's Play!"></CardHeader>
+      </NewsletterNagOpportunity>
       <CardContent className="root-login-card-content">
         {renderCardContent()}
       </CardContent>

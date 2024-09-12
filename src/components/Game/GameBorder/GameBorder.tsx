@@ -138,7 +138,7 @@ export default React.memo(({ roomName, host, isHost, players, children, onLeave,
       endIcon={null}
     >
       Leave Room
-  </Button>;
+    </Button>;
   }
 
   const title = <>

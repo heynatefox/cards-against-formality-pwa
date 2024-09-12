@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router";
 import {
   Container,
   Button,
@@ -12,13 +13,11 @@ import {
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import QuestionIcon from "@material-ui/icons/HelpOutline";
 
 import { UserContext } from "../../Contexts/UserProvider";
 import Room from "./Room/Room";
 import useFetchData, { FetchType } from "../../Hooks/useFetchData";
 import CreateRoom from "./CreateRoom/CreateRoom";
-import { RouterContext } from "../../Contexts/RouteProvider";
 import { SnackbarContext } from "../../Contexts/SnackbarProvider";
 import useRooms from "../../Hooks/useRooms";
 import GenericGardGroup from "../GenericCardGroup/GenericCardGroup";
@@ -29,6 +28,7 @@ import _ from "lodash";
 export default function Rooms() {
   const { openSnack } = useContext(SnackbarContext);
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [hasServerIssue, setHasServerIssue] = useState(false);
   useEffect(() => {
     // If there's no user yet. Check if ther's an issue.
@@ -47,7 +47,6 @@ export default function Rooms() {
     };
   }, [user]);
 
-  const { history } = useContext(RouterContext);
   const { rooms, isLoading, disconnected, reconnecting, paginationProps } =
     useRooms();
   const [isCreating, setIsCreating] = useState(false);
@@ -84,7 +83,7 @@ export default function Rooms() {
 
     join(data, true)
       .then((axiosRes) => {
-        history.push(`/game?_id=${roomId}`, axiosRes.data);
+        navigate(`/game?_id=${roomId}`, axiosRes.data);
         openSnack({ text: "Success!", severity: "success" });
       })
       .catch((err) => {
@@ -193,7 +192,7 @@ export default function Rooms() {
             <Button
               color="primary"
               variant="contained"
-              onClick={() => history.push("/")}
+              onClick={() => navigate("/")}
             >
               Home
             </Button>
@@ -219,7 +218,7 @@ export default function Rooms() {
               <Button
                 color="secondary"
                 variant="contained"
-                onClick={() => history.push("/login")}
+                onClick={() => navigate("/login")}
               >
                 Reconnect
               </Button>
@@ -236,23 +235,6 @@ export default function Rooms() {
       <Card className="rooms-card" raised={true}>
         <CardHeader
           title={!isCreating ? "Join a Game!" : "Creating a Game"}
-          subheader={
-            <div style={{ display: "flex", alignItems: "center" }}>
-              {isDesktop ? (
-                "Want to help keep the servers alive?"
-              ) : (
-                <span style={{ marginRight: "2%" }}>Want to help?</span>
-              )}
-              <IconButton
-                style={{ padding: isDesktop ? 12 : 0 }}
-                onClick={() =>
-                  window.open("https://www.buymeacoffee.com/cards")
-                }
-              >
-                <QuestionIcon fontSize="small" />
-              </IconButton>
-            </div>
-          }
           action={renderHeaderButton()}
         />
         <CardContent className="rooms-content-container">

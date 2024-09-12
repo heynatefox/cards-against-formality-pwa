@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect, useCallback, useReducer } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 import { UserContext } from "../../Contexts/UserProvider";
 import useFetchData, { FetchType } from "../../Hooks/useFetchData";
-import { RouterContext } from "../../Contexts/RouteProvider";
 import useSocket from "../../Hooks/useSocket";
 import genericReducer from "../../Reducers/genericReducer";
 import { SnackbarMessage } from "../../Contexts/SnackbarProvider";
@@ -12,7 +12,8 @@ export default function useGameRoom(openSnack: (data: SnackbarMessage | null) =>
   const { user } = useContext(UserContext);
   // We need to keep the room state up to date.
   const [res, isLoading, errorMessage, next] = useFetchData(`/api/rooms/join/players`, FetchType.PUT);
-  const { location: { search, state }, history } = useContext(RouterContext);
+  const navigate = useNavigate();
+  const location = useLocation();
   const [roomId, setRoomId] = useState<null | string>(null);
 
   const [spectators, setSpectators] = useState([]);
@@ -24,15 +25,15 @@ export default function useGameRoom(openSnack: (data: SnackbarMessage | null) =>
   const [isCzar, setIsCzar] = useState(false);
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
 
-  const onRoomEvent = useCallback(({ updateType, payload }) => {
+  const onRoomEvent = useCallback(({ updateType, payload }: { updateType: any, payload: any }) => {
     if (updateType === 'removed') {
-      history.push('/rooms');
+      navigate('/rooms');
       return;
     }
     setRoom(payload);
   }, [history]);
-  const onDealEvent = useCallback(d => setCards(d.payload), []);
-  const onGameEvent = useCallback(d => setGame(d.payload), []);
+  const onDealEvent = useCallback((d: any) => setCards(d.payload), []);
+  const onGameEvent = useCallback((d: any) => setGame(d.payload), []);
   const [socketMapping] = useState({ room: onRoomEvent, game: onGameEvent, deal: onDealEvent });
   const [socket, disconnected, reconnecting] = useSocket(socketMapping, '/games', false);
   const joinRoom = useCallback((passcode?: string) => {
@@ -49,7 +50,7 @@ export default function useGameRoom(openSnack: (data: SnackbarMessage | null) =>
       .catch((err) => {
         if (err.response?.status === 404) {
           openSnack({ text: 'Game no longer exists', severity: "error" });
-          history.push('/rooms');
+          navigate('/rooms');
           return;
         }
         if (err.response?.status === 401) {
@@ -65,6 +66,7 @@ export default function useGameRoom(openSnack: (data: SnackbarMessage | null) =>
   // if the game is password protected, prompt password, or take from url.
   // try join room.
   useEffect(() => {
+    const { state, search } = location;
     // if state location is present. Redirect came from joining a room from /rooms.
     if (state) {
       setRoomId((state as any)._id);
@@ -78,7 +80,7 @@ export default function useGameRoom(openSnack: (data: SnackbarMessage | null) =>
         setRoomId(roomId);
       }
     }
-  }, [search, state]);
+  }, [location]);
 
 
   useEffect(() => {
@@ -101,7 +103,7 @@ export default function useGameRoom(openSnack: (data: SnackbarMessage | null) =>
     if (socket) {
       socket.once('message', (data: any) => {
         if (data.payload?.type?.length && data.payload.type === 'kicked') {
-          history.push('/rooms');
+          navigate('/rooms');
           openSnack({ text: 'You have been kicked from the game', severity: 'error' });
         }
       });

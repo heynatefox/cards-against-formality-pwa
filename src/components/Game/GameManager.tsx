@@ -1,11 +1,11 @@
 import React, { useCallback, useContext } from 'react';
+import { useNavigate } from 'react-router';
 import { Typography, Container, Backdrop, CircularProgress, Button } from '@material-ui/core';
 
 import GameContainer from './GameBorder/GameBorder';
 import useGameRoom from './useGameRoom';
 import './GameManager.scss';
 import useFetchData, { FetchType } from '../../Hooks/useFetchData';
-import { RouterContext } from '../../Contexts/RouteProvider';
 import Pending from './Pending/Pending';
 import Game from './Game/Game'
 import PasswordDialog from '../Rooms/Room/PasswordDialog';
@@ -19,7 +19,7 @@ export default function GameManager() {
   const [, , , startGame] = useFetchData(`/api/games/start`, FetchType.PUT);
   const [, , , submitCards] = useFetchData(`/api/games/cards`, FetchType.POST);
   const [, , , selectWinner] = useFetchData(`/api/games/winner`, FetchType.POST);
-  const { history } = useContext(RouterContext);
+  const navigate = useNavigate();
   const onLeave = useCallback(_onLeave, [room, leave, history]);
   const onGameStart = useCallback(_onGameStart, [room, startGame, openSnack]);
   const onCardsSubmit = useCallback(_onCardsSubmit, [room, submitCards, clientId, openSnack]);
@@ -30,10 +30,10 @@ export default function GameManager() {
     leave({ roomId: room?._id })
       .then(() => {
         (window as any)?.gtag('event', 'game_leave');
-        history.push('/rooms');
+        navigate('/rooms');
       })
       .catch(() => {
-        history.push('/rooms');
+        navigate('/rooms');
         // handle toasty error.
       })
   }
@@ -93,7 +93,7 @@ export default function GameManager() {
       <GenericGardGroup
         leftCardText="Game Disconnected!"
         leftCardChild={
-          reconnecting ? <Typography className="reconnecting-typog"> Reconnecting<CircularProgress /></Typography> : <Button color="secondary" variant="contained" onClick={() => history.push('/login')}>Reconnect</Button>
+          reconnecting ? <Typography className="reconnecting-typog"> Reconnecting<CircularProgress /></Typography> : <Button color="secondary" variant="contained" onClick={() => navigate('/login')}>Reconnect</Button>
         }
         rightCardText="Ensure you do not have more than one instance of the game open."
       />
@@ -102,6 +102,6 @@ export default function GameManager() {
 
   return <Container className="game-manager-container" maxWidth="xl">
     {renderMain()}
-    {showPasswordDialog ? <PasswordDialog isDialogOpen={true} onSubmit={joinRoom} onClose={() => history.push('/rooms')} /> : null}
+    {showPasswordDialog ? <PasswordDialog isDialogOpen={true} onSubmit={joinRoom} onClose={() => navigate('/rooms')} /> : null}
   </Container>
 }

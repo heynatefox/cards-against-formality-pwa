@@ -29,7 +29,7 @@ The project only has 4 dependencies for local development:
 
 - A package manager, **yarn** or **npm**
 
--  The backend [Services](https://github.com/JordanPawlett/cards-against-formality-services) for integration with the full application stack.
+-  The backend [Services](https://github.com/heynatefox/cards-against-formality-services) for integration with the full application stack.
 
   
 
@@ -45,7 +45,7 @@ Clone the repository
 
 ```sh
 
-git clone https://github.com/JordanPawlett/cards-against-formality-pwa.git
+git clone https://github.com/heynatefox/cards-against-formality-pwa.git
 
 ```
 
@@ -66,4 +66,4 @@ yarn start
 ```
 
   ## The bording stuff...
-  Please find additional Licensing [here](https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/license.html) and information about our privacy policy [here](https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html).
+  Please find additional Licensing [here](https://htmlpreview.github.io/?https://github.com/heynatefox/cards-against-formality-pwa/blob/master/public/license.html) and information about our privacy policy [here](https://htmlpreview.github.io/?https://github.com/heynatefox/cards-against-formality-pwa/blob/master/public/privacy_policy.html).
