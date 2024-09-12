@@ -2,16 +2,17 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import {
   CircularProgress, FormControl, InputLabel, Input, FormHelperText, Switch,
   FormControlLabel, Card, CardContent, CardActions, Button, FormLabel, FormGroup, Checkbox,
-  ExpansionPanel, ExpansionPanelSummary, Typography, ExpansionPanelDetails, Divider, Select, MenuItem
+  Accordion, AccordionSummary, Typography, AccordionDetails, Divider, Select, MenuItem
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './CreateRoom.scss';
 import useFetchData, { FetchType } from '../../../Hooks/useFetchData';
 import { SnackbarContext } from '../../../Contexts/SnackbarProvider';
+import { NewsletterNagOpportunity } from '../../Nag/NewsletterNag';
 
 function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: string[]) => void }) {
   const [deckOptions, setDeckOptions] = useState<{ name: string; _id: string, value?: boolean }[]>([]);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [isAllSelected, setIsAllSelected] = useState(false);
   const toggleSelectAll = useCallback(() => {
     setDeckOptions(prevDeck => {
@@ -49,15 +50,15 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
     return null;
   }
 
-  return <ExpansionPanel expanded={isExpanded} onChange={() => { setIsExpanded(prev => !prev) }}>
-    <ExpansionPanelSummary
+  return <Accordion expanded={isExpanded} onChange={() => { setIsExpanded(prev => !prev) }}>
+    <AccordionSummary
       expandIcon={<ExpandMoreIcon />}
       aria-controls="panel1bh-content"
       id="panel1bh-header"
     >
       <Typography>Available Decks!</Typography>
-    </ExpansionPanelSummary>
-    <ExpansionPanelDetails>
+    </AccordionSummary>
+    <AccordionDetails>
       <FormControl required component="fieldset" error={!deckOptions.some(deck => deck.value)}>
         <FormControlLabel
           control={<Checkbox checked={isAllSelected} onChange={toggleSelectAll} name="Select all" />}
@@ -67,17 +68,18 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
         <FormLabel component="legend">Select which decks you would like to play with</FormLabel>
         <FormGroup className="deck-checkbox-group">
           {deckOptions.map(deck => {
-            return <FormControlLabel
-              key={deck._id}
-              control={<Checkbox checked={deck.value} onChange={_onChange} name={deck._id} />}
-              label={deck.name}
-            />
+            return <NewsletterNagOpportunity key={deck._id}>
+              <FormControlLabel
+                control={<Checkbox checked={deck.value} onChange={_onChange} name={deck._id} />}
+                label={deck.name}
+              />
+            </NewsletterNagOpportunity>
           })}
         </FormGroup>
         <FormHelperText>You must select at least one</FormHelperText>
       </FormControl>
-    </ExpansionPanelDetails>
-  </ExpansionPanel>
+    </AccordionDetails>
+  </Accordion>
 }
 
 export default function CreateRoom({ onJoin, decksData, user }: any) {

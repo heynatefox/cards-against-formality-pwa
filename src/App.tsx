@@ -1,12 +1,12 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { Container, Backdrop, CircularProgress, } from '@material-ui/core';
-import { Route, Switch } from 'react-router-dom';
-import firebase from "firebase/app";
-import "firebase/analytics";
+import { Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
 import UserProvider from './Contexts/UserProvider';
 import './App.scss';
+import { initialNagRecency, NagRecency, NewsletterNagContext } from './components/Nag/NewsletterNag';
+import { FirebaseProvider } from './Contexts/FirebaseProvider';
 
 const Homepage = lazy(() => import('./components/Homepage/Homepage'));
 const Login = lazy(() => import('./components/Login/Login'));
@@ -19,77 +19,80 @@ function RouteLoadingFallback() {
   </Backdrop>;
 }
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCZLzkZG3s1KZOnASu_RrSL_C2_1PaJTNA",
-  authDomain: "cards-against-formality.firebaseapp.com",
-  databaseURL: "https://cards-against-formality.firebaseio.com",
-  projectId: "cards-against-formality",
-  storageBucket: "cards-against-formality.appspot.com",
-  messagingSenderId: "963787405555",
-  appId: "1:963787405555:web:9a16ebc50e7de8e02d5f86",
-  measurementId: "G-CC9C8EF5ZP"
-};
+function LoggedIn() {
+  return (
+    <FirebaseProvider>
+      <UserProvider>
+        <Routes>
+          <Route
+            path="/login/*"
+            element={<>
+              <Navbar />
+              <Container className="app-container" maxWidth="lg">
+                <div className="app">
+                  <Suspense fallback={<RouteLoadingFallback />}>
+                    <Login />
+                  </Suspense>
+                </div>
+              </Container>
+            </>}
+          />
+
+          <Route
+            path="/rooms/*"
+            element={<>
+              <Navbar />
+              <Container className="app-container" maxWidth="lg">
+                <div className="app">
+                  <Suspense fallback={<RouteLoadingFallback />}>
+                    <Rooms />
+                  </Suspense>
+                </div>
+              </Container>
+            </>}
+          />
+
+          <Route
+            path="/game/*"
+            element={<>
+              {window.screen.width > 600 ? <Navbar /> : null}
+              <Container className="app-container game" maxWidth="xl">
+                <div className="app game-app">
+                  <Suspense fallback={<RouteLoadingFallback />}>
+                    <Game />
+                  </Suspense>
+                </div>
+              </Container>
+            </>}
+          />
+        </Routes>
+      </UserProvider>
+    </FirebaseProvider >
+  );
+}
 
 function App() {
-  const [isFirebaseInit, setIsFirebaseInit] = useState(false);
+  const [nagContext, setNagContext] = useState<NagRecency>(initialNagRecency);
 
-  useEffect(() => {
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+  return (
+    <NewsletterNagContext.Provider value={{ recency: nagContext, setRecency: setNagContext }}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<RouteLoadingFallback />}>
+              <Homepage />
+            </Suspense>
+          }
+        />
 
-    if (import.meta.env.PROD) {
-      firebase.analytics();
-    }
-
-    setIsFirebaseInit(true);
-  }, []);
-
-  return <>
-    <Switch>
-
-      <Route exact={true} path="/">
-        <Suspense fallback={<RouteLoadingFallback />}>
-          <Homepage />
-        </Suspense>
-      </Route>
-
-      <UserProvider isFirebaseInit={isFirebaseInit}>
-        <Route path="/login">
-          <Navbar />
-          <Container className="app-container" maxWidth="lg">
-            <div className="app">
-              <Suspense fallback={<RouteLoadingFallback />}>
-                <Login />
-              </Suspense>
-            </div>
-          </Container>
-        </Route>
-
-        <Route path="/rooms">
-          <Navbar />
-          <Container className="app-container" maxWidth="lg">
-            <div className="app">
-              <Suspense fallback={<RouteLoadingFallback />}>
-                <Rooms />
-              </Suspense>
-            </div>
-
-          </Container>
-        </Route>
-
-        <Route path="/game">
-          {window.screen.width > 600 ? <Navbar /> : null}
-          <Container className="app-container game" maxWidth="xl">
-            <div className="app game-app">
-              <Suspense fallback={<RouteLoadingFallback />}>
-                <Game />
-              </Suspense>
-            </div>
-          </Container>
-        </Route>
-      </UserProvider>
-    </Switch>
-  </>;
+        <Route
+          path="/*"
+          element={<LoggedIn />}
+        />
+      </Routes>
+    </NewsletterNagContext.Provider >
+  );
 }
 
 export default App;

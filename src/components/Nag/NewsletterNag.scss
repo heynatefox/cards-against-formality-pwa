@@ -1,0 +1,50 @@
+.suggestion-anchor {
+  position: relative;
+}
+
+.suggestion-overlay {
+  position: absolute;
+  right: 0;
+  top: 0;
+  translate: 80% -95%;
+  transform-origin: bottom left;
+  z-index: 1;
+  width: min(40vw, 20em);
+
+  display: flex;
+  flex-direction: row;
+
+  transform: scale(0);
+  transition: transform 0.5s;
+  @media (prefers-reduced-motion) {
+    transition: none !important;
+  }
+
+  &.entered {
+    transform: scale(1);
+  }
+
+  > a {
+    display: block;
+    padding: 1em;
+    background-color: #f50057;
+    border-radius: 4em 4em 4em 0;
+    color: #ffffff;
+    border: 0.2em solid #ffffff;
+    filter: drop-shadow(0.5em 0.5em #3f51b5);
+    text-align: center;
+    text-decoration: none;
+
+    .call-to-action {
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  }
+
+  > div {
+    align-items: flex-start;
+    margin-top: -0.75em;
+    margin-left: -0.75em;
+  }
+}
+

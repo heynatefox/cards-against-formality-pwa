@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useEffect, useContext, useRef } from "react";
 import { Backdrop, CircularProgress } from '@material-ui/core';
-import firebase from "firebase/app";
-import "firebase/auth";
+import { getAuth, onAuthStateChanged, signInAnonymously, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 
 import useFetchData, { FetchType } from "../Hooks/useFetchData";
-import { RouterContext } from "./RouteProvider";
 import { SnackbarContext } from "./SnackbarProvider";
+import { useLocation, useNavigate, type Location } from "react-router";
+import { FirebaseContext } from "./FirebaseProvider";
 
 export interface UserContextInterface {
   login: (username: string) => Promise<string>;
@@ -19,13 +19,22 @@ export const UserContext = React.createContext<UserContextInterface>(
   { login: () => Promise.resolve(''), logout: () => { }, signup: () => Promise.resolve(), user: null, authUser: null }
 );
 
-export default function UserProvider({ children, isFirebaseInit }: any) {
+export default function UserProvider({ children }: { children: any }) {
+  const firebase = useContext(FirebaseContext);
   const { openSnack } = useContext(SnackbarContext);
-  const routerContext = useContext(RouterContext);
-  const routerRef = useRef(routerContext);
+  const navigate = useNavigate();
+  const navigateRef = useRef(navigate);
   useEffect(() => {
-    routerRef.current = routerContext;
-  }, [routerContext]);
+    navigateRef.current = navigate;
+  }, [navigate]);
+  const location = useLocation();
+  const locationRef = useRef<{ current: Location, previous: Location | null }>({ current: location, previous: null });
+  useEffect(() => {
+    if (locationRef.current?.current) {
+      locationRef.current.previous = locationRef.current.current;
+    }
+    locationRef.current.current = location;
+  }, [location]);
 
   const [user, setUser] = useState<{ _id: string, username: string, isAnonymous: boolean } | null>(null);
 
@@ -43,8 +52,9 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   useEffect(() => {
     // get the initial state of the user.
     let unsubscribe: any;
-    if (isFirebaseInit) {
-      unsubscribe = firebase.auth().onAuthStateChanged((_user) => {
+    if (firebase) {
+      const auth = getAuth(firebase);
+      unsubscribe = onAuthStateChanged(auth, (_user) => {
         if (_user) {
           _user.getIdToken(true).then(() => {
             const { uid, displayName, photoURL, email, emailVerified, phoneNumber, isAnonymous } = _user;
@@ -53,8 +63,8 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
           })
         } else {
           setAuthUser(null);
-          if (routerRef.current.location.pathname !== '/') {
-            routerRef.current.history.push('/login')
+          if (locationRef.current.current.pathname !== '/') {
+            navigateRef.current('/login')
           }
         }
         setIsLoadingAuth(false)
@@ -66,15 +76,20 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
         unsubscribe()
       }
     }
-  }, [isFirebaseInit]);
+  }, [firebase]);
 
   useEffect(() => {
-    setInterval(() => {
-      firebase.auth().currentUser?.getIdToken(true)
-        .catch(() => { });
-      // Refresh token every 30 minutes.
+    // Refresh token every 30 minutes.
+    const timeout = setInterval(() => {
+      if (firebase) {
+        const auth = getAuth(firebase);
+        auth.currentUser?.getIdToken(true).catch(() => { });
+      }
     }, 60000 * 30)
-  }, [])
+    return () => {
+      clearInterval(timeout);
+    }
+  }, [firebase])
 
   // called after it is determined whether a firebase user is logged in.
   useEffect(() => {
@@ -84,7 +99,7 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
         .catch((err) => {
           if (err.message === 'Network Error') {
             // api servers are down, redirect to /rooms to see the error page.
-            routerRef.current.history.push('/rooms');
+            navigateRef.current('/rooms');
             return;
           }
         })
@@ -112,15 +127,13 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   // Handle smoother transitions between multiple loading states
   useEffect(() => {
     const newIsLoading = isLoadingAuth || isRenewing || isSigningin || isProviderSigningIn;
-    let timeout: NodeJS.Timeout;
-    // If the next loading state is false. Set a timeout.
-    if (!newIsLoading) {
-      timeout = setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
-    } else {
-      setIsLoading(true);
-    }
+    const timeout =
+      // If the next loading state is false. Set a timeout.
+      !newIsLoading ?
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000) :
+        setIsLoading(true);
 
     return () => {
       if (timeout) {
@@ -130,25 +143,25 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   }, [isLoadingAuth, isRenewing, isSigningin, isProviderSigningIn])
 
   function redirect() {
-    if (!routerRef?.current) {
+    if (!navigateRef?.current || !locationRef?.current) {
       return;
     }
 
-    const { prevLocation, history } = routerRef.current;
+    const { current, previous } = locationRef.current;
     // If there's no prevLocation (first request) and the path doesn't equal login. Go to desired path.
-    if (!prevLocation && history.location.pathname !== '/login') {
+    if (!previous && current.pathname !== '/login') {
       return;
     }
 
     let redirectPath = '/rooms';
-    if (prevLocation) {
-      const userDest = `${prevLocation.pathname}${prevLocation.search}`;
+    if (previous) {
+      const userDest = `${previous.pathname}${previous.search}`;
       if (userDest !== '/login' && userDest !== '/') {
         redirectPath = userDest;
       }
     }
 
-    history.push(redirectPath);
+    navigate(redirectPath);
   }
 
   function isPhoneOrTablet() {
@@ -159,23 +172,28 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   }
 
   function signup(providerStr: string): Promise<any> {
-    setIsProviderSigningIn(true);
-    // here we should handle the different sign up types.
-    if (providerStr === 'anonymous') {
-      return firebase.auth().signInAnonymously()
-        .catch((err) => { });
-    }
+    if (firebase) {
+      const auth = getAuth(firebase);
+      setIsProviderSigningIn(true);
+      // here we should handle the different sign up types.
+      if (providerStr === 'anonymous') {
+        return signInAnonymously(auth)
+          .catch((err) => { });
+      }
 
-    let provider: firebase.auth.GoogleAuthProvider | firebase.auth.FacebookAuthProvider;
-    if (providerStr === 'facebook') {
-      provider = new firebase.auth.FacebookAuthProvider();
+      let provider: GoogleAuthProvider | FacebookAuthProvider;
+      if (providerStr === 'facebook') {
+        provider = new FacebookAuthProvider();
+      } else {
+        // must be google.
+        provider = new GoogleAuthProvider();
+      }
+
+      return signInWithPopup(auth, provider)
+        .catch(err => { });
     } else {
-      // must be google.
-      provider = new firebase.auth.GoogleAuthProvider();
+      return Promise.resolve();
     }
-
-    return firebase.auth().signInWithPopup(provider)
-      .catch(err => { });
   }
 
   function _login(username: string) {
@@ -183,21 +201,27 @@ export default function UserProvider({ children, isFirebaseInit }: any) {
   }
 
   function _logout() {
-    const handleComplete = () => {
-      setUser(null);
-      setAuthUser(null);
-      routerRef.current.history.push('/');
-      document.cookie = 'auth=;'
-    };
+    if (firebase) {
+      const handleComplete = () => {
+        setUser(null);
+        setAuthUser(null);
+        navigateRef.current('/');
+        document.cookie = 'auth=;'
+      };
 
-    return firebase.auth().signOut()
-      .then(() => logoutHttp())
-      .then(() => {
-        handleComplete();
-      })
-      .catch(() => {
-        handleComplete();
-      })
+      const auth = getAuth(firebase);
+      return auth.signOut()
+        .then(() => logoutHttp())
+        .then(() => {
+          handleComplete();
+        })
+        .catch(() => {
+          handleComplete();
+        })
+    } else {
+      console.log("No firebase, can't logout.");
+      return Promise.resolve();
+    }
   }
 
   return <UserContext.Provider value={{ login: (login as any), logout, user, authUser, signup }}>

@@ -1,14 +1,16 @@
 import React, { useContext, useState, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Typography, IconButton, Menu, MenuItem, Switch, Grid, Button } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
-import { RouterContext } from '../../Contexts/RouteProvider';
 import { UserContext } from '../../Contexts/UserProvider';
 import { ThemeContext } from '../../Contexts/ThemeProvider';
 import './Navbar.scss';
+import { newsletterLink } from '../../config';
 
 export default React.memo(() => {
-  const { history } = useContext(RouterContext);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { name, onChange } = useContext(ThemeContext);
   const { user, logout, authUser } = useContext(UserContext);
   const [isOpen, setOpen] = useState(false);
@@ -17,13 +19,13 @@ export default React.memo(() => {
     setOpen(false);
   }
 
-  if (history?.location.pathname === '/') {
+  if (location.pathname === '/') {
     return null;
   }
 
-  const logo = <Typography className="logo" variant="h4" onClick={() => history.push('/')}>
+  const logo = <Typography className="logo" variant="h4" onClick={() => navigate('/')}>
     Cards Against Formality
-              </Typography>;
+  </Typography>;
   if (!user) {
     return <div className="nav-bar">
       {logo}
@@ -70,7 +72,7 @@ export default React.memo(() => {
           </Grid>
         </Typography>
       </MenuItem>
-      <MenuItem onClick={() => window.open("https://www.buymeacoffee.com/cards")}><Button color="secondary" variant="contained">Buy me a coffee</Button></MenuItem>
+      <MenuItem onClick={() => window.open(newsletterLink)}><Button color="secondary" variant="contained">Enter to win $100</Button></MenuItem>
       <MenuItem onClick={() => { handleClose(); logout(); }}>Logout</MenuItem>
     </Menu>
   </div>

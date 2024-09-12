@@ -59,19 +59,21 @@
     }
 
     .black-card-container {
-      width: 120%;
-      margin-left: -10%;
       display: flex;
       justify-content: center;
+      box-sizing: border-box;
 
       @media (min-width: 600px) {
         position: unset;
-        width: 200px;
+        width: 400px;
         margin-left: 2%;
       }
 
       .master-black-card {
         font-size: 0.6em;
+        flex-shrink: 1;
+        flex-grow: 1;
+        align-self: flex-start;
 
         @media (min-width: 400px) {
           font-size: 0.8em;
@@ -79,8 +81,7 @@
 
         @media (min-width: 600px) {
           font-size: unset;
-          position: absolute;
-          width: calc(100vh * 0.22);
+          flex-basis: calc(100vh * 0.22);
         }
       }
     }

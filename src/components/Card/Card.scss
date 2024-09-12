@@ -8,6 +8,7 @@
   perspective: 100vw;
   max-width: 400px;
   font-size: 0.5rem;
+  box-sizing: border-box;
 
   @media (min-width: 600px) {
     font-size: 0.6rem;
@@ -27,8 +28,7 @@
 
   .aspect-ratio-wrapper {
     position: relative;
-    height: 0;
-    padding-top: calc(1 / 0.72 * 100%);
+    aspect-ratio: 0.72;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,15 +36,13 @@
 
   .card-content {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0 0 0 0;
     padding: 10%;
     display: flex;
     flex-flow: column;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
 
     .text {
       .word {

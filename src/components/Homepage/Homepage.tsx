@@ -1,22 +1,20 @@
 import React, { useContext } from 'react';
+import { useNavigate } from 'react-router';
 import { Link, Typography, Container, Button } from '@material-ui/core';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
 
 import Card from '../Card/Card';
 import './Homepage.scss';
-import { RouterContext } from '../../Contexts/RouteProvider';
 import { ThemeContext } from '../../Contexts/ThemeProvider';
 
 const Homepage = React.memo(() => {
-  const { history } = useContext(RouterContext);
+  const navigate = useNavigate();
   const { name } = useContext(ThemeContext);
 
+
   function onPlay() {
-    if (history) {
-      history.push('/rooms');
-    }
+    navigate('/rooms');
   }
 
   function onWindowOpen(target: string) {
@@ -47,10 +45,10 @@ const Homepage = React.memo(() => {
         <div className="title-container">
           <Typography className="title" variant="h2" style={{ width: 200 }}>
             Cards Against Formality
-        </Typography>
+          </Typography>
           <Typography className="subtitle" variant="h6" style={{ width: 200 }}>
             A terrible card game. For terrible people...
-        </Typography>
+          </Typography>
           <div className="play-button-container">
             <Button className="play-button" variant="contained" color="primary" onClick={onPlay}>Play</Button>
           </div>
@@ -99,11 +97,10 @@ const Homepage = React.memo(() => {
     <section className="homepage-section footer">
       <div className="link-icons">
         <TwitterIcon className="icon" fontSize="large" onClick={() => onWindowOpen('https://twitter.com/CardsFormality')} />
-        <GitHubIcon className="icon" fontSize="large" onClick={() => onWindowOpen('https://github.com/jordanpawlett/cards-against-formality')} />
-        <LinkedInIcon className="icon" fontSize="large" onClick={() => onWindowOpen('https://www.linkedin.com/in/jordanpawlett/')} />
+        <GitHubIcon className="icon" fontSize="large" onClick={() => onWindowOpen('https://github.com/heynatefox/cards-against-formality')} />
       </div>
       <Typography variant="caption">
-        To view the privacy and terms of use, click <Link color="secondary" onClick={() => onWindowOpen('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link> and <Link color="secondary" onClick={() => onWindowOpen('https://htmlpreview.github.io/?https://github.com/JordanPawlett/cards-against-formality-pwa/blob/master/public/license.html')}>here</Link>
+        To view the privacy and terms of use, click <Link color="secondary" onClick={() => onWindowOpen('https://htmlpreview.github.io/?https://github.com/heynatefox/cards-against-formality-pwa/blob/master/public/privacy_policy.html')}>here</Link> and <Link color="secondary" onClick={() => onWindowOpen('https://htmlpreview.github.io/?https://github.com/heynatefox/cards-against-formality-pwa/blob/master/public/license.html')}>here</Link>
       </Typography>
     </section>
   </div >;

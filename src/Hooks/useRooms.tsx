@@ -3,7 +3,7 @@ import { useReducer, useEffect, useCallback, useState, useRef } from "react";
 import PaginationReducer from "../Reducers/paginationReducer";
 import useFetchData from "./useFetchData";
 import useSocket from "./useSocket";
-import { UsePaginationProps, usePagination } from "@material-ui/lab";
+import { UsePaginationProps } from "@material-ui/lab";
 
 interface Room {
   _id: string;
@@ -96,7 +96,7 @@ export default function useRooms() {
     }
   }, [paginationProps, page]);
 
-  const onPageChange = useCallback((_, page: number) => {
+  const onPageChange = useCallback((_: any, page: number) => {
     setPage(page);
   }, []);
 
