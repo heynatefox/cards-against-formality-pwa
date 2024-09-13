@@ -5,8 +5,9 @@ import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import UserProvider from './Contexts/UserProvider';
 import './App.scss';
-import { initialNagRecency, NagRecency, NewsletterNagContext } from './components/Nag/NewsletterNag';
+import { initialNagRecency, NagRecency, NewsletterNagContext } from './components/Newsletter/Nag';
 import { FirebaseProvider } from './Contexts/FirebaseProvider';
+import { Banner } from './components/Newsletter/Banner';
 
 const Homepage = lazy(() => import('./components/Homepage/Homepage'));
 const Login = lazy(() => import('./components/Login/Login'));
@@ -42,6 +43,7 @@ function LoggedIn() {
             path="/rooms/*"
             element={<>
               <Navbar />
+              <Banner />
               <Container className="app-container" maxWidth="lg">
                 <div className="app">
                   <Suspense fallback={<RouteLoadingFallback />}>
@@ -81,6 +83,7 @@ function App() {
           path="/"
           element={
             <Suspense fallback={<RouteLoadingFallback />}>
+              <Banner />
               <Homepage />
             </Suspense>
           }

@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './CreateRoom.scss';
 import useFetchData, { FetchType } from '../../../Hooks/useFetchData';
 import { SnackbarContext } from '../../../Contexts/SnackbarProvider';
-import { NewsletterNagOpportunity } from '../../Nag/NewsletterNag';
+import { NagOpportunity } from '../../Newsletter/Nag';
 
 function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: string[]) => void }) {
   const [deckOptions, setDeckOptions] = useState<{ name: string; _id: string, value?: boolean }[]>([]);
@@ -68,12 +68,12 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
         <FormLabel component="legend">Select which decks you would like to play with</FormLabel>
         <FormGroup className="deck-checkbox-group">
           {deckOptions.map(deck => {
-            return <NewsletterNagOpportunity key={deck._id}>
+            return <NagOpportunity key={deck._id}>
               <FormControlLabel
                 control={<Checkbox checked={deck.value} onChange={_onChange} name={deck._id} />}
                 label={deck.name}
               />
-            </NewsletterNagOpportunity>
+            </NagOpportunity>
           })}
         </FormGroup>
         <FormHelperText>You must select at least one</FormHelperText>

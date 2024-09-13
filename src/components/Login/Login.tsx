@@ -7,7 +7,7 @@ import { UserContext } from '../../Contexts/UserProvider';
 import googleLogo from './Google__G__Logo.svg';
 import './Login.scss';
 import useFetchData, { FetchType } from '../../Hooks/useFetchData';
-import { NewsletterNagOpportunity } from '../Nag/NewsletterNag';
+import { NagOpportunity } from '../Newsletter/Nag';
 
 function LoginProviders({ onProviderSelect }: any) {
   return <div className="login-providers-content">
@@ -124,9 +124,9 @@ export default React.memo(() => {
 
   return <Container maxWidth="lg" className="login-wrapper">
     <Card className="inner-login-container" raised={true}>
-      <NewsletterNagOpportunity initialActivation={true}>
+      <NagOpportunity initialActivation={true}>
         <CardHeader className="header" title="Let's Play!"></CardHeader>
-      </NewsletterNagOpportunity>
+      </NagOpportunity>
       <CardContent className="root-login-card-content">
         {renderCardContent()}
       </CardContent>
