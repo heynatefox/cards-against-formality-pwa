@@ -13,6 +13,7 @@ export default defineConfig({
     svgPlugin(),
     VitePWA({
       injectRegister: "inline",
+      registerType: "autoUpdate",
       manifest: {
         short_name: "CAF",
         name: "Cards Against Formality",

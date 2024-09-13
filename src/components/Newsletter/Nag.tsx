@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useId, useState } from 'react';
 
 import { newsletterLink } from '../../config';
 
-import './NewsletterNag.scss';
+import './Nag.scss';
 import { IconButton, Typography } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 
@@ -75,7 +75,7 @@ const variants = [
   </>),
 ] as const;
 
-const NewsletterNag = ({ id }: { id: string }) => {
+const Nag = ({ id }: { id: string }) => {
   const context = useContext(NewsletterNagContext);
   const [visible, setVisible] = useState(false);
   const [variant, _] = useState(Math.floor(Math.random() * variants.length));
@@ -108,7 +108,7 @@ const NewsletterNag = ({ id }: { id: string }) => {
   </div>)
 };
 
-export const NewsletterNagOpportunity = ({ children, initialActivation }: { children: any, initialActivation?: boolean }) => {
+export const NagOpportunity = ({ children, initialActivation }: { children: any, initialActivation?: boolean }) => {
   const nagContext = useContext(NewsletterNagContext);
   const id = useId();
 
@@ -121,7 +121,7 @@ export const NewsletterNagOpportunity = ({ children, initialActivation }: { chil
   return (
     <div className="suggestion-anchor" onClick={() => trigger(id, nagContext)}>
       {children}
-      {nagContext.recency.activeNag === id ? (<NewsletterNag id={id} />) : null}
+      {nagContext.recency.activeNag === id ? (<Nag id={id} />) : null}
     </div>
   )
 };
