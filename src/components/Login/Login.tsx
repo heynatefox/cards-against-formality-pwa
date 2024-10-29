@@ -60,7 +60,6 @@ export default React.memo(() => {
     checkUsername(e.target.value);
   }, [checkUsername]);
 
-
   useEffect(() => {
     // user that is logged in, is trying to go to the login page.
     if (user && authUser) {
@@ -124,7 +123,10 @@ export default React.memo(() => {
 
   return <Container maxWidth="lg" className="login-wrapper">
     <Card className="inner-login-container" raised={true}>
-      <NagOpportunity initialActivation={true}>
+      <NagOpportunity
+        initialActivation={true}
+        utm={{ medium: "pre-login", campaign: "giveaway" }}
+      >
         <CardHeader className="header" title="Let's Play!"></CardHeader>
       </NagOpportunity>
       <CardContent className="root-login-card-content">

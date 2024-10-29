@@ -6,7 +6,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import { UserContext } from '../../Contexts/UserProvider';
 import { ThemeContext } from '../../Contexts/ThemeProvider';
 import './Navbar.scss';
-import { newsletterLink } from '../../config';
+import { newsletterLink } from '../Newsletter/Campaigns';
 
 export default React.memo(() => {
   const navigate = useNavigate();
@@ -72,7 +72,10 @@ export default React.memo(() => {
           </Grid>
         </Typography>
       </MenuItem>
-      <MenuItem onClick={() => window.open(newsletterLink)}><Button color="secondary" variant="contained">Enter to win $100</Button></MenuItem>
+      <MenuItem onClick={() => window.open(newsletterLink({
+        campaign: "giveaway",
+        medium: "menu"
+      }, user))}><Button color="secondary" variant="contained">Enter to win $100</Button></MenuItem>
       <MenuItem onClick={() => { handleClose(); logout(); }}>Logout</MenuItem>
     </Menu>
   </div>

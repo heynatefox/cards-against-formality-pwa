@@ -68,7 +68,10 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
         <FormLabel component="legend">Select which decks you would like to play with</FormLabel>
         <FormGroup className="deck-checkbox-group">
           {deckOptions.map(deck => {
-            return <NagOpportunity key={deck._id}>
+            return <NagOpportunity
+              key={deck._id}
+              utm={{ medium: "deck-selection", campaign: "giveaway" }}
+            >
               <FormControlLabel
                 control={<Checkbox checked={deck.value} onChange={_onChange} name={deck._id} />}
                 label={deck.name}

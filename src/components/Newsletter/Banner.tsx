@@ -1,22 +1,27 @@
-import React, { useContext } from "react";
-import { newsletterLink } from "../../config";
+import React, { useContext, useState } from "react";
 import { NewsletterNagContext } from "./Nag";
+import { UserContext } from "../../Contexts/UserProvider";
+import { UTM, bannerVariants, newsletterLink } from './Campaigns';
 
 import './Banner.scss';
 
-export const Banner = () => {
+export const Banner = ({ utm }: { utm: UTM }) => {
   const context = useContext(NewsletterNagContext);
+  const { user } = useContext(UserContext);
+
+  const campaignVariants = bannerVariants[utm.campaign];
+  const [variant, _] = useState(Math.floor(Math.random() * campaignVariants.length));
+
+  const link = newsletterLink(utm, user);
 
   return (<div className="suggestion-bar">
     <a
       target="_blank"
       rel="noopener"
-      href={newsletterLink}
+      href={link}
       onClick={() => context.setRecency({ ...context.recency, previouslyEngaged: true })}
     >
-      <span>🎉 Community Giveaway 🎉:</span>
-      <span>Join our newsletter for a chance to win $100! <span className="call-to-action">Click here</span>.</span>
-      <span>Winner will be drawn on <time dateTime="2024-10-21T11:59:00.000-08:00">10/21/2024</time>.</span>
+      {campaignVariants[variant]}
     </a>
   </div>)
 };

@@ -43,7 +43,7 @@ function LoggedIn() {
             path="/rooms/*"
             element={<>
               <Navbar />
-              <Banner />
+              <Banner utm={{ medium: "rooms-banner", campaign: "giveaway" }} />
               <Container className="app-container" maxWidth="lg">
                 <div className="app">
                   <Suspense fallback={<RouteLoadingFallback />}>
@@ -83,7 +83,7 @@ function App() {
           path="/"
           element={
             <Suspense fallback={<RouteLoadingFallback />}>
-              <Banner />
+              <Banner utm={{ medium: "home-banner", campaign: "giveaway" }} />
               <Homepage />
             </Suspense>
           }

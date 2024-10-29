@@ -39,3 +39,18 @@
   justify-content: center;
   align-items: center;
 }
+
+#post-log-in {
+  position: relative;
+  width: 14em;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+  gap: 3em;
+
+  > img {
+    width: 50%;
+  }
+}

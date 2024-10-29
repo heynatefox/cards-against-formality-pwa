@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useId, useState } from 'react';
 
-import { newsletterLink } from '../../config';
+import { newsletterLink } from './Campaigns';
 
 import './Nag.scss';
-import { IconButton, Typography } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
+import { UserContext } from '../../Contexts/UserProvider';
+import { UTM, variants } from './Campaigns';
 
 // Five minutes.
 const maximumNagFrequencyMillis = 5 * 60 * 1000;
@@ -55,30 +57,23 @@ const naggedRecently = ({ activeNag, lastNagged }: NagRecency) =>
       (new Date().getMilliseconds() - lastNagged.getMilliseconds()) < maximumNagFrequencyMillis :
       false;
 
-const variants = [
-  (<>
-    <Typography variant="subtitle1">Interested in other fun stuff?</Typography>
-    <Typography variant="subtitle2"><span className="call-to-action">Join our newsletter</span> for a chance to win $100!</Typography>
-  </>),
-  (<>
-    <Typography variant="subtitle2">Celebrate 4 years of CAF and enter to win $100! <span className="call-to-action">Click here</span>.</Typography>
-  </>),
-  (<>
-    <Typography variant="subtitle2">Help us build a community pack and enter to win $100 by <span className="call-to-action">joining our newsletter</span>.</Typography>
-  </>),
-  (<>
-    <Typography variant="subtitle1">Like free shit?</Typography>
-    <Typography variant="subtitle2"><span className="call-to-action">Join our newsletter</span> and enter to win $100.</Typography>
-  </>),
-  (<>
-    <Typography variant="subtitle1"><span className="call-to-action">Click here</span> if you like free shit.</Typography>
-  </>),
-] as const;
 
-const Nag = ({ id }: { id: string }) => {
-  const context = useContext(NewsletterNagContext);
+export const Nag = ({
+  id,
+  utm,
+  onClick,
+  onDismiss,
+}: {
+  id: string,
+  utm: UTM,
+  onClick: () => void,
+  onDismiss: () => void,
+}) => {
+  const { user } = useContext(UserContext);
   const [visible, setVisible] = useState(false);
-  const [variant, _] = useState(Math.floor(Math.random() * variants.length));
+
+  const campaignVariants = variants[utm.campaign];
+  const [variant, _] = useState(Math.floor(Math.random() * campaignVariants.length));
 
   useEffect(() => {
     requestAnimationFrame(() => {
@@ -86,29 +81,39 @@ const Nag = ({ id }: { id: string }) => {
     })
   }, [])
 
+  const link = newsletterLink(utm, user);
+
   return (<div className={`suggestion-overlay${visible ? " entered" : ""}`}>
     <a
       id={id}
       target="_blank"
       rel="noopener"
-      href={newsletterLink}
-      onClick={() => context.setRecency({ activeNag: null, previouslyEngaged: true, lastNagged: new Date() })}
+      href={link}
+      onClick={onClick}
     >
-      {variants[variant]}
+      {campaignVariants[variant]}
     </a>
     <div className="dismiss">
       <IconButton
-        onClick={() => dismiss(id, context)}
+        onClick={onDismiss}
         color="inherit"
         title="Not now, thanks."
       >
         <Close />
       </IconButton>
     </div>
-  </div>)
+  </div >)
 };
 
-export const NagOpportunity = ({ children, initialActivation }: { children: any, initialActivation?: boolean }) => {
+export const NagOpportunity = ({
+  children,
+  initialActivation,
+  utm,
+}: {
+  children: any,
+  initialActivation?: boolean,
+  utm: UTM,
+}) => {
   const nagContext = useContext(NewsletterNagContext);
   const id = useId();
 
@@ -121,7 +126,12 @@ export const NagOpportunity = ({ children, initialActivation }: { children: any,
   return (
     <div className="suggestion-anchor" onClick={() => trigger(id, nagContext)}>
       {children}
-      {nagContext.recency.activeNag === id ? (<Nag id={id} />) : null}
+      {nagContext.recency.activeNag === id ? (<Nag
+        id={id}
+        utm={utm}
+        onClick={() => nagContext.setRecency({ activeNag: null, previouslyEngaged: true, lastNagged: new Date() })}
+        onDismiss={() => dismiss(id, nagContext)}
+      />) : null}
     </div>
   )
 };
