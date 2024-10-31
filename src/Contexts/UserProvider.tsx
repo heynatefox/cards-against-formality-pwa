@@ -245,7 +245,7 @@ export default function UserProvider({ children }: { children: any }) {
           <div id="post-log-in">
             <Nag
               id="singular-post-login-nag"
-              utm={{ medium: "post-login", campaign: "giveaway" }}
+              medium="post-login"
               onClick={redirect}
               onDismiss={redirect}
             ></Nag>

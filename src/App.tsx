@@ -5,9 +5,9 @@ import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import UserProvider from './Contexts/UserProvider';
 import './App.scss';
-import { initialNagRecency, NagRecency, NewsletterNagContext } from './components/Newsletter/Nag';
 import { FirebaseProvider } from './Contexts/FirebaseProvider';
 import { Banner } from './components/Newsletter/Banner';
+import { initialNagRecency, NagRecency, NewsletterContext } from './components/Newsletter/Context';
 
 const Homepage = lazy(() => import('./components/Homepage/Homepage'));
 const Login = lazy(() => import('./components/Login/Login'));
@@ -43,7 +43,7 @@ function LoggedIn() {
             path="/rooms/*"
             element={<>
               <Navbar />
-              <Banner utm={{ medium: "rooms-banner", campaign: "giveaway" }} />
+              <Banner medium="rooms-banner" />
               <Container className="app-container" maxWidth="lg">
                 <div className="app">
                   <Suspense fallback={<RouteLoadingFallback />}>
@@ -77,13 +77,13 @@ function App() {
   const [nagContext, setNagContext] = useState<NagRecency>(initialNagRecency);
 
   return (
-    <NewsletterNagContext.Provider value={{ recency: nagContext, setRecency: setNagContext }}>
+    <NewsletterContext.Provider value={{ campaign: "newsletter", recency: nagContext, setRecency: setNagContext }}>
       <Routes>
         <Route
           path="/"
           element={
             <Suspense fallback={<RouteLoadingFallback />}>
-              <Banner utm={{ medium: "home-banner", campaign: "giveaway" }} />
+              <Banner medium="home-banner" />
               <Homepage />
             </Suspense>
           }
@@ -94,7 +94,7 @@ function App() {
           element={<LoggedIn />}
         />
       </Routes>
-    </NewsletterNagContext.Provider >
+    </NewsletterContext.Provider>
   );
 }
 

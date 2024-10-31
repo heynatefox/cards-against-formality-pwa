@@ -123,10 +123,7 @@ export default React.memo(() => {
 
   return <Container maxWidth="lg" className="login-wrapper">
     <Card className="inner-login-container" raised={true}>
-      <NagOpportunity
-        initialActivation={true}
-        utm={{ medium: "pre-login", campaign: "giveaway" }}
-      >
+      <NagOpportunity initialActivation={true} medium="pre-login">
         <CardHeader className="header" title="Let's Play!"></CardHeader>
       </NagOpportunity>
       <CardContent className="root-login-card-content">
