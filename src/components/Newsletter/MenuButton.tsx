@@ -1,16 +1,15 @@
 import React, { useContext, useState } from "react";
 import { hasEngaged } from "./Nag";
 import { UserContext } from "../../Contexts/UserProvider";
-import { bannerVariants, newsletterLink } from "./Campaigns";
-
-import "./Banner.scss";
+import { menuVariants, newsletterLink } from "./Campaigns";
+import { MenuItem, Button } from "@material-ui/core";
 import { NewsletterContext } from "./Context";
 
-export const Banner = ({ medium }: { medium: string }) => {
+export const MenuButton = ({ medium }: { medium: string }) => {
   const context = useContext(NewsletterContext);
   const { user } = useContext(UserContext);
 
-  const campaignVariants = bannerVariants[context.campaign];
+  const campaignVariants = menuVariants[context.campaign];
   const [variant, _] = useState(
     campaignVariants.length > 0
       ? Math.floor(Math.random() * campaignVariants.length)
@@ -21,16 +20,16 @@ export const Banner = ({ medium }: { medium: string }) => {
     return null;
   } else {
     return (
-      <div className="suggestion-bar">
-        <a
-          target="_blank"
-          rel="noopener"
-          href={newsletterLink(context, medium, user)}
-          onClick={() => hasEngaged(context)}
-        >
+      <MenuItem
+        onClick={() => {
+          window.open(newsletterLink(context, medium, user));
+          hasEngaged(context);
+        }}
+      >
+        <Button color="secondary" variant="contained">
           {campaignVariants[variant]}
-        </a>
-      </div>
+        </Button>
+      </MenuItem>
     );
   }
 };
