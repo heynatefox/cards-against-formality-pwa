@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { hasEngaged } from "./Nag";
 import { UserContext } from "../../Contexts/UserProvider";
-import { bannerVariants, newsletterLink } from "./Campaigns";
+import { bannerVariants, campaignLink } from "./Campaigns";
 
 import "./Banner.scss";
 import { NewsletterContext } from "./Context";
@@ -25,7 +25,7 @@ export const Banner = ({ medium }: { medium: string }) => {
         <a
           target="_blank"
           rel="noopener"
-          href={newsletterLink(context, medium, user)}
+          href={campaignLink(context.campaign, context, medium, user)}
           onClick={() => hasEngaged(context)}
         >
           {campaignVariants[variant]}

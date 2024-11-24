@@ -8,7 +8,7 @@ import {
   NewsletterContext,
   NewsletterContextProps,
 } from "./Context";
-import { newsletterLink, variants } from "./Campaigns";
+import { campaignLink, variants } from "./Campaigns";
 
 import "./Nag.scss";
 
@@ -81,7 +81,7 @@ export const Nag = ({
           id={id}
           target="_blank"
           rel="noopener"
-          href={newsletterLink(context, medium, user)}
+          href={campaignLink(context.campaign, context, medium, user)}
           onClick={onClick}
         >
           {campaignVariants[variant]}

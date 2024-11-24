@@ -1,56 +1,60 @@
 .app-container {
-  overflow-x: hidden;
-  height: calc(100% - 50px);
-  // background: url('./tactile_noise.png');
+    overflow-x: hidden;
+    height: calc(100% - 50px);
+    // background: url('./tactile_noise.png');
 
-  @media (min-width: 600px) {
-    padding: 0 19.5%;
-    height: calc(100% - 75px);
-  }
+    @media (min-width: 600px) {
+        padding: 0 19.5%;
+        height: calc(100% - 75px);
+    }
 }
 
 .app {
-  width: 100%;
-  height: 95%;
+    width: 100%;
+    height: 95%;
 
-  &.game-app {
-    height: 100%;
+    &.game-app {
+        height: 100%;
 
-    @media (min-width: 600px) {
-      height: 95%;
+        @media (min-width: 600px) {
+            height: 95%;
+        }
     }
-  }
-  overflow-x: hidden;
-  .backdrop {
-    z-index: 999;
-  }
-  .title {
-    text-align: center;
-  }
+    overflow-x: hidden;
+    .backdrop {
+        z-index: 999;
+    }
+    .title {
+        text-align: center;
+    }
 }
 
 .backdrop {
-  z-index: 10 !important;
+    z-index: 10 !important;
 }
 
 .reconnecting-typog {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
 }
 
 #post-log-in {
-  position: relative;
-  width: 14em;
+    position: relative;
+    width: 14em;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column;
-  gap: 3em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    gap: 3em;
 
-  > img {
-    width: 50%;
-  }
+    > img {
+        width: 50%;
+
+        &.bad-cards {
+            width: 100%;
+        }
+    }
 }

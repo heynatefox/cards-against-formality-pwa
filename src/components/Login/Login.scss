@@ -1,90 +1,99 @@
 .login-title {
-  text-align: center;
-  margin-bottom: 5% !important;
+    text-align: center;
+    margin-bottom: 5% !important;
 }
 
 .login-wrapper {
-  height: 100%;
+    height: 100%;
 }
 
 .inner-login-container {
-  height: max(30em, 100%);
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  overflow: visible;
-
-  .suggestion-anchor {
-    margin-top: 25em;
-    @media (min-width: 400px) {
-      margin-top: 15em;
-    }
-    @media (min-height: 600px) {
-      margin-top: 0em;
-    }
-  }
-
-  .header {
-    text-align: center;
-  }
-
-  .input-wrapper {
-    width: 100%;
+    height: max(40em, 100%);
+    min-height: 40em;
     display: flex;
-    flex-flow: row;
+    flex-flow: column;
     align-items: center;
     justify-content: center;
-    @media (min-width: 600px) {
-      min-width: 500px;
+    width: 100%;
+    overflow: visible;
+
+    .suggestion-anchor {
+        margin-top: 25em;
+        @media (min-width: 400px) {
+            margin-top: 15em;
+        }
+        @media (min-height: 600px) {
+            margin-top: 0em;
+        }
     }
 
-    .username-input {
-      margin-right: 5%;
+    .header {
+        text-align: center;
     }
-  }
+
+    .input-wrapper {
+        width: 100%;
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        justify-content: center;
+        @media (min-width: 600px) {
+            min-width: 500px;
+        }
+
+        .username-input {
+            margin-right: 5%;
+        }
+    }
+}
+
+.prefix-login-card-content {
+    .bad-cards {
+        height: 25px;
+        width: 25px;
+        margin-right: 10px;
+    }
 }
 
 .login-providers-content {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
 
-  .button {
-    font-size: 0.8em;
-    @media (min-width: 600px) {
-      font-size: 1em;
+    .button {
+        font-size: 0.8em;
+        @media (min-width: 600px) {
+            font-size: 1em;
+        }
+        margin-bottom: 5%;
+        &.bottom {
+            margin-top: 5%;
+        }
     }
-    margin-bottom: 5%;
-    &.bottom {
-      margin-top: 5%;
-    }
-  }
 
-  .google-icon-svg {
-    height: 25px;
-    width: 25px;
-    margin-right: 10px;
-  }
+    .google-icon-svg {
+        height: 25px;
+        width: 25px;
+        margin-right: 10px;
+    }
 }
 
 .sign-in-helper {
-  text-align: center;
-  font-size: 0.7em;
+    text-align: center;
+    font-size: 0.7em;
 
-  @media (min-width: 600px) {
-    font-size: 0.9em;
-  }
+    @media (min-width: 600px) {
+        font-size: 0.9em;
+    }
 }
 
 .legal-helper {
-  font-size: 0.6em;
-  margin-top: 20%;
+    font-size: 0.6em;
+    margin-top: 20%;
 
-  @media (min-width: 600px) {
-    margin-top: 0;
-    font-size: 0.8em;
-  }
+    @media (min-width: 600px) {
+        margin-top: 0;
+        font-size: 0.8em;
+    }
 }
