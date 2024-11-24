@@ -1,1 +1,0 @@
-export const newsletterBaseLink = "https://magic.beehiiv.com/v1/750e27e5-1969-4d4a-9097-3f0504f990e7";

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { hasEngaged } from "./Nag";
 import { UserContext } from "../../Contexts/UserProvider";
-import { menuVariants, newsletterLink } from "./Campaigns";
+import { menuVariants, campaignLink } from "./Campaigns";
 import { MenuItem, Button } from "@material-ui/core";
 import { NewsletterContext } from "./Context";
 
@@ -22,7 +22,7 @@ export const MenuButton = ({ medium }: { medium: string }) => {
     return (
       <MenuItem
         onClick={() => {
-          window.open(newsletterLink(context, medium, user));
+          window.open(campaignLink(context.campaign, context, medium, user));
           hasEngaged(context);
         }}
       >
