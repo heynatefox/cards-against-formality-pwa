@@ -91,7 +91,7 @@ function App() {
   return (
     <NewsletterContext.Provider
       value={{
-        campaign: "bad-cards",
+        campaign: "12-days",
         recency: nagContext,
         setRecency: setNagContext,
       }}

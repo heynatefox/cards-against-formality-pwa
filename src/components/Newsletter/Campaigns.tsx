@@ -65,6 +65,15 @@ export const variants = {
       </Typography>
     </>,
   ],
+  ["12-days"]: [
+    <>
+      <Typography variant="subtitle1">Twelve Days of Gametime</Typography>
+      <Typography variant="subtitle2">
+        <span className="call-to-action">Enter to win</span> $5k in Prizes with
+        Gametime and Barstool 👀
+      </Typography>
+    </>,
+  ],
 } as const;
 
 export type Campaign = keyof typeof variants;
@@ -97,12 +106,23 @@ export const bannerVariants = {
       </span>
     </>,
   ],
+  ["12-days"]: [
+    <>
+      <span>
+        <span>
+          <span className="call-to-action">Enter to win</span> $5k in Prizes
+          with Gametime and Barstool 👀
+        </span>
+      </span>
+    </>,
+  ],
 } as const satisfies { [campaign in Campaign]: ReactNode[] };
 
 export const menuVariants = {
   newsletter: ["Get our newsletter"],
   giveaway: ["Enter to win $100"],
   ["bad-cards"]: ["Play our other games!"],
+  ["12-days"]: ["Enter daily to win!"],
 } as const satisfies { [campaign in Campaign]: ReactNode[] };
 
 export const loginVariants = {
@@ -121,6 +141,7 @@ export const loginVariants = {
   ["bad-cards"]: [
     <img className="bad-cards" src={badCardsLogo} alt="Bad Cards" />,
   ],
+  ["12-days"]: [],
 };
 
 export const unknownCampagin = (campaign: never): never => {
@@ -148,6 +169,8 @@ export const campaignLink = (
       return link.toString();
     case "bad-cards":
       return "https://bad.cards/";
+    case "12-days":
+      return "https://12daysofgametime.com/";
     default:
       return unknownCampagin(campaign);
   }
