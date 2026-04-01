@@ -1,217 +1,244 @@
-.card-group-wrapper {
+// ─── Homepage ────────────────────────────────────────────────────────────────
+// Full dark background, centered hero, cards as decoration
+
+.homepage-root {
+  background-color: #0f0f1a;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Roboto Mono', monospace;
+}
+
+// ── Hero section ──────────────────────────────────────────────────────────────
+.homepage-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 85vh;
+  padding: 2rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+
+  // subtle grid texture behind
+  background:
+    linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(116, 0, 216, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(116, 0, 216, 0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+}
+
+.hero-card-decoration {
   position: absolute;
-  z-index: -1;
-  width: 600px;
-  top: 20%;
-  right: -70%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 4%;
+  pointer-events: none;
+  z-index: 0;
 
-  @media (max-width: 330px) {
-    width: 600px;
-    right: -80%;
-    top: 40%;
-  }
-
-  @media (min-width: 400px) {
-    width: 1000px;
-    right: -90%;
-  }
-
-  @media (min-width: 600px) {
-    width: 1000px;
+  @media (max-width: 600px) {
+    opacity: 0.18;
     width: 100%;
-    top: -2.5%;
-    right: -5%;
+    justify-content: center;
+    padding-right: 0;
   }
 
   .card-group {
     display: flex;
-    justify-content: flex-end;
-    margin-right: 20%;
-    margin-top: 10%;
-    pointer-events: none;
     position: relative;
 
-    @media (max-width: 600px) {
-      .blank-space {
-        border: none;
-      }
-      color: transparent;
-    }
-
     .first-card {
-      font-size: 1.2em !important;
+      transform: rotate(-10deg) translateY(1em);
       z-index: 2;
-      transform: rotate(-15deg) translateY(1.5em) translateX(0em);
-
-      @media (min-width: 600px) {
-        font-size: unset;
-      }
-
-      @media (max-width: 600px) {
-        color: transparent;
-      }
     }
+
     .second-card {
-      font-size: 1.2em !important;
-      z-index: 2;
-      transform: rotate(4deg) translateY(0.5em) translateX(-4em);
-
-      @media (min-width: 600px) {
-        font-size: unset;
-      }
-
-      @media (max-width: 600px) {
-        color: transparent;
-      }
+      transform: rotate(5deg) translateY(-0.5em) translateX(-3em);
+      z-index: 1;
     }
   }
 }
 
-.homepage-section {
-  padding: 10% 0 10%;
-  height: 450px;
-  background: #303030;
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+
+  @media (min-width: 600px) {
+    text-align: left;
+    align-items: flex-start;
+    margin-left: 4%;
+    margin-right: 50%;
+  }
+}
+
+.hero-title {
+  font-family: 'Roboto Mono', monospace !important;
+  font-weight: 700 !important;
+  font-size: clamp(1.8rem, 5vw, 3.2rem) !important;
+  line-height: 1.15 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.02em;
+  margin: 0 !important;
+
+  span {
+    color: #7400d8;
+  }
+}
+
+.hero-subtitle {
+  font-family: 'Roboto Mono', monospace !important;
+  font-size: clamp(0.85rem, 2vw, 1.1rem) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  margin: 0 !important;
+  font-style: italic;
+}
+
+.hero-play-btn {
+  margin-top: 0.5rem !important;
+  padding: 0.75rem 2.5rem !important;
+  font-size: 1rem !important;
+  font-family: 'Roboto Mono', monospace !important;
+  font-weight: 700 !important;
+  border-radius: 2em !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  background-color: #7400d8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 24px rgba(116, 0, 216, 0.45) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+
+  &:hover {
+    background-color: #ab47ff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 0 36px rgba(116, 0, 216, 0.65) !important;
+  }
+}
+
+// ── About section ─────────────────────────────────────────────────────────────
+.homepage-about {
+  background-color: #1a1a2e;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4rem 1.5rem;
+
+  @media (min-width: 600px) {
+    padding: 4rem 8%;
+  }
+
+  .about-title {
+    font-family: 'Roboto Mono', monospace !important;
+    font-weight: 700 !important;
+    font-size: clamp(1.5rem, 3vw, 2rem) !important;
+    color: #ff8a50 !important;
+    margin: 0 0 1.5rem 0 !important;
+  }
+
+  .about-body {
+    color: rgba(255, 255, 255, 0.75) !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.9rem !important;
+    line-height: 1.7 !important;
+    max-width: 720px;
+  }
+
+  h5.MuiTypography-h5 {
+    color: #ffffff !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-weight: 700 !important;
+    margin: 1.5rem 0 0.5rem !important;
+    font-size: 1.1rem !important;
+  }
+
+  ul {
+    color: rgba(255, 255, 255, 0.75);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    padding-left: 1.5rem;
+  }
+
+  .pick-option {
+    background: #7400d8;
+    border-radius: 50%;
+    width: 1.4em;
+    height: 1.4em;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+  }
 
   a {
+    color: #ff8a50;
     cursor: pointer;
+    text-decoration: underline;
   }
 
-  &.about {
-    height: fit-content;
-
-    .pick-option {
-      background: black;
-      border-radius: 50%;
-      width: 1.2em;
-      height: 1.2em;
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-  }
-
-  &.footer {
-    text-align: center;
-    height: 180px;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: center;
-
-    .link-icons {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 1%;
-
-      .icon {
-        margin-right: 5%;
-        cursor: pointer;
-      }
-    }
-  }
-
-  &.sponsor {
-    height: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: fit-content;
-  }
-
-  &.page-break {
-    height: 5px;
-  }
-
-  &.title {
-    display: flex;
-    width: 100%;
-    background: none;
-  }
-
-  @media (min-width: 600px) {
-    padding: 5% 0 5%;
-    height: 550px;
-  }
-
-  .title-container {
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    .play-button-container {
-      z-index: 5;
-      margin-top: 5%;
-      display: flex;
-      justify-content: center;
-      .play-button {
-        width: 100px;
-      }
-    }
-  }
-
-  .title {
-    font-family: "Helvetica" !important;
-    font-weight: bolder !important;
-  }
-
-  .subtitle {
-    margin-top: 5%;
-  }
-  &.even {
-    background: white;
+  .MuiTypography-subtitle1 {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.85rem !important;
+    line-height: 1.7 !important;
+    margin: 0.75rem 0 !important;
   }
 }
 
-.patreon-button {
-  img {
-    height: 50px;
-  }
-  &:hover {
-    transform: scale(1.05);
-    
-    @media (min-width: 600px) {
-      transition: all 0.5s ease;
-    }
-  }
-}
-
-.sponsor-list {
-  @media (min-width: 600px) {
-    margin-top: 5%;
-  }
-
-  margin-top: 10%;
-  width: 100%;
+// ── Footer ────────────────────────────────────────────────────────────────────
+.homepage-footer {
+  background-color: #0f0f1a;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  padding: 2rem 1.5rem;
   display: flex;
-  flex-flow: wrap;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 0.75rem;
 
-  .logo-template {
-    &:last-child {
-      margin-bottom: 0%;
+  .footer-icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
 
-      @media (min-width: 1334px) {
-        margin-top: -5%;
+    .icon {
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.5);
+      transition: color 0.15s;
+
+      &:hover {
+        color: #ff8a50;
       }
     }
+  }
 
-    cursor: pointer;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-bottom: 5%;
-    width: 300px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: dotted grey 1px;
+  .MuiTypography-caption {
+    color: rgba(255, 255, 255, 0.35) !important;
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.7rem !important;
 
-    &:hover {
-      border: dotted grey 2px;
+    a {
+      color: #ff8a50;
+      cursor: pointer;
     }
   }
 }

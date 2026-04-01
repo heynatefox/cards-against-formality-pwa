@@ -1,19 +1,74 @@
+// ─── Room tile ────────────────────────────────────────────────────────────────
+// Styled as a dark game tile with purple/orange accents
+
 .room {
-  margin-right: 5%;
-  margin-bottom: 5%;
+  margin-bottom: 0;
   flex: 1 1 auto;
   max-width: 100%;
+  background-color: #111122 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0.15em 0.15em 0.4em rgba(0, 0, 0, 0.35) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: rgba(116, 0, 216, 0.5) !important;
+    box-shadow: 0 0 16px rgba(116, 0, 216, 0.25) !important;
+  }
 
   @media (min-width: 600px) {
-    max-width: 50%;
+    max-width: calc(50% - 0.5rem);
+  }
+
+  // Title row
+  .MuiCardHeader-root {
+    padding: 10px 14px 6px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   .room-title {
-    text-transform: capitalize;
+    .MuiCardHeader-title {
+      font-family: 'Roboto Mono', monospace !important;
+      font-weight: 700 !important;
+      font-size: 0.95rem !important;
+      color: #ffffff !important;
+      text-transform: capitalize;
+    }
+
+    .MuiCardHeader-subheader {
+      font-family: 'Roboto Mono', monospace !important;
+      font-size: 0.75rem !important;
+      color: rgba(255, 255, 255, 0.45) !important;
+    }
+
+    // Join button override — already handled globally but reinforce
+    .MuiButton-containedPrimary {
+      background-color: #7400d8 !important;
+      color: #ffffff !important;
+      font-size: 0.72rem !important;
+      padding: 4px 14px !important;
+      border-radius: 2em !important;
+    }
   }
 
   .room-content {
     display: flex;
     flex-flow: column;
+    gap: 0.15rem;
+    padding: 8px 14px 12px !important;
+
+    // Override all caption text in room content
+    .MuiTypography-caption {
+      font-family: 'Roboto Mono', monospace !important;
+      font-size: 0.72rem !important;
+      color: rgba(255, 255, 255, 0.45) !important;
+      line-height: 1.6;
+    }
+
+    // Private badge
+    .MuiTypography-colorSecondary {
+      color: #ff8a50 !important;
+      font-weight: 700 !important;
+    }
   }
 }

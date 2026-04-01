@@ -1,6 +1,184 @@
-html,body, #root {
+html, body, #root {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  background-color: #0f0f1a;
+  color: #f0f0f0;
+  font-family: 'Roboto Mono', monospace;
+}
+
+// ─── Global MUI dark theme overrides ────────────────────────────────────────
+body {
+  margin: 0;
+  padding: 0;
+}
+
+// Dark paper/card background across all MUI components
+.MuiPaper-root {
+  background-color: #1a1a2e !important;
+  color: #f0f0f0 !important;
+}
+
+// MUI AppBar / Toolbar
+.MuiAppBar-root {
+  background-color: #111122 !important;
+}
+
+// Input fields
+.MuiInputBase-root,
+.MuiInput-underline:before {
+  color: #f0f0f0 !important;
+  border-bottom-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.MuiInputLabel-root {
+  color: rgba(255, 255, 255, 0.55) !important;
+  font-family: 'Roboto Mono', monospace !important;
+}
+
+.MuiFormHelperText-root {
+  color: rgba(255, 255, 255, 0.45) !important;
+  font-family: 'Roboto Mono', monospace !important;
+}
+
+// Typography
+.MuiTypography-root {
+  font-family: 'Roboto Mono', monospace !important;
+}
+
+// Buttons (global)
+.MuiButton-root {
+  font-family: 'Roboto Mono', monospace !important;
+  font-weight: 700 !important;
+  border-radius: 2em !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+// Contained primary
+.MuiButton-containedPrimary {
+  background-color: #7400d8 !important;
+  color: #ffffff !important;
+  &:hover {
+    background-color: #ab47ff !important;
+  }
+}
+
+// Contained secondary
+.MuiButton-containedSecondary {
+  background-color: #ff8a50 !important;
+  color: #111111 !important;
+  &:hover {
+    background-color: #ffa070 !important;
+  }
+}
+
+// Outlined secondary
+.MuiButton-outlinedSecondary {
+  border-color: #ff8a50 !important;
+  color: #ff8a50 !important;
+  &:hover {
+    background-color: rgba(255, 138, 80, 0.1) !important;
+  }
+}
+
+// Outlined primary
+.MuiButton-outlinedPrimary {
+  border-color: #7400d8 !important;
+  color: #7400d8 !important;
+}
+
+// Icon buttons
+.MuiIconButton-root {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+// Divider
+.MuiDivider-root {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+// Checkbox
+.MuiCheckbox-colorPrimary.Mui-checked {
+  color: #7400d8 !important;
+}
+.MuiCheckbox-colorSecondary.Mui-checked {
+  color: #ff8a50 !important;
+}
+
+// Switch
+.MuiSwitch-colorPrimary.Mui-checked {
+  color: #7400d8 !important;
+}
+.MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
+  background-color: #7400d8 !important;
+}
+
+// List items
+.MuiListItem-root {
+  color: #f0f0f0 !important;
+}
+
+// Menu
+.MuiMenu-paper {
+  background-color: #1a1a2e !important;
+  color: #f0f0f0 !important;
+}
+
+.MuiMenuItem-root {
+  font-family: 'Roboto Mono', monospace !important;
+  color: #f0f0f0 !important;
+  &:hover {
+    background-color: rgba(116, 0, 216, 0.15) !important;
+  }
+}
+
+// Accordion
+.MuiAccordion-root {
+  background-color: #111122 !important;
+  color: #f0f0f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.MuiAccordionSummary-root {
+  color: #f0f0f0 !important;
+}
+
+.MuiAccordionSummary-expandIcon {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+// Select
+.MuiSelect-root {
+  color: #f0f0f0 !important;
+}
+.MuiSelect-icon {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+// Pagination
+.MuiPaginationItem-root {
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-family: 'Roboto Mono', monospace !important;
+}
+
+.MuiPaginationItem-page.Mui-selected {
+  background-color: #7400d8 !important;
+  color: #ffffff !important;
+}
+
+// Card actions area
+.MuiCardActions-root {
+  background-color: #111122 !important;
+}
+
+// List text
+.MuiListItemText-primary {
+  font-family: 'Roboto Mono', monospace !important;
+  color: #f0f0f0 !important;
+}
+.MuiListItemText-secondary {
+  font-family: 'Roboto Mono', monospace !important;
+  color: rgba(255, 255, 255, 0.5) !important;
 }

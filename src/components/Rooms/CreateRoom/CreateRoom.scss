@@ -1,3 +1,38 @@
+// ─── Create Room form ─────────────────────────────────────────────────────────
+// Dark inputs, styled accordion, purple CTA
+
+.form-container {
+  height: 100%;
+  overflow: auto;
+  background-color: #1a1a2e !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 0.75rem !important;
+
+  // Create / submit button bar
+  .MuiCardActions-root {
+    background-color: #111122 !important;
+    padding: 10px 16px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    .MuiButton-containedPrimary {
+      border-radius: 2em !important;
+      background-color: #7400d8 !important;
+      color: #ffffff !important;
+      font-family: 'Roboto Mono', monospace !important;
+      font-weight: 700 !important;
+      font-size: 0.8rem !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.06em !important;
+      box-shadow: 0 0 12px rgba(116, 0, 216, 0.35) !important;
+
+      &:hover {
+        background-color: #ab47ff !important;
+      }
+    }
+  }
+}
+
 .deck-loading-container {
   display: flex;
   justify-content: center;
@@ -5,25 +40,138 @@
 }
 
 .create-form-card-content {
+  padding: 1rem 1rem 0 !important;
 
   .create-room-form {
     display: flex;
     flex-flow: column;
+    gap: 0.5rem;
 
     .MuiFormControl-root {
-      margin-bottom: 5%;
+      margin-bottom: 0.75rem !important;
+
       @media (min-width: 600px) {
-        margin-bottom: 2%;
+        margin-bottom: 0.5rem !important;
       }
+    }
+
+    // Input labels
+    .MuiInputLabel-root {
+      font-family: 'Roboto Mono', monospace !important;
+      font-size: 0.85rem !important;
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    // Input values
+    .MuiInputBase-root {
+      font-family: 'Roboto Mono', monospace !important;
+      color: #f0f0f0 !important;
+      font-size: 0.9rem !important;
+    }
+
+    .MuiInput-underline:before {
+      border-bottom-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .MuiInput-underline:after {
+      border-bottom-color: #7400d8 !important;
+    }
+
+    // Helper text
+    .MuiFormHelperText-root {
+      font-family: 'Roboto Mono', monospace !important;
+      font-size: 0.7rem !important;
+      color: rgba(255, 255, 255, 0.35) !important;
+    }
+
+    // Select
+    .MuiSelect-root {
+      font-family: 'Roboto Mono', monospace !important;
+      color: #f0f0f0 !important;
+    }
+
+    // Switch
+    .MuiSwitch-colorPrimary.Mui-checked {
+      color: #7400d8 !important;
+    }
+
+    .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
+      background-color: #7400d8 !important;
+    }
+
+    // Switch label
+    .MuiFormControlLabel-label {
+      font-family: 'Roboto Mono', monospace !important;
+      font-size: 0.85rem !important;
+      color: rgba(255, 255, 255, 0.65) !important;
     }
   }
 
   .deck-checkbox-group {
     flex-direction: row;
+
+    .MuiFormControlLabel-label {
+      font-family: 'Roboto Mono', monospace !important;
+      font-size: 0.78rem !important;
+      color: rgba(255, 255, 255, 0.65) !important;
+    }
+
+    .MuiCheckbox-colorPrimary.Mui-checked {
+      color: #7400d8 !important;
+    }
   }
 }
 
-.form-container {
-  height: 100%;
-  overflow: auto;
+// Accordion — deck selector
+.MuiAccordion-root {
+  background-color: #0f0f1a !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 0.5rem !important;
+
+  &::before {
+    display: none;
+  }
+}
+
+.MuiAccordionSummary-root {
+  font-family: 'Roboto Mono', monospace !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 0.88rem !important;
+  min-height: 44px !important;
+
+  .MuiTypography-root {
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.88rem !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+}
+
+.MuiAccordionDetails-root {
+  padding: 8px 16px 16px !important;
+}
+
+// Deck selector FormLabel
+.MuiFormLabel-root {
+  font-family: 'Roboto Mono', monospace !important;
+  font-size: 0.8rem !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+// Select dropdown popover
+.MuiPopover-paper {
+  background-color: #1a1a2e !important;
+
+  .MuiMenuItem-root {
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 0.85rem !important;
+    color: #f0f0f0 !important;
+
+    &:hover {
+      background-color: rgba(116, 0, 216, 0.15) !important;
+    }
+
+    &.Mui-selected {
+      background-color: rgba(116, 0, 216, 0.25) !important;
+    }
+  }
 }
