@@ -50,11 +50,13 @@ export interface GameProps {
   game: TurnDataWithState;
   players: any[];
   isCzar: boolean;
+  isHost: boolean;
   onWinnerSelect: (winnerId: string) => void;
+  onPlayAgain: () => void;
   maxChildHeight?: number;
 }
 
-export default function Game({ game, players, isCzar, onWinnerSelect, maxChildHeight }: GameProps) {
+export default function Game({ game, players, isCzar, isHost, onWinnerSelect, onPlayAgain, maxChildHeight }: GameProps) {
   const [gameState, setGameState] = useState<string | null>(null);
   useEffect(() => {
     if (game?.state) {
@@ -71,7 +73,7 @@ export default function Game({ game, players, isCzar, onWinnerSelect, maxChildHe
       case GameState.SELECTING_WINNER:
         return <SelectingWinner game={game} onWinnerSelect={onWinnerSelect} isCzar={isCzar} maxChildHeight={maxChildHeight} />;
       case GameState.ENEDED:
-        return <GameEnded game={game} players={players} />;
+        return <GameEnded game={game} players={players} isHost={isHost} onPlayAgain={onPlayAgain} />;
       default:
         return <div className="generic-cards-wrapper">
           <GenericGardGroup

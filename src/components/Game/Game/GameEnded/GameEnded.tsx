@@ -4,7 +4,7 @@ import { UserContext } from '../../../../Contexts/UserProvider';
 
 import './GameEnded.scss';
 
-export default function GameEnded({ game, players }: { game: any, players: any }) {
+export default function GameEnded({ game, players, isHost, onPlayAgain }: { game: any, players: any, isHost: boolean, onPlayAgain: () => void }) {
   const { user } = useContext(UserContext);
   const winners = useMemo(() => {
     return game.winner.map((winner: string) => players.find((player: any) => player._id === winner));
@@ -26,6 +26,11 @@ export default function GameEnded({ game, players }: { game: any, players: any }
       }) : null}
     </div>
     <div className="content-wrapper">
+      {isHost && (
+        <Button onClick={onPlayAgain} color="secondary" variant="contained" style={{ marginBottom: '16px' }}>
+          Play Again
+        </Button>
+      )}
       <Typography variant="body1">
         If you enjoyed the game and would like to help keep the servers alive, please consider buying me a coffee.
       </Typography>
