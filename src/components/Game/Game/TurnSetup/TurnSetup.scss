@@ -1,22 +1,44 @@
 .turn-setup-container {
   display: flex;
-  height: 100%;
   width: 100%;
   align-items: center;
-  justify-content: unset;
+  justify-content: flex-start;
   flex-flow: column;
-  padding: 5%;
+  padding: 3% 4%;
+
+  @media (min-width: 600px) {
+    height: 100%;
+    padding: 5%;
+  }
 
   .winning-cards {
-    margin-top: 1%;
+    margin-top: 2%;
     display: flex;
-    flex-flow: row-reverse;
     justify-content: space-evenly;
-    max-width: 100vw;
+    max-width: 100%;
     width: 100%;
+
+    @media (max-width: 599px) {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      justify-content: flex-start;
+      gap: 6px;
+      padding-bottom: 4px;
+    }
+
+    @media (min-width: 600px) {
+      flex-flow: row-reverse;
+    }
 
     .winner {
       min-width: 100px !important;
+
+      @media (max-width: 599px) {
+        flex-shrink: 0 !important;
+        width: 95px !important;
+        font-size: 0.52rem !important;
+      }
     }
   }
 }
