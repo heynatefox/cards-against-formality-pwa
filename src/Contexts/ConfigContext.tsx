@@ -1,7 +1,8 @@
 import React from 'react';
 
 export interface ConfigContextProps {
-  baseUrl: string
+  baseUrl: string;
+  socketUrl: string;
 }
 
 export default React.createContext<ConfigContextProps>({} as any);

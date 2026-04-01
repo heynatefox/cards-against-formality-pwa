@@ -10,9 +10,13 @@ import ThemeProvider from './Contexts/ThemeProvider';
 import SnackbarProvider from './Contexts/SnackbarProvider';
 import './index.scss';
 
-const config = { baseUrl: 'https://api.cardsagainstformality.io' };
+const config = {
+  baseUrl: 'https://api.cardsagainstformality.io',
+  socketUrl: 'https://socket.cardsagainstformality.io',
+};
 if (!import.meta.env.PROD) {
   config.baseUrl = `http://${window.location.hostname}:8000`;
+  config.socketUrl = `http://${window.location.hostname}:8000`;
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);

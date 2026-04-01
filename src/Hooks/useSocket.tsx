@@ -16,7 +16,7 @@ export default function useSocket(
   const [reconnecting, setReconnecting] = useState(false);
   const [disconnected, setDisconnected] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { baseUrl } = useContext(ConfigContext);
+  const { socketUrl } = useContext(ConfigContext);
   const firebase = useContext(FirebaseContext);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function useSocket(
       auth.currentUser?.getIdToken()
         .then((token) => {
           if (active) {
-            setSocket(io(`${baseUrl}${namespace}`, {
+            setSocket(io(`${socketUrl}${namespace}`, {
               transports: ['websocket'],
               path: '/socket',
               autoConnect,
@@ -42,7 +42,7 @@ export default function useSocket(
         active = false;
       }
     }
-  }, [firebase, namespace, socketEventMap, autoConnect, baseUrl]);
+  }, [firebase, namespace, socketEventMap, autoConnect, socketUrl]);
 
   useEffect(() => {
     let disconnectedTimeout: number | null;
