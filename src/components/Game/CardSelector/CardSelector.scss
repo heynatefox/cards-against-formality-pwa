@@ -38,6 +38,18 @@
   }
   .scroll-wrapper {
     overflow: auto;
+
+    // Mobile: horizontal snap-scroll carousel
+    @media (max-width: 599px) {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      // Padding reveals adjacent cards (peek effect); scroll-padding aligns
+      // the snap point to the same offset so cards snap into the padded center.
+      padding-inline: 12%;
+      scroll-padding-inline: 12%;
+    }
   }
 
   .cards-list-container {
@@ -45,6 +57,15 @@
     gap: 0.5em;
     justify-content: center;
     overflow: auto;
+
+    @media (max-width: 599px) {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: 8px;
+      // Negative margin cancels out the scroll-wrapper padding so cards
+      // are flush against the padded edges and peek is purely from padding.
+      padding: 0;
+    }
 
     @media (min-width: 600px) {
       padding: 2% 2% 1%;
@@ -54,6 +75,18 @@
 
     .card-selector-card {
       font-size: 0.6em;
+
+      // Mobile: snap carousel item — 76% of viewport so ~12% peeks each side
+      @media (max-width: 599px) {
+        scroll-snap-align: center;
+        flex-shrink: 0 !important;
+        // 76vw card inside a container with 12% padding on each side means
+        // the card fills the padded viewport exactly, and adjacent cards
+        // peek from behind the padding edges.
+        width: 76vw !important;
+        max-width: 280px !important;
+        font-size: 0.62rem !important;
+      }
 
       @media (min-width: 850px) {
         font-size: 0.8em;

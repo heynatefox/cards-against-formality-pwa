@@ -141,6 +141,34 @@
   overflow: auto;
 }
 
+// ─── Mobile layout additions ───────────────────────────────────────────────
+// Additive-only: no structural desktop changes.
+@media (max-width: 599px) {
+  // Use descendant selector (2-class specificity) to beat playing-card's
+  // width: 25% (1-class), then !important as backstop against load-order races.
+  .black-card-container .master-black-card {
+    flex-grow: 0 !important;
+    width: 46vw !important;
+    max-width: 200px !important;
+  }
+
+  // Players strip: move to top-right so it doesn't collide with hand cards
+  // at the bottom.
+  .players-container {
+    bottom: unset !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: unset !important;
+    width: auto !important;
+    padding-top: 0 !important;
+    max-height: 42px !important;
+    overflow: hidden !important;
+    justify-content: flex-end !important;
+    padding-right: 4px !important;
+    opacity: 0.85;
+  }
+}
+
 .sub-header-container {
   display: flex;
   align-items: center;
