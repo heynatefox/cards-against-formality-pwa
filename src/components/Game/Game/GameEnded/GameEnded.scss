@@ -3,9 +3,14 @@
   flex-flow: column;
   align-items: center;
   height: 100%;
+  padding: 5%;
 
   .game-ended-header {
     margin-bottom: 10%;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    color: #ff8a50;
+    text-align: center;
 
     @media (min-width: 600px) {
       margin-bottom: 5%;
@@ -15,6 +20,8 @@
   .winners-container {
     text-align: center;
     margin-bottom: 15%;
+    font-family: 'Roboto Mono', monospace;
+
     @media (min-width: 600px) {
       margin-bottom: 10%;
     }
@@ -27,6 +34,8 @@
 
     button {
       margin-top: 5%;
+      font-family: 'Roboto Mono', monospace !important;
+      font-weight: 700 !important;
     }
   }
 }

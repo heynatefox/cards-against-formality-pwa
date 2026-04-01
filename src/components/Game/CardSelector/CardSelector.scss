@@ -22,6 +22,9 @@
       margin-left: 2%;
       margin-right: 2%;
       width: 50px !important;
+      font-family: 'Roboto Mono', monospace !important;
+      font-weight: 700 !important;
+      background-color: #7400d8 !important;
       @media (min-width: 600px) {
         margin-right: 0%;
         width: 100px !important;
@@ -30,12 +33,23 @@
 
     .czar-message {
       margin-right: 2%;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
 
       @media (min-width: 600px) {
         margin-right: 0%;
       }
     }
+
+    // MUI Typography in card count indicator
+    .MuiTypography-root {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.65);
+    }
   }
+
   .scroll-wrapper {
     overflow: auto;
 
@@ -45,8 +59,6 @@
       overflow-y: hidden;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
-      // Padding reveals adjacent cards (peek effect); scroll-padding aligns
-      // the snap point to the same offset so cards snap into the padded center.
       padding-inline: 12%;
       scroll-padding-inline: 12%;
     }
@@ -62,8 +74,6 @@
       flex-wrap: nowrap;
       justify-content: flex-start;
       gap: 8px;
-      // Negative margin cancels out the scroll-wrapper padding so cards
-      // are flush against the padded edges and peek is purely from padding.
       padding: 0;
     }
 
@@ -76,13 +86,10 @@
     .card-selector-card {
       font-size: 0.6em;
 
-      // Mobile: snap carousel item — 76% of viewport so ~12% peeks each side
+      // Mobile: snap carousel item
       @media (max-width: 599px) {
         scroll-snap-align: center;
         flex-shrink: 0 !important;
-        // 76vw card inside a container with 12% padding on each side means
-        // the card fills the padded viewport exactly, and adjacent cards
-        // peek from behind the padding edges.
         width: 76vw !important;
         max-width: 280px !important;
         font-size: 0.62rem !important;

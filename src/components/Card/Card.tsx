@@ -30,6 +30,7 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
   const calculatedClassName = useMemo(() => {
     return `no-select playing-card ${card.cardType} ${isSelected ? 'selected' : ''} ${isUnselectable ? 'unselectable' : ''} ${className ? className : ''}`;
   }, [card, isSelected, isUnselectable, className]);
+
   function _onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (!onSelect || isUnselectable) {
       return;
@@ -50,7 +51,7 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
         <div className="text" style={textStyle}>
           {words.map((word, index) => {
             if (word.includes('<br>')) {
-              return <br />;
+              return <br key={index} />;
             }
             if (word.includes('_')) {
               return <span key={index} className="blank-space" />
@@ -65,11 +66,9 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
         <div className="options">
           <span className="title-plugin">Cards Against Formality</span>
           <div className="spacer" />
-          {card.pick ? <> <span>PICK</span><span className="pick-option">{card.pick}</span></> : null}
-
+          {card.pick ? <><span>PICK</span><span className="pick-option">{card.pick}</span></> : null}
         </div>
       </div>
     </div>
   </div>;
 });
-

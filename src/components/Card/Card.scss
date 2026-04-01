@@ -1,8 +1,8 @@
 .playing-card {
   text-rendering: optimizeLegibility;
   hyphens: none;
-  font-family: "Helvetica" !important;
-  font-weight: bolder !important;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
   position: relative;
   width: 25%;
   perspective: 100vw;
@@ -11,7 +11,7 @@
   box-sizing: border-box;
 
   @media (min-width: 600px) {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
   }
   @media (min-width: 800px) {
     font-size: 0.9rem;
@@ -23,12 +23,12 @@
     flex-grow: 1;
     flex-basis: 2em;
     max-width: 7em;
-    border-bottom: 0.1em solid white;
+    border-bottom: 0.1em solid currentColor;
   }
 
   .aspect-ratio-wrapper {
     position: relative;
-    aspect-ratio: 0.72;
+    aspect-ratio: 0.714;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,12 +40,20 @@
     padding: 10%;
     display: flex;
     flex-flow: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     box-sizing: border-box;
 
     .text {
+      width: 100%;
+      text-align: center;
       align-self: flex-start;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.4;
     }
   }
 
@@ -62,6 +70,8 @@
 
     .title-plugin {
       font-size: 0.4em;
+      opacity: 0.7;
+      letter-spacing: 0.02em;
     }
 
     .pick-option {
@@ -79,37 +89,49 @@
   }
 
   cursor: pointer;
-  border-radius: 5%;
-  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+  border-radius: 0.75em;
+  box-shadow: 0.15em 0.15em 0.4em rgba(0, 0, 0, 0.35),
+    -0.05em -0.05em 0.3em rgba(0, 0, 0, 0.2);
 
   @media (min-width: 600px) {
-    transition: all 0.5s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
   &.selected {
-    transform: scale(1.1) translateY(-1em) rotate(-1deg) !important;
+    transform: scale(1.08) translateY(-0.75em) rotate(-1deg) !important;
+    box-shadow: 0.2em 0.4em 0.8em rgba(0, 0, 0, 0.5),
+      -0.05em -0.05em 0.3em rgba(0, 0, 0, 0.2);
   }
 
   &.black {
-    background: black;
-    color: white;
+    background: #111111;
+    color: #ffffff;
+    border: 0.25em solid #111111;
+
+    .pick-option {
+      background: #ffffff;
+      color: #111111;
+    }
   }
 
   &.white {
-    background: white;
-    color: black;
+    background: #ffffff;
+    color: #111111;
+    border: 0.25em solid #e8e8e8;
 
     &.unselectable {
-      background: grey;
+      background: #c8c8c8;
+      color: #666666;
       pointer-events: none;
     }
   }
 
   &:hover {
     @media (min-width: 600px) {
-      transform: scale(1.1);
+      transform: scale(1.08) translateY(-0.4em);
       z-index: 2;
+      box-shadow: 0.2em 0.5em 1em rgba(0, 0, 0, 0.45),
+        -0.05em -0.05em 0.3em rgba(0, 0, 0, 0.15);
     }
   }
 }

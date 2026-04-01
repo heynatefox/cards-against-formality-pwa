@@ -2,6 +2,38 @@
   height: 100%;
   display: flex;
   flex-flow: column;
+  background: #1a1a2e !important;
+  color: #f0f0f0;
+
+  // Override MUI Card header to match dark theme
+  .MuiCardHeader-root {
+    background: #111122;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 8px 12px;
+
+    @media (min-width: 600px) {
+      padding: 10px 16px;
+    }
+  }
+
+  .MuiCardHeader-title {
+    color: #ff8a50 !important;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1rem !important;
+    font-weight: 700;
+  }
+
+  .MuiCardHeader-subheader {
+    color: rgba(255, 255, 255, 0.65) !important;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.8rem;
+  }
+
+  .MuiCardContent-root {
+    background: #1a1a2e;
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
 
   .card-selector-container {
     width: 100%;
@@ -9,14 +41,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    @media (min-width: 600px) {
-    }
   }
 }
 
 .MuiCardHeader-action {
-  @media (max-wwidth: 600px) {
+  @media (max-width: 600px) {
     margin-top: 0 !important;
   }
 }
@@ -94,13 +123,11 @@
     display: flex;
     justify-content: center;
     width: 100%;
-    // max-height: 45vh;
     margin-top: 2%;
     padding: 0;
     @media (min-width: 600px) {
       margin-top: 0%;
       padding: 0 2%;
-      // max-height: 65vh;
     }
   }
 
@@ -108,15 +135,18 @@
     .player {
       flex-shrink: 0;
       margin-left: 5%;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.8);
       &.special {
-        color: gold;
+        color: #ff8a50;
+        font-weight: 700;
       }
     }
     flex-grow: 0;
     flex-shrink: 1;
     width: 100%;
     overflow: auto;
-    // display: none;
     position: absolute;
     bottom: 0.5%;
     display: flex;
@@ -132,6 +162,29 @@
       position: unset;
       display: block;
       height: 100%;
+
+      // Desktop players list MUI overrides
+      .MuiListItemText-primary {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.85rem;
+        color: #f0f0f0;
+      }
+
+      .MuiListItemText-secondary {
+        font-family: 'Roboto Mono', monospace;
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .MuiDivider-root {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .MuiAvatar-root {
+        background: #7400d8;
+        width: 32px;
+        height: 32px;
+      }
     }
   }
 }
@@ -141,19 +194,32 @@
   overflow: auto;
 }
 
+.sub-header-container {
+  display: flex;
+  align-items: center;
+
+  .round-number {
+    margin-right: 5%;
+    font-weight: 700;
+    color: #ff8a50;
+  }
+
+  .timer {
+    margin-right: 5px;
+    line-height: 1px;
+    color: #ff8a50;
+    font-weight: 700;
+  }
+}
+
 // ─── Mobile layout additions ───────────────────────────────────────────────
-// Additive-only: no structural desktop changes.
 @media (max-width: 599px) {
-  // Use descendant selector (2-class specificity) to beat playing-card's
-  // width: 25% (1-class), then !important as backstop against load-order races.
   .black-card-container .master-black-card {
     flex-grow: 0 !important;
     width: 46vw !important;
     max-width: 200px !important;
   }
 
-  // Players strip: move to top-right so it doesn't collide with hand cards
-  // at the bottom.
   .players-container {
     bottom: unset !important;
     top: 0 !important;
@@ -166,19 +232,5 @@
     justify-content: flex-end !important;
     padding-right: 4px !important;
     opacity: 0.85;
-  }
-}
-
-.sub-header-container {
-  display: flex;
-  align-items: center;
-
-  .round-number {
-    margin-right: 5%;
-  }
-
-  .timer {
-    margin-right: 5px;
-    line-height: 1px;
   }
 }

@@ -16,8 +16,17 @@ export default function ThemeProvider({ children }: any) {
   const [name, setName] = useState<'dark' | 'light'>(defaultTheme?.length ? defaultTheme : 'dark');
   const theme = useMemo(() => createMuiTheme({
     palette: {
-      type: name
-    }
+      type: name,
+      primary: {
+        main: '#7400d8',
+      },
+      secondary: {
+        main: '#ff8a50',
+      },
+    },
+    typography: {
+      fontFamily: "'Roboto Mono', monospace, 'Roboto', sans-serif",
+    },
   }), [name]);
 
   const onChange = useCallback(() => {

@@ -11,14 +11,19 @@
     align-items: center;
     height: fit-content;
     margin: 5% 2% 1%;
+    cursor: pointer;
+    border-radius: 0.75em;
+    transition: transform 0.2s ease;
 
     .playing-card {
       min-width: 150px !important;
     }
 
     &.selected {
-      transform: scale(1.1) translateY(-1em) rotate(-1deg) !important;
+      transform: scale(1.08) translateY(-0.75em) rotate(-1deg) !important;
+      filter: drop-shadow(0 0 0.5em rgba(116, 0, 216, 0.6));
     }
+
     .user-selection-card {
       font-size: 0.8em;
     }
@@ -27,15 +32,22 @@
 
 .submit-wrapper {
   display: flex;
+  align-items: center;
   margin-bottom: 1%;
+  gap: 8px;
 
   .submit-text {
     margin-right: 5%;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.75);
   }
 }
 
 .user-submit {
   width: 50px;
+  font-family: 'Roboto Mono', monospace !important;
+  font-weight: 700 !important;
 
   @media (min-width: 600px) {
     width: unset;
