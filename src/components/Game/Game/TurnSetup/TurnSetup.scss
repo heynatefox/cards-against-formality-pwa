@@ -6,13 +6,21 @@
   justify-content: center;
   flex-flow: column;
   padding: 5%;
+  background-color: #1a1a2e;
+  font-family: 'Roboto Mono', monospace;
 
   .MuiTypography-h5 {
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 700;
-    color: #ff8a50;
+    font-family: 'Roboto Mono', monospace !important;
+    font-weight: 700 !important;
+    color: #ff8a50 !important;
     text-align: center;
     margin-bottom: 1.5rem;
+    font-size: clamp(1rem, 2.5vw, 1.4rem) !important;
+  }
+
+  .MuiTypography-root {
+    font-family: 'Roboto Mono', monospace !important;
+    color: rgba(255, 255, 255, 0.75) !important;
   }
 
   .winning-cards {

@@ -4,6 +4,7 @@
   display: flex;
   flex-wrap: wrap;
   overflow: auto;
+  background-color: #1a1a2e;
 
   .user-selection {
     display: flex;
@@ -13,10 +14,16 @@
     margin: 5% 2% 1%;
     cursor: pointer;
     border-radius: 0.75em;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, filter 0.2s ease;
 
     .playing-card {
       min-width: 150px !important;
+    }
+
+    &:hover {
+      @media (min-width: 600px) {
+        filter: drop-shadow(0 0 0.4em rgba(255, 138, 80, 0.35));
+      }
     }
 
     &.selected {
@@ -35,12 +42,13 @@
   align-items: center;
   margin-bottom: 1%;
   gap: 8px;
+  background-color: #1a1a2e;
 
   .submit-text {
     margin-right: 5%;
     font-family: 'Roboto Mono', monospace;
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.65);
   }
 }
 
@@ -48,6 +56,13 @@
   width: 50px;
   font-family: 'Roboto Mono', monospace !important;
   font-weight: 700 !important;
+  border-radius: 2em !important;
+  background-color: #7400d8 !important;
+  color: #ffffff !important;
+
+  &:hover {
+    background-color: #ab47ff !important;
+  }
 
   @media (min-width: 600px) {
     width: unset;

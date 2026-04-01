@@ -7,7 +7,9 @@
   flex-flow: column;
   height: 100%;
   width: 100%;
-  
+  background-color: #1a1a2e;
+  font-size: clamp(0.5rem, 2vw, 1rem);
+
   padding-left: 2%;
   padding-right: 2%;
   @media (min-width: 600px) {
@@ -29,6 +31,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #1a1a2e;
+
+  // Dark overlay for CircularProgress color
+  .MuiCircularProgress-colorInherit {
+    color: #7400d8;
+  }
 }
 
 .game {
