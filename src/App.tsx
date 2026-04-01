@@ -89,8 +89,8 @@ function MaintenanceBanner() {
     return null;
   }
   return (
-    <div className="maintenance-banner" style={{ background: '#e67e22', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1400, position: 'relative' }}>
-      <Typography className="maintenance-banner-text" variant="body2" style={{ flex: 1, textAlign: 'center' }}>
+    <div style={{ background: '#e67e22', color: '#fff', padding: '8px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1400, position: 'relative' }}>
+      <Typography variant="body2" style={{ flex: 1, textAlign: 'center' }}>
         We're doing some work under the hood — you might hit a few bumps. Hang tight! 🔧
       </Typography>
       <Button onClick={() => setDismissed(true)} size="small" style={{ color: '#fff', minWidth: 'unset', padding: '0 8px', fontSize: '1rem', lineHeight: 1 }}>✕</Button>

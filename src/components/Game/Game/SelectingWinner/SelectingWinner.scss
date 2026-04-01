@@ -1,47 +1,19 @@
 .user-selection-container {
   width: 100%;
+  height: 100%;
   display: flex;
+  flex-wrap: wrap;
   overflow: auto;
-
-  @media (max-width: 599px) {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    align-items: flex-start;
-    padding: 4px 8px;
-  }
-
-  @media (min-width: 600px) {
-    flex-wrap: wrap;
-    height: 100%;
-  }
 
   .user-selection {
     display: flex;
     width: fit-content;
     align-items: center;
     height: fit-content;
-
-    @media (max-width: 599px) {
-      flex-shrink: 0;
-      margin: 2% 1%;
-    }
-
-    @media (min-width: 600px) {
-      margin: 5% 2% 1%;
-    }
+    margin: 5% 2% 1%;
 
     .playing-card {
-      @media (max-width: 599px) {
-        min-width: 95px !important;
-        width: 95px !important;
-        font-size: 0.52rem !important;
-      }
-
-      @media (min-width: 600px) {
-        min-width: 150px !important;
-      }
+      min-width: 150px !important;
     }
 
     &.selected {

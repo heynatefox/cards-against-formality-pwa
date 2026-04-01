@@ -54,8 +54,6 @@
     width: 100%;
     flex: 1 1 auto;
     flex-flow: column;
-    min-height: 0;
-
     @media (min-width: 600px) {
       flex-flow: row;
     }
@@ -64,35 +62,25 @@
       display: flex;
       justify-content: center;
       box-sizing: border-box;
-      flex: 0 0 auto;
 
       @media (min-width: 600px) {
         position: unset;
         width: 400px;
         margin-left: 2%;
-        flex: unset;
       }
 
       .master-black-card {
-        flex-grow: 0;
-        flex-shrink: 0;
+        font-size: 0.6em;
+        flex-shrink: 1;
+        flex-grow: 1;
         align-self: flex-start;
-        width: 38vw;
-        max-width: 190px;
-        font-size: 0.7em;
 
         @media (min-width: 400px) {
-          width: 42vw;
-          max-width: 210px;
           font-size: 0.8em;
         }
 
         @media (min-width: 600px) {
           font-size: unset;
-          flex-grow: 1;
-          flex-shrink: 1;
-          width: auto;
-          max-width: unset;
           flex-basis: calc(100vh * 0.22);
         }
       }
@@ -101,17 +89,18 @@
 
   .game-container-children-wrapper {
     flex: 1 1 auto;
-    min-height: 0;
+    padding: 0 2%;
+    height: 100%;
     display: flex;
     justify-content: center;
     width: 100%;
-    overflow: auto;
+    // max-height: 45vh;
     margin-top: 2%;
     padding: 0;
-
     @media (min-width: 600px) {
       margin-top: 0%;
       padding: 0 2%;
+      // max-height: 65vh;
     }
   }
 
@@ -127,13 +116,11 @@
     flex-shrink: 1;
     width: 100%;
     overflow: auto;
+    // display: none;
     position: absolute;
-    top: 44px;
-    right: 0;
+    bottom: 0.5%;
     display: flex;
-    padding: 4px 8px;
-    pointer-events: none;
-    justify-content: flex-end;
+    padding-top: 10%;
 
     @media (min-width: 600px) {
       padding: 0;
@@ -142,12 +129,9 @@
       width: 15%;
       justify-content: unset;
       bottom: unset;
-      top: unset;
-      right: unset;
       position: unset;
       display: block;
       height: 100%;
-      pointer-events: auto;
     }
   }
 }

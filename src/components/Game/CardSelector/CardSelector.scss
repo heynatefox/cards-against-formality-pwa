@@ -2,7 +2,11 @@
   display: flex;
   flex-flow: column;
   width: 100%;
-  flex-shrink: 0;
+
+  @media (max-width: 800px) {
+    position: absolute;
+    bottom: 4%;
+  }
 
   .cards-action {
     flex-flow: row-reverse;
@@ -25,51 +29,31 @@
     }
 
     .czar-message {
-      font-size: 0.75rem;
       margin-right: 2%;
 
       @media (min-width: 600px) {
-        font-size: inherit;
         margin-right: 0%;
       }
     }
   }
-
   .scroll-wrapper {
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    overflow: auto;
   }
 
   .cards-list-container {
     display: flex;
     gap: 0.5em;
-    overflow: visible;
-
-    @media (max-width: 599px) {
-      flex-wrap: nowrap;
-      justify-content: flex-start;
-      padding: 4px 8px 8px;
-      gap: 6px;
-    }
+    justify-content: center;
+    overflow: auto;
 
     @media (min-width: 600px) {
-      justify-content: center;
       padding: 2% 2% 1%;
       width: 100%;
-      flex-wrap: wrap;
+      overflow: none;
     }
 
     .card-selector-card {
-      @media (max-width: 599px) {
-        flex-shrink: 0 !important;
-        width: 88px !important;
-        font-size: 0.52rem !important;
-      }
-
-      @media (min-width: 600px) {
-        font-size: 0.6em;
-      }
+      font-size: 0.6em;
 
       @media (min-width: 850px) {
         font-size: 0.8em;
