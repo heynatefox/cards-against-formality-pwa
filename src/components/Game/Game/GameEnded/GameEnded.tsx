@@ -27,14 +27,10 @@ export default function GameEnded({ game, players, isHost, onPlayAgain }: { game
     </div>
     <div className="content-wrapper">
       {isHost && (
-        <Button onClick={onPlayAgain} color="secondary" variant="contained" style={{ marginBottom: '16px' }}>
+        <Button onClick={onPlayAgain} color="secondary" variant="contained">
           Play Again
         </Button>
       )}
-      <Typography variant="body1">
-        If you enjoyed the game and would like to help keep the servers alive, please consider buying me a coffee.
-      </Typography>
-      <Button onClick={() => window.open("https://www.buymeacoffee.com/cards")} color="primary" variant="contained">Buy me a coffee</Button>
     </div>
   </div>
 }
