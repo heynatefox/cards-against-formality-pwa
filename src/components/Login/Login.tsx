@@ -17,10 +17,8 @@ import { debounce } from "lodash";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import { UserContext } from "../../Contexts/UserProvider";
 import googleLogo from "./Google__G__Logo.svg";
-import badCardsLogo from "./bad-cards.ico";
 import "./Login.scss";
 import useFetchData, { FetchType } from "../../Hooks/useFetchData";
-import { NagOpportunity } from "../Newsletter/Nag";
 
 function LoginProviders({ onProviderSelect }: any) {
   return (
@@ -195,21 +193,17 @@ export default React.memo(() => {
     <Container maxWidth="lg" className="login-wrapper">
       <Card className="inner-login-container" raised={true}>
         <CardHeader className="header" title="Let's Play!"></CardHeader>
-        <CardContent className="prefix-login-card-content">
-          <Button
-            className="button bottom"
-            href="https://bad.cards"
-            variant="contained"
-            color="secondary"
-          >
-            <img className="bad-cards" src={badCardsLogo} alt="Bad Cards" />
-            <div>Play Our New Games!</div>
-          </Button>
-        </CardContent>
-        <CardHeader className="header" title="Keep playing CAF:"></CardHeader>
         <CardContent className="root-login-card-content">
           {renderCardContent()}
         </CardContent>
+        <div style={{ textAlign: 'center', padding: '4px 16px 14px', opacity: 0.55 }}>
+          <span style={{ fontSize: '0.75rem' }}>
+            Looking for more games?{' '}
+            <Link color="secondary" href="https://badcards.io" target="_blank" rel="noopener">
+              Try Bad Cards
+            </Link>
+          </span>
+        </div>
       </Card>
     </Container>
   );

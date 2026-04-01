@@ -8,20 +8,43 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import './CreateRoom.scss';
 import useFetchData, { FetchType } from '../../../Hooks/useFetchData';
 import { SnackbarContext } from '../../../Contexts/SnackbarProvider';
-import { NagOpportunity } from '../../Newsletter/Nag';
+import NewsletterGate, { isNewsletterUnlocked } from '../../Newsletter/NewsletterGate';
+
+const isBaseDeck = (name: string) => name.includes('Base');
 
 function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: string[]) => void }) {
   const [deckOptions, setDeckOptions] = useState<{ name: string; _id: string, value?: boolean }[]>([]);
   const [isExpanded, setIsExpanded] = useState(true);
   const [isAllSelected, setIsAllSelected] = useState(false);
+  const [unlocked, setUnlocked] = useState(isNewsletterUnlocked);
+  const [gateOpen, setGateOpen] = useState(false);
+  const [pendingDeckId, setPendingDeckId] = useState<string | null>(null);
+
+  const handleUnlock = useCallback(() => {
+    setUnlocked(true);
+    setGateOpen(false);
+    if (pendingDeckId) {
+      setDeckOptions(prev => {
+        const deck = prev.find(d => d._id === pendingDeckId);
+        if (deck) deck.value = true;
+        return [...prev];
+      });
+      setPendingDeckId(null);
+    }
+  }, [pendingDeckId]);
+
   const toggleSelectAll = useCallback(() => {
+    if (!unlocked) {
+      setGateOpen(true);
+      return;
+    }
     setDeckOptions(prevDeck => {
       prevDeck.forEach(deck => deck.value = !isAllSelected);
       return [...prevDeck];
     });
 
     setIsAllSelected(!isAllSelected);
-  }, [isAllSelected])
+  }, [isAllSelected, unlocked])
 
   useEffect(() => {
     if (decks) {
@@ -37,10 +60,16 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
 
 
   function _onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const deck = deckOptions.find(d => d._id === e.target.name);
+    if (deck && !isBaseDeck(deck.name) && !unlocked) {
+      setPendingDeckId(e.target.name);
+      setGateOpen(true);
+      return;
+    }
     setDeckOptions(prevDeck => {
-      const deck = prevDeck.find(deck => deck._id === e.target.name);
-      if (deck) {
-        deck.value = e.target.checked;
+      const d = prevDeck.find(deck => deck._id === e.target.name);
+      if (d) {
+        d.value = e.target.checked;
       }
       return [...prevDeck];
     });
@@ -68,17 +97,21 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
         <FormLabel component="legend">Select which decks you would like to play with</FormLabel>
         <FormGroup className="deck-checkbox-group">
           {deckOptions.map(deck => {
-            return <NagOpportunity key={deck._id} medium="deck-selection">
-              <FormControlLabel
-                control={<Checkbox checked={deck.value} onChange={_onChange} name={deck._id} />}
-                label={deck.name}
-              />
-            </NagOpportunity>
+            return <FormControlLabel
+              key={deck._id}
+              control={<Checkbox checked={deck.value} onChange={_onChange} name={deck._id} />}
+              label={deck.name}
+            />
           })}
         </FormGroup>
         <FormHelperText>You must select at least one</FormHelperText>
       </FormControl>
     </AccordionDetails>
+    <NewsletterGate
+      open={gateOpen}
+      onUnlock={handleUnlock}
+      onClose={() => { setGateOpen(false); setPendingDeckId(null); }}
+    />
   </Accordion>
 }
 

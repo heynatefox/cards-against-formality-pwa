@@ -6,7 +6,6 @@ import Navbar from "./components/Navbar/Navbar";
 import UserProvider from "./Contexts/UserProvider";
 import "./App.scss";
 import { FirebaseProvider } from "./Contexts/FirebaseProvider";
-import { Banner } from "./components/Newsletter/Banner";
 import {
   initialNagRecency,
   NagRecency,
@@ -52,7 +51,6 @@ function LoggedIn() {
             element={
               <>
                 <Navbar />
-                <Banner medium="rooms-banner" />
                 <Container className="app-container" maxWidth="lg">
                   <div className="app">
                     <Suspense fallback={<RouteLoadingFallback />}>
@@ -117,7 +115,6 @@ function App() {
           path="/"
           element={
             <Suspense fallback={<RouteLoadingFallback />}>
-              <Banner medium="home-banner" />
               <Homepage />
             </Suspense>
           }

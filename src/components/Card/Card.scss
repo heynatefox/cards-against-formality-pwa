@@ -45,9 +45,7 @@
     box-sizing: border-box;
 
     .text {
-      .word {
-        line-height: 2em;
-      }
+      align-self: flex-start;
     }
   }
 

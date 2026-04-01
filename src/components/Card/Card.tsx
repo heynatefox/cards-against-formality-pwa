@@ -17,6 +17,16 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
     card.text.replace(/<br>/g, ' <br> ').split(/[ ]+/)
     , [card]);
 
+  const textStyle = useMemo(() => {
+    const len = card.text.length;
+    if (len <= 15) return { fontSize: '2.4em', lineHeight: 1.2 };
+    if (len <= 30) return { fontSize: '2.0em', lineHeight: 1.25 };
+    if (len <= 55) return { fontSize: '1.6em', lineHeight: 1.3 };
+    if (len <= 90) return { fontSize: '1.25em', lineHeight: 1.35 };
+    if (len <= 140) return { fontSize: '1.0em', lineHeight: 1.4 };
+    return { fontSize: '0.8em', lineHeight: 1.4 };
+  }, [card.text]);
+
   const calculatedClassName = useMemo(() => {
     return `no-select playing-card ${card.cardType} ${isSelected ? 'selected' : ''} ${isUnselectable ? 'unselectable' : ''} ${className ? className : ''}`;
   }, [card, isSelected, isUnselectable, className]);
@@ -37,7 +47,7 @@ export default React.memo(({ card, onSelect, isSelected, isUnselectable, classNa
   >
     <div className="aspect-ratio-wrapper">
       <div className="card-content">
-        <div className="text">
+        <div className="text" style={textStyle}>
           {words.map((word, index) => {
             if (word.includes('<br>')) {
               return <br />;
