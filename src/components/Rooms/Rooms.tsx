@@ -55,10 +55,16 @@ export default function Rooms() {
     []
   );
 
-  const [decksData] = useFetchData<{ rows: any[] } | null>(
+  const [decksData, , , refetchDecks] = useFetchData<{ rows: any[] } | null>(
     `/api/decks?fields=name,_id&pageSize=100`,
     FetchType.GET
   );
+
+  useEffect(() => {
+    if (user && !decksData) {
+      refetchDecks().catch(() => {});
+    }
+  }, [user, decksData, refetchDecks]);
   const [, , , join] = useFetchData(
     `/api/rooms/join/players`,
     FetchType.PUT,
