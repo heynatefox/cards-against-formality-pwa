@@ -25,7 +25,7 @@ function DeckSelector({ decks, onChange }: { decks: any[], onChange: (decks: str
   useEffect(() => {
     if (decks) {
       setDeckOptions(decks.map(deck => {
-        return { value: deck.name.includes('Base'), ...deck }
+        return { ...deck, value: deck.name.includes('Base') }
       }));
     }
   }, [decks]);
