@@ -69,9 +69,6 @@ const Homepage = React.memo(() => {
         <Typography variant="body1" style={{ color: '#bbb', marginTop: 16, lineHeight: 1.6 }}>
           Ridrunkulous® works with Cards Against Humanity, Monopoly, Catan, Chess, Jenga — any game you already own. 52 cards, unlimited chaos.
         </Typography>
-        <Typography variant="body2" style={{ color: '#ffd54f', marginTop: 16 }}>
-          ⭐⭐⭐⭐⭐ 5.0 on Amazon
-        </Typography>
         <Button
           variant="contained"
           color="primary"
@@ -80,7 +77,7 @@ const Homepage = React.memo(() => {
           rel="noopener noreferrer"
           style={{ marginTop: 24, fontWeight: 'bold', padding: '10px 28px' }}
         >
-          Get it on Amazon →
+          Play Now →
         </Button>
       </Container>
     </section>
