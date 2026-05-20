@@ -24,6 +24,7 @@ import GenericGardGroup from "../GenericCardGroup/GenericCardGroup";
 import "./Rooms.scss";
 import { Pagination } from "@material-ui/lab";
 import _ from "lodash";
+import ConfigContext from "../../Contexts/ConfigContext";
 
 export default function Rooms() {
   const { openSnack } = useContext(SnackbarContext);
@@ -55,16 +56,16 @@ export default function Rooms() {
     []
   );
 
-  const [decksData, , , refetchDecks] = useFetchData<{ rows: any[] } | null>(
-    `/api/decks?fields=name,_id&pageSize=100`,
-    FetchType.GET
-  );
+  const { baseUrl } = useContext(ConfigContext);
+  const [decksData, setDecksData] = useState<{ rows: any[] } | null>(null);
 
   useEffect(() => {
-    if (user && !decksData) {
-      refetchDecks().catch(() => {});
-    }
-  }, [user, decksData, refetchDecks]);
+    fetch(`${baseUrl}/api/decks?fields=name,_id&pageSize=100`)
+      .then(res => res.json())
+      .then(data => setDecksData(data))
+      .catch(() => {});
+  }, [baseUrl]);
+
   const [, , , join] = useFetchData(
     `/api/rooms/join/players`,
     FetchType.PUT,
