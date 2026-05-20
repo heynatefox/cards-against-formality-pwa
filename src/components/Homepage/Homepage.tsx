@@ -56,6 +56,35 @@ const Homepage = React.memo(() => {
       </Container>
 
     </section>
+
+    {/* Ridrunkulous Promo */}
+    <section style={{ background: '#111', color: '#fff', padding: '64px 24px', textAlign: 'center', width: '100%' }}>
+      <Container maxWidth="sm">
+        <Typography variant="overline" style={{ color: '#999', letterSpacing: 2, fontSize: '0.7rem' }}>
+          FROM THE MAKERS OF CARDS AGAINST FORMALITY
+        </Typography>
+        <Typography variant="h4" style={{ color: '#fff', fontWeight: 'bold', marginTop: 12 }}>
+          Turn any game into a drinking game.
+        </Typography>
+        <Typography variant="body1" style={{ color: '#bbb', marginTop: 16, lineHeight: 1.6 }}>
+          Ridrunkulous® works with Cards Against Humanity, Monopoly, Catan, Chess, Jenga — any game you already own. 52 cards, unlimited chaos.
+        </Typography>
+        <Typography variant="body2" style={{ color: '#ffd54f', marginTop: 16 }}>
+          ⭐⭐⭐⭐⭐ 5.0 on Amazon
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          href="https://www.ridrunkulous.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ marginTop: 24, fontWeight: 'bold', padding: '10px 28px' }}
+        >
+          Get it on Amazon →
+        </Button>
+      </Container>
+    </section>
+
     <section className="homepage-section even about">
       <Container maxWidth="md">
         <Typography className="title" variant="h2" style={{ color: "black" }}>

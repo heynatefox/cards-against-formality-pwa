@@ -83,17 +83,36 @@ function LoggedIn() {
   );
 }
 
-function MaintenanceBanner() {
-  const [dismissed, setDismissed] = useState(false);
+const BANNER_DISMISSED_KEY = 'ridrunkulous-banner-dismissed';
+
+function PromoBanner() {
+  const [dismissed, setDismissed] = useState(() => {
+    return localStorage.getItem(BANNER_DISMISSED_KEY) === 'true';
+  });
+
   if (dismissed) {
     return null;
   }
+
+  function handleDismiss() {
+    localStorage.setItem(BANNER_DISMISSED_KEY, 'true');
+    setDismissed(true);
+  }
+
   return (
-    <div style={{ background: '#e67e22', color: '#fff', padding: '8px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1400, position: 'relative' }}>
+    <div style={{ background: '#111', color: '#fff', padding: '8px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1400, position: 'relative' }}>
       <Typography variant="body2" style={{ flex: 1, textAlign: 'center' }}>
-        We're doing some work under the hood — you might hit a few bumps. Hang tight! 🔧
+        🍺 Try our new free drinking game — Ridrunkulous®{' '}
+        <a
+          href="https://www.ridrunkulous.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#4fc3f7', fontWeight: 'bold', marginLeft: 8, textDecoration: 'none' }}
+        >
+          Play Now →
+        </a>
       </Typography>
-      <Button onClick={() => setDismissed(true)} size="small" style={{ color: '#fff', minWidth: 'unset', padding: '0 8px', fontSize: '1rem', lineHeight: 1 }}>✕</Button>
+      <Button onClick={handleDismiss} size="small" style={{ color: '#fff', minWidth: 'unset', padding: '0 8px', fontSize: '1rem', lineHeight: 1 }}>✕</Button>
     </div>
   );
 }
@@ -109,7 +128,7 @@ function App() {
         setRecency: setNagContext,
       }}
     >
-      <MaintenanceBanner />
+      <PromoBanner />
       <Routes>
         <Route
           path="/"
