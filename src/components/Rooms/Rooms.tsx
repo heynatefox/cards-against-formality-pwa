@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, { useContext, useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import {
   Container,
@@ -24,7 +24,40 @@ import GenericGardGroup from "../GenericCardGroup/GenericCardGroup";
 import "./Rooms.scss";
 import { Pagination } from "@material-ui/lab";
 import _ from "lodash";
-import ConfigContext from "../../Contexts/ConfigContext";
+
+const STATIC_DECKS = { rows: [
+  { _id: "6a0e4c0b1d3f873b84d0dfc8", name: "Base Set" },
+  { _id: "6a0e4c0b1d3f873b84d0dfc9", name: "The First Expansion" },
+  { _id: "6a0e4c0b1d3f873b84d0dfca", name: "The Second Expansion" },
+  { _id: "6a0e4c0b1d3f873b84d0dfcb", name: "The Third Expansion" },
+  { _id: "6a0e4c0c1d3f873b84d0dfcc", name: "The Fourth Expansion" },
+  { _id: "6a0e4c0c1d3f873b84d0dfcd", name: "The Fifth Expansion" },
+  { _id: "6a0e4c0c1d3f873b84d0dfce", name: "The Sixth Expansion" },
+  { _id: "6a0e4c0c1d3f873b84d0dfcf", name: "Green Box Expansion" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd0", name: "90s Nostalgia Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd1", name: "Box Expansion" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd2", name: "Fantasy Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd3", name: "Food Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd4", name: "Science Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd5", name: "World Wide Web Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd6", name: "Vote for Hillary Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd7", name: "Vote for Trump Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd8", name: "Trump Survival Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfd9", name: "2012 Holiday Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfda", name: "2013 Holiday Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfdb", name: "PAX East 2013" },
+  { _id: "6a0e4c0c1d3f873b84d0dfdc", name: "PAX Prime 2013" },
+  { _id: "6a0e4c0c1d3f873b84d0dfdd", name: "PAX East 2014" },
+  { _id: "6a0e4c0c1d3f873b84d0dfde", name: "PAX East 2014 Panel Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfdf", name: "PAX Prime 2014 Panel Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfe0", name: "PAX Prime 2015 Food Packs" },
+  { _id: "6a0e4c0c1d3f873b84d0dfe1", name: "House of Cards Against Humanity" },
+  { _id: "6a0e4c0c1d3f873b84d0dfe2", name: "Reject Pack" },
+  { _id: "6a0e4c0c1d3f873b84d0dfe3", name: "Reject Pack 2" },
+  { _id: "6a0e4c0c1d3f873b84d0dfe4", name: "Canadian" },
+  { _id: "6a0e4c0c1d3f873b84d0dfe5", name: "Misprint Replacement Bonus Cards" },
+  { _id: "6a0e4c0c1d3f873b84d0dfe6", name: "Family Edition" },
+] };
 
 export default function Rooms() {
   const { openSnack } = useContext(SnackbarContext);
@@ -56,15 +89,7 @@ export default function Rooms() {
     []
   );
 
-  const { baseUrl } = useContext(ConfigContext);
-  const [decksData, setDecksData] = useState<{ rows: any[] } | null>(null);
-
-  useEffect(() => {
-    fetch(`${baseUrl}/api/decks?fields=name,_id&pageSize=100`)
-      .then(res => res.json())
-      .then(data => setDecksData(data))
-      .catch(() => {});
-  }, [baseUrl]);
+  const decksData = STATIC_DECKS;
 
   const [, , , join] = useFetchData(
     `/api/rooms/join/players`,
