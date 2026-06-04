@@ -57,7 +57,7 @@ const Homepage = React.memo(() => {
 
     </section>
 
-    {/* Ridrunkulous Promo - hidden while fixing site
+    {/* Ridrunkulous Promo */}
     <section style={{ background: '#111', color: '#fff', padding: '64px 24px', textAlign: 'center', width: '100%' }}>
       <Container maxWidth="sm">
         <Typography variant="overline" style={{ color: '#999', letterSpacing: 2, fontSize: '0.7rem' }}>
@@ -81,7 +81,6 @@ const Homepage = React.memo(() => {
         </Button>
       </Container>
     </section>
-    */}
 
     <section className="homepage-section even about">
       <Container maxWidth="md">

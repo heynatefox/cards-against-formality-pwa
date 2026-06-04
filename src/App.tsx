@@ -128,7 +128,7 @@ function App() {
         setRecency: setNagContext,
       }}
     >
-      {/* <PromoBanner /> */}
+      <PromoBanner />
       <Routes>
         <Route
           path="/"
