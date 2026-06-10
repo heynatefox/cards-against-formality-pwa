@@ -300,31 +300,29 @@ export default function UserProvider({ children }: { children: any }) {
         open={isLoading || isPromoting}
       >
         {isPromoting ? (
-          <div id="post-log-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px', maxWidth: 700 }}>
-            <p style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 'bold', fontStyle: 'italic', margin: '0 0 20px' }}>
+          <div id="post-log-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '32px 24px', width: '100%', maxWidth: 800, boxSizing: 'border-box' }}>
+            <p style={{ color: '#fff', fontSize: 'clamp(1.25rem, 4vw, 1.75rem)', fontWeight: 'bold', fontStyle: 'italic', margin: '0 0 32px', fontFamily: 'Helvetica, Arial, sans-serif' }}>
               My buddy made a Scary Movie party game.
             </p>
-            <img src="/scary-movie-logo.png" alt="Scary Movie" style={{ maxWidth: 320, width: '80%', marginBottom: 16 }} />
-            <img src="/scary-movie-cards.png" alt="Scary Movie Cards" style={{ maxWidth: 420, width: '90%', marginBottom: 24 }} />
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 24 }}>
-              <Button
-                variant="contained"
+            <img src="/scary-movie-logo.png" alt="Scary Movie" style={{ width: '100%', maxWidth: 500, marginBottom: 24 }} />
+            <img src="/scary-movie-cards.png" alt="Scary Movie Cards" style={{ width: '100%', maxWidth: 580, marginBottom: 40 }} />
+            <div style={{ display: 'flex', gap: 20, justifyContent: 'center', marginBottom: 40, flexDirection: window.innerWidth < 500 ? 'column' : 'row', width: window.innerWidth < 500 ? '100%' : 'auto' }}>
+              <a
                 href="https://badcards.com/scarymovie"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ background: '#d32f2f', color: '#fff', fontWeight: 'bold', padding: '10px 32px', fontSize: '1rem' }}
+                style={{ display: 'inline-block', background: '#d32f2f', color: '#fff', fontWeight: 'bold', padding: '14px 48px', fontSize: '1.1rem', borderRadius: 4, textDecoration: 'none', textAlign: 'center', fontFamily: 'Helvetica, Arial, sans-serif', letterSpacing: '0.5px' }}
               >
                 Check it out
-              </Button>
-              <Button
-                variant="contained"
+              </a>
+              <button
                 onClick={redirect}
-                style={{ background: '#777', color: '#fff', fontWeight: 'bold', padding: '10px 32px', fontSize: '1rem' }}
+                style={{ background: '#888', color: '#fff', fontWeight: 'bold', padding: '14px 48px', fontSize: '1.1rem', borderRadius: 4, border: 'none', cursor: 'pointer', fontFamily: 'Helvetica, Arial, sans-serif', letterSpacing: '0.5px' }}
               >
                 Nah, go to CAF
-              </Button>
+              </button>
             </div>
-            <p style={{ color: '#fff', fontWeight: 'bold', fontSize: '1rem', margin: 0, lineHeight: 1.5 }}>
+            <p style={{ color: '#fff', fontWeight: 'bold', fontSize: 'clamp(1rem, 3vw, 1.35rem)', margin: 0, lineHeight: 1.6, fontFamily: 'Helvetica, Arial, sans-serif' }}>
               Not an ad. Friends supporting friends.<br />Click that shit.
             </p>
           </div>
