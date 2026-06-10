@@ -19,9 +19,7 @@ import useFetchData, { FetchType } from "../Hooks/useFetchData";
 import { SnackbarContext } from "./SnackbarProvider";
 import { useLocation, useNavigate, type Location } from "react-router";
 import { FirebaseContext } from "./FirebaseProvider";
-import { Nag } from "../components/Newsletter/Nag";
 import { NewsletterContext } from "../components/Newsletter/Context";
-import { loginVariants } from "../components/Newsletter/Campaigns";
 
 export interface UserContextInterface {
   login: (username: string) => Promise<string>;
@@ -292,36 +290,43 @@ export default function UserProvider({ children }: { children: any }) {
     [firebase],
   );
 
-  const campaignVariants = loginVariants[context.campaign];
-  const [variant, _] = useState(
-    campaignVariants.length > 0
-      ? Math.floor(Math.random() * campaignVariants.length)
-      : null,
-  );
-
-  const isPromotingAndHasPromotion = isPromoting && variant !== null;
-
   return (
     <UserContext.Provider
       value={{ login: login as any, logout, user, authUser, signup }}
     >
-      {isLoading || isPromotingAndHasPromotion ? null : children}
+      {isLoading || isPromoting ? null : children}
       <Backdrop
         className="backdrop"
-        open={isLoading || isPromotingAndHasPromotion}
+        open={isLoading || isPromoting}
       >
-        {isPromotingAndHasPromotion ? (
-          <div id="post-log-in">
-            <Nag
-              id="singular-post-login-nag"
-              medium="post-login"
-              onClick={redirect}
-              onDismiss={redirect}
-            ></Nag>
-            {campaignVariants[variant]}
-            <Button variant="contained" color="primary" onClick={redirect}>
-              Not Now
-            </Button>
+        {isPromoting ? (
+          <div id="post-log-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '24px', maxWidth: 700 }}>
+            <p style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 'bold', fontStyle: 'italic', margin: '0 0 20px' }}>
+              My buddy made a Scary Movie party game.
+            </p>
+            <img src="/scary-movie-logo.png" alt="Scary Movie" style={{ maxWidth: 320, width: '80%', marginBottom: 16 }} />
+            <img src="/scary-movie-cards.png" alt="Scary Movie Cards" style={{ maxWidth: 420, width: '90%', marginBottom: 24 }} />
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 24 }}>
+              <Button
+                variant="contained"
+                href="https://badcards.com/scarymovie"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ background: '#d32f2f', color: '#fff', fontWeight: 'bold', padding: '10px 32px', fontSize: '1rem' }}
+              >
+                Check it out
+              </Button>
+              <Button
+                variant="contained"
+                onClick={redirect}
+                style={{ background: '#777', color: '#fff', fontWeight: 'bold', padding: '10px 32px', fontSize: '1rem' }}
+              >
+                Nah, go to CAF
+              </Button>
+            </div>
+            <p style={{ color: '#fff', fontWeight: 'bold', fontSize: '1rem', margin: 0, lineHeight: 1.5 }}>
+              Not an ad. Friends supporting friends.<br />Click that shit.
+            </p>
           </div>
         ) : (
           <CircularProgress color="inherit" />
