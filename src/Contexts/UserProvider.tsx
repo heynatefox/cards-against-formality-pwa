@@ -300,29 +300,29 @@ export default function UserProvider({ children }: { children: any }) {
         open={isLoading || isPromoting}
       >
         {isPromoting ? (
-          <div id="post-log-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '56px 20px 32px', width: '100%', maxWidth: 800, boxSizing: 'border-box' }}>
-            <p style={{ color: '#fff', fontSize: 'clamp(1.1rem, 4vw, 1.75rem)', fontWeight: 'bold', fontStyle: 'italic', margin: '0 0 24px', fontFamily: 'Helvetica, Arial, sans-serif' }}>
+          <div id="post-log-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '48px 20px 16px', width: '100%', maxWidth: 800, boxSizing: 'border-box', height: '100vh', maxHeight: '100dvh', overflow: 'hidden' }}>
+            <p style={{ color: '#fff', fontSize: 'clamp(0.95rem, 3.5vw, 1.75rem)', fontWeight: 'bold', fontStyle: 'italic', margin: '0 0 clamp(8px, 2vh, 24px)', fontFamily: 'Helvetica, Arial, sans-serif' }}>
               My buddies and I made a bunch of free online drinking games.
             </p>
-            <img src="/ridrunkulous-logo.png" alt="Ridrunkulous" style={{ width: '100%', maxWidth: 500, marginBottom: 16 }} />
-            <img src="/ridrunkulous-beers.png" alt="Cheers!" style={{ width: '100%', maxWidth: 320, marginBottom: 32 }} />
-            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginBottom: 32 }}>
+            <img src="/ridrunkulous-logo.png" alt="Ridrunkulous" style={{ width: '100%', maxWidth: 500, maxHeight: '25vh', objectFit: 'contain', marginBottom: 'clamp(4px, 1.5vh, 16px)' }} />
+            <img src="/ridrunkulous-beers.png" alt="Cheers!" style={{ width: '100%', maxWidth: 320, maxHeight: '20vh', objectFit: 'contain', marginBottom: 'clamp(8px, 2vh, 32px)' }} />
+            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginBottom: 'clamp(8px, 2vh, 32px)' }}>
               <a
                 href="https://www.ridrunkulous.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ display: 'inline-block', background: '#d32f2f', color: '#fff', fontWeight: 'bold', padding: '14px 36px', fontSize: '1rem', borderRadius: 4, textDecoration: 'none', textAlign: 'center', fontFamily: 'Helvetica, Arial, sans-serif', whiteSpace: 'nowrap' }}
+                style={{ display: 'inline-block', background: '#d32f2f', color: '#fff', fontWeight: 'bold', padding: 'clamp(10px, 1.5vh, 14px) 36px', fontSize: 'clamp(0.85rem, 2.5vw, 1rem)', borderRadius: 4, textDecoration: 'none', textAlign: 'center', fontFamily: 'Helvetica, Arial, sans-serif', whiteSpace: 'nowrap' }}
               >
                 Check it out
               </a>
               <button
                 onClick={redirect}
-                style={{ background: '#888', color: '#fff', fontWeight: 'bold', padding: '14px 36px', fontSize: '1rem', borderRadius: 4, border: 'none', cursor: 'pointer', fontFamily: 'Helvetica, Arial, sans-serif', whiteSpace: 'nowrap' }}
+                style={{ background: '#888', color: '#fff', fontWeight: 'bold', padding: 'clamp(10px, 1.5vh, 14px) 36px', fontSize: 'clamp(0.85rem, 2.5vw, 1rem)', borderRadius: 4, border: 'none', cursor: 'pointer', fontFamily: 'Helvetica, Arial, sans-serif', whiteSpace: 'nowrap' }}
               >
                 Nah, go to CAF
               </button>
             </div>
-            <p style={{ color: '#fff', fontWeight: 'bold', fontSize: 'clamp(0.95rem, 3vw, 1.3rem)', margin: 0, lineHeight: 1.6, fontFamily: 'Helvetica, Arial, sans-serif' }}>
+            <p style={{ color: '#fff', fontWeight: 'bold', fontSize: 'clamp(0.8rem, 2.5vw, 1.3rem)', margin: 0, lineHeight: 1.4, fontFamily: 'Helvetica, Arial, sans-serif' }}>
               Not an ad. We literally made this. Play it.
             </p>
           </div>
