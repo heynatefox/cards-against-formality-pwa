@@ -7,6 +7,7 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import Card from '../Card/Card';
 import './Homepage.scss';
 import { ThemeContext } from '../../Contexts/ThemeProvider';
+import { getVariant, trackClick } from '../../abtest';
 
 const Homepage = React.memo(() => {
   const navigate = useNavigate();
@@ -58,29 +59,41 @@ const Homepage = React.memo(() => {
     </section>
 
     {/* Ridrunkulous Promo */}
-    <section style={{ background: '#111', color: '#fff', padding: '64px 24px', textAlign: 'center', width: '100%' }}>
-      <Container maxWidth="sm">
-        <Typography variant="overline" style={{ color: '#999', letterSpacing: 2, fontSize: '0.7rem' }}>
-          FROM THE MAKERS OF CARDS AGAINST FORMALITY
-        </Typography>
-        <Typography variant="h4" style={{ color: '#fff', fontWeight: 'bold', marginTop: 12 }}>
-          Turn any game into a drinking game.
-        </Typography>
-        <Typography variant="body1" style={{ color: '#bbb', marginTop: 16, lineHeight: 1.6 }}>
-          Ridrunkulous® works with Cards Against Humanity, Monopoly, Catan, Chess, Jenga — any game you already own. 52 cards, unlimited chaos.
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          href="https://www.ridrunkulous.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ marginTop: 24, fontWeight: 'bold', padding: '10px 28px' }}
-        >
-          Play Now →
-        </Button>
-      </Container>
-    </section>
+    {(() => {
+      const variant = getVariant();
+      const heading = variant === 'hq'
+        ? 'The drinking game headquarters.'
+        : 'Play or build your own drinking game.';
+      const subtext = variant === 'hq'
+        ? 'Ridrunkulous® has 20+ free drinking games, a full encyclopedia, and more dropping every week. Any group, any vibe.'
+        : 'Ridrunkulous® lets you play 20+ free drinking games or create custom ones with your own rules. Your game, your chaos.';
+      return (
+        <section style={{ background: '#111', color: '#fff', padding: '64px 24px', textAlign: 'center', width: '100%' }}>
+          <Container maxWidth="sm">
+            <Typography variant="overline" style={{ color: '#999', letterSpacing: 2, fontSize: '0.7rem' }}>
+              FROM THE MAKERS OF CARDS AGAINST FORMALITY
+            </Typography>
+            <Typography variant="h4" style={{ color: '#fff', fontWeight: 'bold', marginTop: 12 }}>
+              {heading}
+            </Typography>
+            <Typography variant="body1" style={{ color: '#bbb', marginTop: 16, lineHeight: 1.6 }}>
+              {subtext}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              href="https://www.ridrunkulous.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackClick('homepage', variant)}
+              style={{ marginTop: 24, fontWeight: 'bold', padding: '10px 28px' }}
+            >
+              Play Now →
+            </Button>
+          </Container>
+        </section>
+      );
+    })()}
 
     <section className="homepage-section even about">
       <Container maxWidth="md">

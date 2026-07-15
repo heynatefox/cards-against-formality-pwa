@@ -83,12 +83,16 @@ function LoggedIn() {
   );
 }
 
+import { getVariant, trackClick } from './abtest';
+
 const BANNER_DISMISSED_KEY = 'ridrunkulous-banner-dismissed';
 
 function PromoBanner() {
   const [dismissed, setDismissed] = useState(() => {
     return localStorage.getItem(BANNER_DISMISSED_KEY) === 'true';
   });
+
+  const variant = getVariant();
 
   if (dismissed) {
     return null;
@@ -99,17 +103,23 @@ function PromoBanner() {
     setDismissed(true);
   }
 
+  const bannerText = variant === 'hq'
+    ? '🍺 Ridrunkulous® — The Drinking Game Headquarters. 20+ free games.'
+    : '🍺 Ridrunkulous® — Play or build your own drinking game. Free.';
+  const ctaText = variant === 'hq' ? 'Play Now →' : 'Try it →';
+
   return (
     <div style={{ background: '#111', color: '#fff', padding: '8px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1400, position: 'relative' }}>
       <Typography variant="body2" style={{ flex: 1, textAlign: 'center' }}>
-        🍺 Try our new free drinking game — Ridrunkulous®{' '}
+        {bannerText}{' '}
         <a
           href="https://www.ridrunkulous.com"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackClick('banner', variant)}
           style={{ color: '#4fc3f7', fontWeight: 'bold', marginLeft: 8, textDecoration: 'none' }}
         >
-          Play Now →
+          {ctaText}
         </a>
       </Typography>
       <Button onClick={handleDismiss} size="small" style={{ color: '#fff', minWidth: 'unset', padding: '0 8px', fontSize: '1rem', lineHeight: 1 }}>✕</Button>
