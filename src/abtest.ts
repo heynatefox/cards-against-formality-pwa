@@ -10,11 +10,24 @@ export function getVariant(): ABVariant {
   return variant;
 }
 
+/** Track when a Ridrunkulous promo is seen */
+export function trackImpression(placement: 'banner' | 'interstitial' | 'homepage', variant: ABVariant) {
+  (window as any)?.gtag?.('event', 'ridrunkulous_impression', {
+    event_category: 'ab_test',
+    event_label: `${variant}_${placement}`,
+    variant,
+    placement,
+  });
+}
+
+/** Track when a Ridrunkulous link is clicked */
 export function trackClick(placement: 'banner' | 'interstitial' | 'homepage', variant: ABVariant) {
+  // Use sendBeacon transport so the event fires even when navigating away
   (window as any)?.gtag?.('event', 'ridrunkulous_click', {
     event_category: 'ab_test',
     event_label: `${variant}_${placement}`,
     variant,
     placement,
+    transport_type: 'beacon',
   });
 }

@@ -7,7 +7,7 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import Card from '../Card/Card';
 import './Homepage.scss';
 import { ThemeContext } from '../../Contexts/ThemeProvider';
-import { getVariant, trackClick } from '../../abtest';
+import { getVariant, trackClick, trackImpression } from '../../abtest';
 
 const Homepage = React.memo(() => {
   const navigate = useNavigate();
@@ -61,6 +61,7 @@ const Homepage = React.memo(() => {
     {/* Ridrunkulous Promo */}
     {(() => {
       const variant = getVariant();
+      trackImpression('homepage', variant);
       const heading = variant === 'hq'
         ? 'The drinking game headquarters.'
         : 'Play or build your own drinking game.';

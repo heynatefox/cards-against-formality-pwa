@@ -20,7 +20,7 @@ import { SnackbarContext } from "./SnackbarProvider";
 import { useLocation, useNavigate, type Location } from "react-router";
 import { FirebaseContext } from "./FirebaseProvider";
 import { NewsletterContext } from "../components/Newsletter/Context";
-import { getVariant, trackClick } from "../abtest";
+import { getVariant, trackClick, trackImpression } from "../abtest";
 
 export interface UserContextInterface {
   login: (username: string) => Promise<string>;
@@ -304,6 +304,7 @@ export default function UserProvider({ children }: { children: any }) {
           <div id="post-log-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '48px 20px 16px', width: '100%', maxWidth: 800, boxSizing: 'border-box', height: '100vh', maxHeight: '100dvh', overflow: 'hidden' }}>
             {(() => {
               const variant = getVariant();
+              trackImpression('interstitial', variant);
               const headline = variant === 'hq'
                 ? 'We built the drinking game headquarters.'
                 : 'Play our drinking games or build your own.';

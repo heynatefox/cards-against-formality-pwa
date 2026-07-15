@@ -83,7 +83,7 @@ function LoggedIn() {
   );
 }
 
-import { getVariant, trackClick } from './abtest';
+import { getVariant, trackClick, trackImpression } from './abtest';
 
 const BANNER_DISMISSED_KEY = 'ridrunkulous-banner-dismissed';
 
